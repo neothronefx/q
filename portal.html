@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Member | neothrone</title>
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" type="image/svg+xml" href="assets/logo/neothrone-logo-light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="assets/logo/neothrone-logo-dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/theme.css">
+<link rel="stylesheet" href="assets/css/portal.css">
+<script src="assets/js/theme.js"></script>
+</head>
+<body>
+<div class="layout" id="app">
+ <aside class="side" aria-label="Menu member">
+  <div class="logo"><span class="brand-mark" role="img" aria-label="Logo neothrone"></span><span>neothrone<small>Area member</small></span></div>
+   <div class="side-tools">
+   <button class="side-tool" id="openTime" type="button" aria-label="Buka jam live (Time)" title="Time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+   <button class="side-tool" id="theme-toggle" type="button" aria-label="Ganti tema">☀</button>
+  </div>
+  <div class="nn-card side-news" role="timer" aria-live="off">
+   <div class="nn-label">News berikutnya</div>
+   <div class="nn-name" id="nnName">Memuat...</div>
+   <div class="nn-time" id="nnTime">--:--:--</div>
+   <div class="nn-note">Waktu ditampilkan sesuai zona waktu perangkat Anda</div>
+  </div>
+  <button class="menu active" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 12 3l9 8v10H3z"/></svg>Ringkasan</button>
+  <button class="menu" data-view="license"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="5"/><path d="m11.5 11.5 8-8 2 2-2 2 2 2-3 3-2-2-3 3"/></svg>Lisensi akun</button>
+  <button class="menu" data-view="download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v4h14v-4"/></svg>Download EA</button>
+  <button class="menu" data-view="perf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10m5 10V4m5 16v-7m5 7V7"/></svg>Performa</button>
+  <button class="menu" data-view="news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>News Calendar</button>
+  <button class="menu" data-view="pairform" id="menuPairForm" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>EA Pair Setting</button>
+  <button class="menu" data-view="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>Profil</button>
+  <button class="menu logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5V3h4M16 17l5-5-5-5M21 12H9"/></svg>Keluar</button>
+ </aside>
+
+ <main>
+  <!-- Ringkasan (Modern UI) -->
+  <section class="view active" id="home">
+   <div class="welcome-hero">
+     <div>
+       <h1 id="hello">Selamat datang</h1>
+       <p>Pantau lisensi, aktivitas, dan performa akun EA kamu secara komprehensif.</p>
+     </div>
+     <button class="btn alt" onclick="document.querySelector('[data-view=\'license\']').click()">
+       + Daftarkan Akun MT5
+     </button>
+   </div>
+
+   <div class="grid">
+    <div class="card-stat">
+      <div class="stat-head">
+        <span class="k">Status email</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+      </div>
+      <div id="hEmail"><span class="badge ok">Terverifikasi</span></div>
+    </div>
+
+    <div class="card-stat">
+      <div class="stat-head">
+        <span class="k">Akun trading terdaftar</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+      </div>
+      <div class="v c" id="hLic">0</div>
+    </div>
+
+    <div class="card-stat">
+      <div class="stat-head">
+        <span class="k">Lisensi aktif</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m11.5 11.5 8-8 2 2-2 2 2 2-3 3-2-2-3 3"/><circle cx="8" cy="15" r="5"/></svg>
+        </div>
+      </div>
+      <div class="v" id="hActive">0</div>
+    </div>
+
+    <div class="card-stat">
+      <div class="stat-head">
+        <span class="k">Rata-rata win rate</span>
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+      </div>
+      <div class="v c" id="hWin">-</div>
+    </div>
+   </div>
+
+   <div class="card" style="margin-bottom:24px;">
+     <h2><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--cyan)" stroke-width="2" style="vertical-align:-3px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Status Panduan</h2>
+     <p class="empty" id="nextStep" style="font-size:14px;color:var(--text);">Memuat...</p>
+   </div>
+
+   <div class="quick-actions">
+     <div class="action-card" onclick="document.querySelector('[data-view=\'license\']').click()">
+       <div class="icon-box">
+         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+       </div>
+       <div>
+         <h3>Kelola Lisensi</h3>
+         <p>Tambah atau cek status verifikasi akun MT5 kamu.</p>
+       </div>
+     </div>
+
+     <div class="action-card" onclick="document.querySelector('[data-view=\'download\']').click()">
+       <div class="icon-box" style="background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent-text);">
+         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+       </div>
+       <div>
+         <h3>Unduh Robot EA</h3>
+         <p>Dapatkan file .ex5 terupdate untuk MetaTrader 5.</p>
+       </div>
+     </div>
+   </div>
+   <div class="card" id="socialBox" style="display:none;margin-top:20px">
+     <h2>Sosial Media &amp; Komunitas</h2>
+     <p class="k" style="margin:0 0 14px">Gabung dan berdiskusi bersama member lain.</p>
+     <div class="soc-grid" id="socialGrid"></div>
+   </div>
+  </section>
+
+  <!-- Lisensi akun -->
+  <section class="view" id="license">
+   <h1>Lisensi akun</h1>
+   <p class="sub">Daftarkan akun MT5 yang akan memakai EA. Akun harus terdaftar di bawah IB admin.</p>
+   <div class="card" style="margin-bottom:20px"><h2>Belum punya akun di bawah IB admin?</h2><p class="k" style="margin:0 0 12px">Buka akun baru lewat salah satu link broker partner di bawah, lalu daftarkan nomornya di form.</p><div id="ibLinks"></div></div>
+   <div class="card" style="margin-bottom:20px">
+    <form id="licForm">
+     <div class="row">
+      <label>Nomor akun<input id="lNo" inputmode="numeric" placeholder="Contoh: 12345678" required></label>
+      <label>Broker partner IB<select id="lBroker" required></select></label>
+      <label>Platform<select id="lPlat" disabled><option value="MT5" selected>MT5</option></select></label>
+     </div>
+     <label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="checkbox" id="lIb" required style="width:auto;margin-top:3px">Saya menyatakan akun ini dibuka lewat link IB admin. Permintaan akan dikirim ke admin untuk diverifikasi.</label>
+     <div><button class="btn" type="submit">Daftarkan akun</button></div>
+     <div class="msg" id="lMsg" role="status"></div>
+    </form>
+   </div>
+   <div class="card"><h2>Akun terdaftar</h2><div class="wrap"><table><thead><tr><th>Nomor akun</th><th>Broker</th><th>Platform</th><th>Status</th></tr></thead><tbody id="lBody"><tr><td colspan="4" class="empty">Memuat...</td></tr></tbody></table></div></div>
+  </section>
+
+<!-- Download EA -->
+  <section class="view" id="download">
+   <h1>Download EA</h1>
+   <p class="sub">EA hanya bisa diunduh jika akun trading kamu sudah didaftarkan dan diverifikasi admin sebagai member IB.</p>
+   
+   <div class="card">
+    <div class="dl">
+      <div><b>EA_AI_News</b><span class="k">File .ex5 untuk MetaTrader 5</span></div>
+      <button class="btn" id="dl1" data-file="EA_AI_News.ex5" disabled>Download MT5</button>
+    </div>
+    
+    <div class="dl">
+      <div><b>EA_Oracle_FOR_NEWS</b><span class="k">File .ex5 untuk MetaTrader 5</span></div>
+      <button class="btn" id="dl2" data-file="EA_Oracle_FOR_NEWS.ex5" disabled>Download MT5</button>
+    </div>
+
+    <p class="k" id="dlNote" style="margin:14px 0 0" role="status"></p>
+   </div>
+  </section>
+
+  <!-- Performa -->
+  <section class="view" id="perf">
+   <h1>Performa Akun</h1>
+   <p class="sub">Statistik dari data EA (tabel trading_stats) untuk setiap akun lisensi yang kamu daftarkan.</p>
+   <div class="card"><div class="wrap"><table><thead><tr><th>Nomor Akun</th><th>Broker</th><th>Lisensi</th><th>Profit Bulanan</th><th>Win Rate</th><th>Total Profit</th><th>Update Terakhir</th></tr></thead><tbody id="pBody"><tr><td colspan="7" class="empty">Memuat...</td></tr></tbody></table></div></div>
+  </section>
+
+  <!-- News Calendar -->
+  <section class="view" id="news">
+   <h1>News Calendar</h1>
+   <p class="sub">Berita High Impact dari Forex Factory. Pilih <b>PAIR ENTRY</b> untuk setiap berita &mdash; pilihan ini menjadi konfigurasi EA kamu.</p>
+   <div class="card" id="ffAcctBox" style="display:none;margin-bottom:14px">
+     <label style="margin:0">Akun MT5 untuk konfigurasi<select id="ffAcct"></select></label>
+     <p class="k" style="margin:8px 0 0">Kamu punya lebih dari satu akun aktif. Pair entry di bawah disimpan terpisah untuk setiap akun.</p>
+   </div>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+     <button class="btn alt" id="ffDefaultBtn" type="button">Isi pair default</button>
+     <button class="btn alt" id="ffReloadBtn" type="button">Muat ulang</button>
+     <button class="btn alt" id="ffResetBtn" type="button" style="border-color:color-mix(in srgb,var(--down) 60%,transparent);color:var(--down)">Reset semua entry</button>
+     <span class="msg" id="ffMsg" role="status"></span>
+   </div>
+   <div class="ffwrap"><table class="ff"><thead><tr>
+     <th>Date</th><th id="ffTz">Time</th><th>Countdown</th><th>Currency</th><th>Impact</th><th class="pairh">PAIR ENTRY</th><th>Event</th><th>Actual</th><th>Forecast</th><th>Previous</th>
+   </tr></thead><tbody id="ffBody"><tr><td colspan="10" class="empty">Memuat...</td></tr></tbody></table></div>
+   <p class="ffnote">Pilih &ldquo;OFF&rdquo; agar EA tidak entry pada berita tersebut. Perubahan tersimpan otomatis. Jam ditampilkan sesuai zona waktu perangkat kamu.</p>
+  </section>
+
+  <!-- EA Pair Setting (fitur khusus: hanya muncul bila admin memberi izin) -->
+  <section class="view" id="pairform">
+   <h1>EA Pair Setting</h1>
+   <p class="sub">Atur <b>Lot, Layer, SL, TP, dan TS</b> untuk setiap pair. EA memakai nilai ini setiap kali entry pada pair tersebut. Kolom kosong = EA memakai form di dashboard. SL, TP, dan TS dalam points.</p>
+   <div class="card" id="pfAcctBox" style="display:none;margin-bottom:14px">
+     <label style="margin:0">Akun MT5 untuk konfigurasi<select id="pfAcct"></select></label>
+     <p class="k" style="margin:8px 0 0">Form disimpan terpisah untuk setiap akun yang punya izin.</p>
+   </div>
+   <div class="card">
+     <div class="wrap"><table class="pf"><thead><tr><th>Pair</th><th>Lot</th><th>Layer</th><th>SL (pts)</th><th>TP (pts)</th><th>TS (pts)</th></tr></thead><tbody id="pfBody"><tr><td colspan="6" class="empty">Memuat...</td></tr></tbody></table></div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px">
+       <button class="btn alt" id="pfResetBtn" type="button" style="border-color:color-mix(in srgb,var(--down) 60%,transparent);color:var(--down)">Reset form akun ini</button>
+       <span class="msg" id="pfMsg" role="status"></span>
+     </div>
+     <p class="ffnote">Perubahan tersimpan otomatis saat kolom selesai diisi. Layer = maksimal posisi aktif per pair. TS = Trailing Stop; Trailing Step tetap dari pengaturan EA.</p>
+   </div>
+  </section>
+
+  <!-- Profil -->
+  <section class="view" id="profile">
+   <h1>Profil</h1>
+   <p class="sub">Data akun dan keamanan.</p>
+   <div class="card" style="margin-bottom:20px"><h2>Data akun</h2>
+    <p style="margin:0 0 6px"><span class="k">Nama:</span> <span id="pName">-</span></p>
+    <p style="margin:0"><span class="k">Email:</span> <span id="pEmail">-</span></p>
+   </div>
+   <div class="card"><h2>Ganti kata sandi</h2>
+    <form id="pwForm"><label>Kata sandi baru<input type="password" id="pw" minlength="6" placeholder="Minimal 6 karakter" required></label>
+     <div><button class="btn" type="submit">Simpan kata sandi</button></div><div class="msg" id="pwMsg" role="status"></div></form>
+   </div>
+  </section>
+ </main>
+</div>
+
+<div class="tm-overlay" id="timeModal" aria-hidden="true">
+ <div class="tm-box" role="dialog" aria-modal="true" aria-labelledby="tmTitle">
+  <button class="tm-close" id="timeClose" type="button" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <div class="scl-top"><span id="tmTitle">TIME</span><span class="scl-live">● LIVE</span></div>
+  <div class="scl-time" id="scTime">00:00:00</div>
+  <div class="scl-date" id="scDate"></div>
+ </div>
+</div>
+
+<div class="bc-overlay" id="bcOverlay" role="dialog" aria-modal="true" aria-labelledby="bcTitle">
+ <div class="bc-box">
+  <div class="bc-head"><h2 id="bcTitle">Pesan dari Admin</h2><span class="bc-count" id="bcCount"></span></div>
+  <div class="bc-body" id="bcBody"></div>
+  <div class="bc-foot"><button class="btn" id="bcClose" type="button">Mengerti</button></div>
+ </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://nzrjskgbcnbmilvzrqqr.supabase.co/';
+const SUPABASE_ANON_KEY = 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-';
+
+const IB_BROKERS = [
+  { name: 'BROKER A', link: 'https://link-ib-tmgm.example' },
+  { name: 'BROKER B', link: 'https://link-ib-valetax.example' }
+];
+
+const $ = id => document.getElementById(id);
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let db = null, user = null, licenses = [], statsMap = {};
+
+// Navigasi menu
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.menu[data-view]').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetView = b.getAttribute('data-view');
+      document.querySelectorAll('.menu').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      b.classList.add('active');
+      const targetElem = $(targetView);
+      if (targetElem) targetElem.classList.add('active');
+    });
+  });
+});
+
+try {
+  if (window.supabase) {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch (e) {
+  console.error("Gagal menginisialisasi Supabase:", e);
+}
+
+async function logout() { 
+  if (db) await db.auth.signOut(); 
+  location.href = 'index.html'; 
+}
+
+function renderData() {
+  const activeLicenses = licenses.filter(l => String(l.status || '').toLowerCase() === 'active');
+
+  $('hLic').textContent = String(licenses.length);
+  $('hActive').textContent = String(activeLicenses.length);
+  const isEnabled = activeLicenses.length > 0;
+  $('dl1').disabled = !isEnabled;
+  $('dl2').disabled = !isEnabled;
+  
+  $('dlNote').textContent = activeLicenses.length > 0 ? '' : !licenses.length
+    ? 'Belum bisa diunduh. Daftarkan ID akun dan broker MT5 di menu Lisensi akun terlebih dahulu.'
+    : 'Belum bisa diunduh. Permintaan akun kamu sedang menunggu verifikasi admin.';
+  
+  $('lBody').innerHTML = licenses.length ? licenses.map(l => {
+    const cls = l.status === 'active' ? 'ok' : l.status === 'rejected' ? 'no' : 'wait';
+    const txt = l.status === 'active' ? 'Aktif' : l.status === 'rejected' ? 'Ditolak' : 'Menunggu verifikasi admin';
+    return `<tr><td>${esc(l.account_number)}</td><td>${esc(l.broker)}</td><td>${esc(l.platform || 'MT5')}</td><td><span class="badge ${cls}">${txt}</span></td></tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty">Belum ada akun. Daftarkan akun MT5 pertama kamu pada form di atas.</td></tr>';
+  
+  $('nextStep').textContent = !licenses.length 
+    ? 'Daftarkan akun trading MT5 yang dibuka lewat link IB admin di menu Lisensi akun.' 
+    : activeLicenses.length > 0 ? 'Lisensi aktif. Unduh EA di menu Download EA.' 
+    : 'Akun sudah terdaftar. Tunggu admin memverifikasi akun Anda.';
+
+  if (typeof pfRefreshMenu === 'function') pfRefreshMenu();
+
+  renderPerf();
+}
+
+// Performa: satu baris per akun lisensi, dicocokkan dengan trading_stats.account_id
+function renderPerf() {
+  if (!licenses.length) {
+    $('pBody').innerHTML = '<tr><td colspan="7" class="empty">Belum ada akun lisensi terdaftar. Daftarkan akun di menu Lisensi akun.</td></tr>';
+    $('hWin').textContent = '-';
+    return;
+  }
+  const fmtDate = v => v ? new Date(v).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '-';
+  const wins = [];
+  $('pBody').innerHTML = licenses.map(l => {
+    const acc = String(l.account_number);
+    const st = statsMap[acc];
+    const cls = l.status === 'active' ? 'ok' : l.status === 'rejected' ? 'no' : 'wait';
+    const txt = l.status === 'active' ? 'Aktif' : l.status === 'rejected' ? 'Ditolak' : 'Menunggu';
+    const head = `<td><b>${esc(acc)}</b></td><td>${esc(l.broker || '-')}</td><td><span class="badge ${cls}">${txt}</span></td>`;
+    if (!st) return `<tr>${head}<td colspan="4" class="empty">Belum ada data dari EA untuk akun ini.</td></tr>`;
+    const win = Number(st.win_rate || 0);
+    wins.push(win);
+    const mp = Number(st.monthly_profit || 0);
+    return `<tr>${head}<td>${mp >= 0 ? '+' : ''}${esc(mp.toFixed(1))}%</td><td>${esc(win.toFixed(1))}%</td><td>$${esc(Number(st.total_profit || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))}</td><td>${esc(fmtDate(st.updated_at))}</td></tr>`;
+  }).join('');
+  $('hWin').textContent = wins.length ? (wins.reduce((a, c) => a + c, 0) / wins.length).toFixed(1) + '%' : '-';
+}
+
+async function loadLicenses() {
+  if (!db || !user) return;
+  const { data, error } = await db.from('licenses').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+  if (error) { 
+    console.error("Gagal memuat lisensi:", error);
+    $('lBody').innerHTML = '<tr><td colspan="4" class="empty">Gagal memuat data lisensi dari server.</td></tr>'; 
+    return; 
+  }
+  licenses = data || [];
+  renderData();
+}
+
+async function loadStats() {
+  if (!db || !user) return;
+  const nums = licenses.map(l => String(l.account_number));
+  statsMap = {};
+  if (!nums.length) { renderPerf(); return; }
+
+  // Ambil langsung dari trading_stats berdasarkan nomor akun lisensi (account_id)
+  const { data, error } = await db.from('trading_stats').select('*').in('account_id', nums);
+  if (error) {
+    console.error('Gagal memuat data trading_stats:', error);
+    $('pBody').innerHTML = '<tr><td colspan="7" class="empty">Gagal memuat performa: ' + esc(error.message) + '</td></tr>';
+    return;
+  }
+  (data || []).forEach(row => {
+    const acc = String(row.account_id ?? row.account_number ?? '');
+    const prev = statsMap[acc];
+    // jika ada lebih dari satu baris untuk akun yang sama, pakai yang paling baru
+    if (!prev || new Date(row.updated_at || 0) >= new Date(prev.updated_at || 0)) statsMap[acc] = row;
+  });
+  renderPerf();
+}
+
+// ===== Countdown news berikutnya (Ringkasan) =====
+let nnTarget=null, nnReload=0;
+async function loadNextNews(){
+  const nameEl=document.getElementById('nnName'); if(!nameEl) return;
+  if(!db){ nameEl.textContent='Belum ada jadwal'; return; }
+  try{
+    const {data,error}=await db.from('news_calendar').select('title,currency,event_time')
+      .eq('impact','High').gte('event_time',new Date().toISOString())
+      .order('event_time',{ascending:true}).limit(1);
+    if(error) throw error;
+    const e=data&&data[0];
+    if(!e){ nnTarget=null; nameEl.textContent='Belum ada jadwal'; document.getElementById('nnTime').textContent='--:--:--'; return; }
+    nnTarget=new Date(e.event_time).getTime();
+    nameEl.textContent=e.title||'News';
+    if(e.currency){ const c=document.createElement('span'); c.className='nn-cur'; c.textContent='('+e.currency+')'; nameEl.appendChild(c); }
+  }catch(err){ console.error('Gagal memuat news berikutnya:',err); nameEl.textContent='Belum ada jadwal'; }
+}
+function nnTick(){
+  const t=document.getElementById('nnTime'); if(!t||!nnTarget) return;
+  const diff=Math.floor((nnTarget-Date.now())/1000), pad=v=>String(v).padStart(2,'0');
+  if(diff<=0){
+    t.textContent='RILIS'; t.className='nn-time now';
+    if(Date.now()-nnReload>20000){ nnReload=Date.now(); setTimeout(loadNextNews,15000); }
+    return;
+  }
+  const dd=Math.floor(diff/86400), h=Math.floor(diff%86400/3600), m=Math.floor(diff%3600/60), sec=diff%60;
+  t.textContent=(dd>0?dd+'d ':'')+pad(h)+':'+pad(m)+':'+pad(sec);
+  t.className='nn-time'+(diff<=120?' now':diff<=900?' soon':'');
+}
+setInterval(nnTick,1000);
+setInterval(loadNextNews,300000);
+
+async function init() {
+  if (db) {
+    const { data: { session }, error: sessionError } = await db.auth.getSession();
+    if (sessionError) console.error('Gagal memeriksa sesi login:', sessionError);
+    if (session) user = session.user;
+  }
+
+  loadNextNews();
+
+  if (!user) {
+    $('hello').textContent = 'Halo, Guest';
+    $('nextStep').textContent = 'Silakan login terlebih dahulu untuk mengakses fitur penuh.';
+    $('lBody').innerHTML = '<tr><td colspan="4" class="empty">Silakan login untuk melihat lisensi akun Anda.</td></tr>';
+    $('pBody').innerHTML = '<tr><td colspan="7" class="empty">Silakan login untuk melihat statistik performa.</td></tr>';
+    return;
+  }
+
+  const name = user.user_metadata?.full_name || user.email;
+  $('hello').textContent = 'Halo, ' + name;
+  $('hEmail').innerHTML = '<span class="badge ok">Terverifikasi</span>';
+  $('pName').textContent = user.user_metadata?.full_name || name; 
+  $('pEmail').textContent = user.email || '-';
+
+  await loadLicenses();
+  await loadStats();
+  await loadBroadcasts();
+  await loadSocial();
+  startRealtime();
+}
+
+// ===== Broadcast dari admin =====
+// - Saat login: pesan yang belum dibaca ditampilkan.
+// - Saat portal sedang terbuka: pesan baru dari admin langsung muncul (Supabase Realtime).
+const bcShown = new Set();
+const bcFmt = v => v ? new Date(v).toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+function bcItemHtml(m) {
+  const title = m.title || m.subject || '';
+  const text = m.message ?? m.body ?? m.content ?? m.text ?? '';
+  return `<div class="bc-item" data-id="${esc(m.id)}">${title ? `<b>${esc(title)}</b>` : ''}<p>${esc(text)}</p><small>${esc(bcFmt(m.created_at))}</small></div>`;
+}
+function bcRefreshCount() {
+  const n = $('bcBody').querySelectorAll('.bc-item').length;
+  $('bcCount').textContent = n + ' pesan baru';
+  if (!n) $('bcOverlay').classList.remove('show');
+}
+// Tampilkan pesan yang belum pernah ditampilkan; kembalikan daftar yang baru tampil
+function bcRender(list) {
+  const fresh = list.filter(m => !bcShown.has(m.id));
+  if (!fresh.length) return [];
+  fresh.forEach(m => bcShown.add(m.id));
+  if (!$('bcOverlay').classList.contains('show')) $('bcBody').innerHTML = '';
+  $('bcBody').insertAdjacentHTML('afterbegin', fresh.map(bcItemHtml).join(''));
+  bcRefreshCount();
+  $('bcOverlay').classList.add('show');
+  return fresh;
+}
+async function bcMarkRead(list) {
+  if (!list.length) return;
+  const rows = list.map(m => ({ message_id: m.id, user_id: user.id }));
+  const { error } = await db.from('broadcast_reads').upsert(rows, { onConflict: 'message_id,user_id', ignoreDuplicates: true });
+  if (error) console.error('Gagal menandai pesan dibaca:', error);
+}
+async function loadBroadcasts() {
+  if (!db || !user) return;
+  try {
+    const { data: msgs, error: e1 } = await db.from('broadcast_messages').select('*').order('created_at', { ascending: false });
+    const { data: reads, error: e2 } = await db.from('broadcast_reads').select('message_id');
+    if (e1 || e2) { console.error('Gagal memuat broadcast:', e1 || e2); return; }
+    const seen = new Set((reads || []).map(r => r.message_id));
+    await bcMarkRead(bcRender((msgs || []).filter(m => !seen.has(m.id))));
+  } catch (err) {
+    console.error('Broadcast error:', err);
+  }
+}
+async function bcLive(m) {
+  if (!m || m.active === false) return;
+  if (m.expires_at && new Date(m.expires_at) < new Date()) return;
+  await bcMarkRead(bcRender([m]));
+}
+function bcRemove(id) {
+  bcShown.delete(id);
+  $('bcBody').querySelector(`.bc-item[data-id="${CSS.escape(String(id))}"]`)?.remove();
+  if ($('bcOverlay').classList.contains('show')) bcRefreshCount();
+}
+
+// ===== Sosial media (bagian bawah Ringkasan) =====
+const SOCIAL_BUCKET = 'social-icons';
+async function loadSocial() {
+  if (!db || !user) return;
+  const { data, error } = await db.from('social_links').select('*').order('created_at', { ascending: true });
+  if (error) { console.error('Gagal memuat sosial media:', error); return; }
+  const list = (data || []).filter(r => /^https?:\/\//i.test(r.url || ''));
+  $('socialBox').style.display = list.length ? '' : 'none';   // tampil hanya jika admin sudah menambahkan
+  $('socialGrid').innerHTML = list.map(r => {
+    const img = r.image_path ? db.storage.from(SOCIAL_BUCKET).getPublicUrl(r.image_path).data.publicUrl : '';
+    const ph = esc(String(r.name || '?').trim().charAt(0).toUpperCase());
+    return `<a class="soc-card" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : `<span class="soc-ph">${ph}</span>`}<span>${esc(r.name)}</span></a>`;
+  }).join('');
+}
+
+// ===== Realtime: broadcast & sosial media =====
+let rtStarted = false;
+function startRealtime() {
+  if (rtStarted || !db || !user) return;
+  rtStarted = true;
+  db.channel('portal-live')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcast_messages' }, p => bcLive(p.new))
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'broadcast_messages' }, p => {
+      if (p.new.active === false) bcRemove(p.new.id); else bcLive(p.new);   // pesan ditarik / diaktifkan lagi
+    })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'broadcast_messages' }, p => bcRemove(p.old.id))
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'social_links' }, () => loadSocial())
+    .subscribe();
+}
+$('bcClose').addEventListener('click', () => $('bcOverlay').classList.remove('show'));
+
+$('logoutBtn').addEventListener('click', logout);
+
+$('lBroker').innerHTML = '<option value="">Pilih broker</option>' + IB_BROKERS.map(b => `<option>${esc(b.name)}</option>`).join('');
+$('ibLinks').innerHTML = IB_BROKERS.map(b => `<a class="btn alt" style="margin:0 8px 8px 0" href="${esc(b.link)}" target="_blank" rel="noopener">Buka akun di ${esc(b.name)}</a>`).join('');
+
+const EA_BUCKET = 'EA PUBLISH'; // harus sama persis dengan nama bucket di Supabase Storage
+
+document.querySelectorAll('[data-file]').forEach(b => b.addEventListener('click', async () => {
+  if (!db) return;
+  // Bucket bersifat PUBLIC, jadi cukup memakai public URL (tidak perlu policy storage)
+  const { data } = db.storage.from(EA_BUCKET).getPublicUrl(b.dataset.file, { download: true });
+  if (!data || !data.publicUrl) {
+    $('dlNote').textContent = 'Gagal mengunduh: link file tidak ditemukan. Hubungi admin.';
+    return;
+  }
+  location.href = data.publicUrl;
+}));
+
+$('licForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const m = $('lMsg');
+  m.textContent = 'Mengirim data ke admin...';
+
+  if (!db || !user) {
+    m.style.color = 'var(--down)';
+    m.textContent = 'Koneksi database belum terhubung atau Anda belum login.';
+    return;
+  }
+
+  const accountNumber = $('lNo').value.trim();
+  const broker = $('lBroker').value.trim();
+
+  if (!/^[0-9]+$/.test(accountNumber)) {
+    m.style.color = 'var(--down)';
+    m.textContent = 'Nomor akun MT5 harus berupa angka tanpa spasi atau tanda baca.';
+    $('lNo').focus();
+    return;
+  }
+  if (!broker) {
+    m.style.color = 'var(--down)';
+    m.textContent = 'Pilih broker partner terlebih dahulu.';
+    $('lBroker').focus();
+    return;
+  }
+  if (!$('lIb').checked) {
+    m.style.color = 'var(--down)';
+    m.textContent = 'Konfirmasi bahwa akun dibuka melalui link IB admin terlebih dahulu.';
+    return;
+  }
+
+  const payload = {
+    user_id: user.id,
+    account_id: accountNumber,
+    account_number: accountNumber,
+    broker: broker,
+    platform: 'MT5',
+    status: 'pending'
+  };
+
+  const { error } = await db.from('licenses').insert(payload);
+
+  if (error) {
+    console.error('Gagal mendaftarkan lisensi:', error);
+    m.style.color = 'var(--down)';
+    m.textContent = 'Gagal mendaftarkan akun: ' + error.message;
+    return;
+  }
+
+  m.style.color = 'var(--up)';
+  m.textContent = 'Berhasil! Permintaan lisensi dikirim ke admin untuk diverifikasi.';
+  e.target.reset();
+  await loadLicenses();
+  await loadStats();
+});
+
+$('pwForm').addEventListener('submit', async e => {
+  e.preventDefault(); const m = $('pwMsg');
+  if (!db) return;
+  const { error } = await db.auth.updateUser({ password: $('pw').value });
+  m.style.color = error ? 'var(--down)' : 'var(--up)';
+  m.textContent = error ? 'Gagal mengganti kata sandi: ' + error.message : 'Kata sandi berhasil diganti.'; 
+  if (!error) e.target.reset();
+});
+
+init();
+setInterval(() => { if (user && licenses.length) loadStats(); }, 60000);
+</script>
+<script>
+const FF_DEFAULT_PAIR={USD:'XAUUSD',GBP:'GBPUSD',AUD:'AUDUSD',NZD:'NZDUSD',EUR:'EURUSD',CAD:'USDCAD',JPY:'USDJPY',CHF:'USDCHF'};
+function ffEsc(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function ffFmt(iso){
+  const d=new Date(iso);
+  const day=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  const tm=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).replace(' ','').toLowerCase();
+  return {dayKey:d.toDateString(),day,tm};
+}
+async function ffLoadEvents(client){
+  const start=new Date(); start.setHours(0,0,0,0);
+  const {data,error}=await client.from('news_calendar').select('*')
+    .eq('impact','High').gte('event_time',start.toISOString()).order('event_time',{ascending:true}).limit(200);
+  if(error) throw error;
+  return data||[];
+}
+function ffGroup(events){
+  const days=[]; const dmap={};
+  events.forEach(e=>{
+    const f=ffFmt(e.event_time);
+    let day=dmap[f.dayKey]; if(!day){day=dmap[f.dayKey]={label:f.day,slots:[],smap:{},n:0};days.push(day);}
+    const sk=e.event_time+'|'+e.currency;
+    let s=day.smap[sk]; if(!s){s=day.smap[sk]={key:sk,time:e.event_time,tm:f.tm,cur:e.currency,items:[]};day.slots.push(s);}
+    s.items.push(e); day.n++;
+  });
+  return days;
+}
+
+const FF_PAIRS=['XAUUSD','EURUSD','GBPUSD','USDJPY','AUDUSD','NZDUSD','USDCAD','USDCHF'];
+let ffCfg={}, ffDays=[], ffLoaded=false, ffAcct='';
+
+function ffActiveAccounts(){
+  return (typeof licenses!=='undefined'?licenses:[]).filter(l=>String(l.status||'').toLowerCase()==='active');
+}
+function ffAcctInit(){
+  const act=ffActiveAccounts();
+  const box=document.getElementById('ffAcctBox'), sel=document.getElementById('ffAcct');
+  const nums=act.map(l=>String(l.account_number));
+  if(!nums.includes(ffAcct)) ffAcct=nums[0]||'';
+  if(act.length>=2){
+    sel.innerHTML=act.map(l=>`<option value="${ffEsc(l.account_number)}"${String(l.account_number)===ffAcct?' selected':''}>${ffEsc(l.account_number)} — ${ffEsc(l.broker||'')}</option>`).join('');
+    box.style.display='';
+  } else {
+    box.style.display='none';
+  }
+}
+
+async function ffLoadCfg(){
+  ffCfg={};
+  if(!db||!user) return;
+  const {data}=await db.from('news_pair_config').select('slot_key,pair').eq('account_number',ffAcct);
+  (data||[]).forEach(r=>ffCfg[r.slot_key]=r.pair);
+}
+async function ffSave(ev,pair){
+  const m=document.getElementById('ffMsg');
+  if(!db||!user){m.textContent='Login dulu untuk menyimpan config.';return;}
+  let res;
+  if(!pair){ res=await db.from('news_pair_config').delete().eq('user_id',user.id).eq('account_number',ffAcct).eq('slot_key',ev.id); delete ffCfg[ev.id]; }
+  else { res=await db.from('news_pair_config').upsert({user_id:user.id,account_number:ffAcct,slot_key:ev.id,event_time:ev.event_time,currency:ev.currency,pair,updated_at:new Date().toISOString()},{onConflict:'user_id,account_number,slot_key'}); ffCfg[ev.id]=pair; }
+  m.style.color=res.error?'var(--down)':'var(--up)';
+  m.textContent=res.error?('Gagal simpan: '+res.error.message):'Tersimpan ✓';
+}
+function ffRender(){
+  const body=document.getElementById('ffBody');
+  if(!ffDays.length){body.innerHTML='<tr><td colspan="10" class="empty">Belum ada berita High Impact. Pastikan sinkronisasi Forex Factory sudah berjalan.</td></tr>';return;}
+  let html='',g=0;
+  const evs={};
+  ffDays.forEach(day=>{
+    let firstDay=true;
+    day.slots.forEach(s=>{
+      const cls='g'+(g%2); g++;
+      s.items.forEach((e,i)=>{
+        evs[e.id]=e;
+        const sel=ffCfg[e.id]||'';
+        const opts='<option value="">— pilih —</option>'+FF_PAIRS.map(x=>`<option${sel===x?' selected':''}>${x}</option>`).join('')+`<option${sel==='OFF'?' selected':''}>OFF</option>`;
+        html+=`<tr class="${cls}">`;
+        if(firstDay){html+=`<td class="day" rowspan="${day.n}">${ffEsc(day.label)}</td>`;firstDay=false;}
+        if(i===0) html+=`<td class="tm" rowspan="${s.items.length}">${ffEsc(s.tm)}</td><td class="cd" rowspan="${s.items.length}"><span class="cdv" data-t="${ffEsc(e.event_time)}">--:--:--</span></td><td class="cur" rowspan="${s.items.length}">${ffEsc(e.currency)}</td><td rowspan="${s.items.length}"><span class="imp"></span></td>`;
+        html+=`<td class="pair"><select data-ev="${ffEsc(e.id)}">${opts}</select></td>`;
+        html+=`<td>${ffEsc(e.title)}</td><td class="num" data-f="a" data-id="${ffEsc(e.id)}">${ffActual(e)}</td><td class="num" data-f="f" data-id="${ffEsc(e.id)}">${ffEsc(e.forecast||'')}</td><td class="num" data-f="p" data-id="${ffEsc(e.id)}">${ffEsc(e.previous||'')}</td></tr>`;
+      });
+    });
+  });
+  body.innerHTML=html;
+  body.querySelectorAll('select[data-ev]').forEach(el=>el.addEventListener('change',()=>ffSave(evs[el.dataset.ev],el.value)));
+}
+async function ffInit(force){
+  if(ffLoaded&&!force) return;
+  const m=document.getElementById('ffMsg'); m.style.color='var(--muted)'; m.textContent='Memuat...';
+  try{
+    document.getElementById('ffTz').textContent='Time ('+(Intl.DateTimeFormat().resolvedOptions().timeZone||'local')+')';
+    ffAcctInit();
+    const ev=await ffLoadEvents(db); await ffLoadCfg();
+    ffDays=ffGroup(ev); ffRender(); ffLoaded=true; m.textContent='';
+  }catch(e){ m.style.color='var(--down)'; m.textContent='Gagal memuat kalender: '+e.message; }
+}
+
+function ffActual(e){
+  const a=(e.actual??'').toString().trim();
+  if(a) return ffEsc(a);
+  return (new Date(e.event_time).getTime()<=Date.now()) ? '<span class="pend" title="Berita sudah lewat, data actual belum masuk ke database">Menunggu…</span>' : '';
+}
+// Cek data terbaru; hanya angka yang diperbarui di tempat, pilihan PAIR ENTRY tidak ikut terganggu
+async function ffRefreshNums(){
+  if(!db||!ffLoaded) return;
+  try{
+    const ev=await ffLoadEvents(db);
+    const ids=ev.map(e=>e.id).join(','), cur=ffDays.flatMap(d=>d.slots.flatMap(s=>s.items)).map(e=>e.id).join(',');
+    if(ids!==cur){ ffDays=ffGroup(ev); ffRender(); return; }
+    ev.forEach(e=>{
+      const q=f=>document.querySelector(`#ffBody td[data-f="${f}"][data-id="${CSS.escape(String(e.id))}"]`);
+      const a=q('a'),f=q('f'),p=q('p');
+      if(a) a.innerHTML=ffActual(e);
+      if(f) f.textContent=e.forecast||'';
+      if(p) p.textContent=e.previous||'';
+    });
+  }catch(_){}
+}
+setInterval(()=>{ if(document.getElementById('news').classList.contains('active')) ffRefreshNums(); },30000);
+try{
+  if(db){ let rt; db.channel('news_calendar_live').on('postgres_changes',{event:'*',schema:'public',table:'news_calendar'},()=>{clearTimeout(rt);rt=setTimeout(ffRefreshNums,800);}).subscribe(); }
+}catch(_){}
+document.getElementById('ffReloadBtn').addEventListener('click',()=>ffInit(true));
+// Reset: hapus semua pilihan PAIR ENTRY (list entry EA) untuk akun yang sedang dipilih
+document.getElementById('ffResetBtn').addEventListener('click',async()=>{
+  const m=document.getElementById('ffMsg');
+  if(!db||!user){m.style.color='var(--down)';m.textContent='Login dulu untuk mereset config.';return;}
+  if(!ffAcct){m.style.color='var(--down)';m.textContent='Belum ada akun aktif untuk direset.';return;}
+  if(!confirm('Hapus SEMUA list entry (pair) untuk akun '+ffAcct+'? EA tidak akan entry pada berita sampai kamu memilih pair lagi.')) return;
+  const btn=document.getElementById('ffResetBtn'); btn.disabled=true;
+  m.style.color='var(--muted)'; m.textContent='Menghapus...';
+  const {error}=await db.from('news_pair_config').delete().eq('user_id',user.id).eq('account_number',ffAcct);
+  btn.disabled=false;
+  if(error){m.style.color='var(--down)';m.textContent='Gagal reset: '+error.message;return;}
+  ffCfg={}; ffRender();
+  m.style.color='var(--up)'; m.textContent='Semua list entry akun '+ffAcct+' berhasil dihapus ✓';
+});
+document.getElementById('ffAcct').addEventListener('change',async e=>{
+  ffAcct=e.target.value;
+  const m=document.getElementById('ffMsg'); m.style.color='var(--muted)'; m.textContent='Memuat config akun '+ffAcct+'...';
+  await ffLoadCfg(); ffRender(); m.textContent='';
+});
+document.getElementById('ffDefaultBtn').addEventListener('click',async()=>{
+  if(!db||!user) return;
+  const rows=[];
+  ffDays.forEach(d=>d.slots.forEach(s=>s.items.forEach(e=>{ if(!ffCfg[e.id]&&FF_DEFAULT_PAIR[e.currency]){rows.push({user_id:user.id,account_number:ffAcct,slot_key:e.id,event_time:e.event_time,currency:e.currency,pair:FF_DEFAULT_PAIR[e.currency]});ffCfg[e.id]=FF_DEFAULT_PAIR[e.currency];}})));
+  if(rows.length) await db.from('news_pair_config').upsert(rows,{onConflict:'user_id,account_number,slot_key'});
+  ffRender(); const m=document.getElementById('ffMsg'); m.style.color='var(--up)'; m.textContent=rows.length+' berita diisi default ✓';
+});
+document.querySelector('.menu[data-view="news"]').addEventListener('click',()=>{ setTimeout(()=>ffInit(true),400); });
+
+/* ===== EA Pair Setting: Lot / Layer / SL / TP / TS per pair (izin admin: licenses.form_access) ===== */
+const PF_PAIRS=['XAUUSD','EURUSD','GBPUSD','USDJPY','AUDUSD','NZDUSD','USDCAD','USDCHF'];
+const PF_KEYS=['lot','layer','sl','tp','ts'];
+const PF_PH={lot:'Default EA',layer:'Default EA',sl:'Default EA',tp:'Default EA',ts:'Default EA'};
+let pfAcct='', pfCfg={};
+function pfAccounts(){
+  return (typeof licenses!=='undefined'?licenses:[]).filter(l=>String(l.status||'').toLowerCase()==='active' && l.form_access===true);
+}
+function pfMsg(txt,color){const m=document.getElementById('pfMsg'); m.style.color=color||'var(--muted)'; m.textContent=txt||'';}
+// Menu hanya tampil bila minimal satu akun aktif punya izin
+function pfRefreshMenu(){
+  const acc=pfAccounts();
+  document.getElementById('menuPairForm').style.display=acc.length?'':'none';
+  const nums=acc.map(l=>String(l.account_number));
+  const prev=pfAcct;
+  if(!nums.includes(pfAcct)) pfAcct=nums[0]||'';
+  document.getElementById('pfAcct').innerHTML=acc.map(l=>`<option value="${ffEsc(l.account_number)}"${String(l.account_number)===pfAcct?' selected':''}>${ffEsc(l.account_number)} — ${ffEsc(l.broker||'')}</option>`).join('');
+  document.getElementById('pfAcctBox').style.display=acc.length>=2?'':'none';
+  if(!acc.length){
+    if(document.getElementById('pairform').classList.contains('active')) document.querySelector('.menu[data-view="home"]').click();
+    return;
+  }
+  if(prev!==pfAcct && document.getElementById('pairform').classList.contains('active')) pfLoad();
+}
+function pfRender(){
+  document.getElementById('pfBody').innerHTML=PF_PAIRS.map(pr=>{
+    const v=pfCfg[pr]||{};
+    return `<tr data-pair="${pr}"><td class="pfp">${pr}</td>`+PF_KEYS.map(k=>`<td><input type="text" inputmode="decimal" data-k="${k}" placeholder="${PF_PH[k]}" value="${v[k]==null?'':ffEsc(v[k])}"></td>`).join('')+`</tr>`;
+  }).join('');
+  document.querySelectorAll('#pfBody input').forEach(el=>el.addEventListener('change',()=>pfSaveRow(el.closest('tr'))));
+}
+async function pfLoad(){
+  pfCfg={};
+  if(!db||!user||!pfAcct){pfRender();return;}
+  pfMsg('Memuat...');
+  const {data,error}=await db.from('pair_form_config').select('pair,lot,layer,sl,tp,ts').eq('account_number',pfAcct);
+  if(error){pfMsg('Gagal memuat form: '+error.message,'var(--down)');pfRender();return;}
+  (data||[]).forEach(r=>pfCfg[r.pair]=r);
+  pfRender(); pfMsg('');
+}
+async function pfSaveRow(tr){
+  const pair=tr.dataset.pair;
+  if(!db||!user){pfMsg('Login dulu untuk menyimpan.','var(--down)');return;}
+  if(!pfAccounts().some(l=>String(l.account_number)===pfAcct)){pfMsg('Akun ini belum memiliki izin EA Pair Setting.','var(--down)');return;}
+  const row={user_id:user.id,account_number:pfAcct,pair,updated_at:new Date().toISOString()};
+  let any=false;
+  for(const k of PF_KEYS){
+    const inp=tr.querySelector(`input[data-k="${k}"]`);
+    const raw=(inp.value||'').trim().replace(',','.');
+    if(raw===''){row[k]=null;continue;}
+    const n=Number(raw);
+    const bad=!isFinite(n)||(k==='lot'?n<=0:k==='layer'?n<1:n<0);
+    if(bad){pfMsg('Nilai '+k.toUpperCase()+' pada '+pair+' tidak valid.','var(--down)');inp.focus();return;}
+    row[k]=(k==='lot')?Math.round(n*100)/100:Math.floor(n);
+    any=true;
+  }
+  let res;
+  if(!any){res=await db.from('pair_form_config').delete().eq('user_id',user.id).eq('account_number',pfAcct).eq('pair',pair); delete pfCfg[pair];}
+  else{res=await db.from('pair_form_config').upsert(row,{onConflict:'user_id,account_number,pair'}); pfCfg[pair]=row;}
+  if(res.error) pfMsg('Gagal simpan '+pair+': '+res.error.message,'var(--down)');
+  else pfMsg(pair+' tersimpan ✓','var(--up)');
+}
+document.getElementById('menuPairForm').addEventListener('click',()=>{ pfLoad(); });
+document.getElementById('pfAcct').addEventListener('change',e=>{ pfAcct=e.target.value; pfLoad(); });
+document.getElementById('pfResetBtn').addEventListener('click',async()=>{
+  if(!db||!user||!pfAcct) return;
+  if(!confirm('Hapus SEMUA pengaturan pair untuk akun '+pfAcct+'? EA kembali memakai form di dashboard.')) return;
+  const {error}=await db.from('pair_form_config').delete().eq('user_id',user.id).eq('account_number',pfAcct);
+  if(error){pfMsg('Gagal reset: '+error.message,'var(--down)');return;}
+  pfCfg={}; pfRender(); pfMsg('Form akun '+pfAcct+' direset ✓','var(--up)');
+});
+</script>
+<script>
+function scTick(){
+  const n=new Date(), pad=v=>String(v).padStart(2,'0');
+  const tz=(new Intl.DateTimeFormat('en',{timeZoneName:'short'}).formatToParts(n).find(x=>x.type==='timeZoneName')||{}).value||'';
+  const t=document.getElementById('scTime'), d=document.getElementById('scDate');
+  if(t) t.textContent=pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds());
+  if(d) d.textContent=n.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'})+' · '+tz;
+}
+function cdTick(){
+  const now=Date.now(), pad=v=>String(v).padStart(2,'0');
+  document.querySelectorAll('.cdv[data-t]').forEach(el=>{
+    const diff=Math.floor((new Date(el.dataset.t).getTime()-now)/1000);
+    let txt, cls='cdv';
+    if(diff<=0){ txt=diff>-300?'RILIS':'Selesai'; cls+=diff>-300?' now':' past'; }
+    else{
+      const dd=Math.floor(diff/86400), h=Math.floor(diff%86400/3600), m=Math.floor(diff%3600/60), s=diff%60;
+      txt=(dd>0?dd+'d ':'')+pad(h)+':'+pad(m)+':'+pad(s);
+      if(diff<=120) cls+=' now'; else if(diff<=3600) cls+=' soon';
+    }
+    el.textContent=txt; el.className=cls;
+  });
+}
+setInterval(()=>{scTick();cdTick();},1000); scTick(); cdTick();
+
+// Popup Time: dibuka dari tombol jam di sidebar
+(function(){
+  const ov=document.getElementById('timeModal'), openB=document.getElementById('openTime'), closeB=document.getElementById('timeClose');
+  if(!ov||!openB||!closeB) return;
+  const open=()=>{ ov.classList.add('show'); ov.setAttribute('aria-hidden','false'); closeB.focus(); };
+  const close=()=>{ ov.classList.remove('show'); ov.setAttribute('aria-hidden','true'); openB.focus(); };
+  openB.addEventListener('click',open);
+  closeB.addEventListener('click',close);
+  ov.addEventListener('click',e=>{ if(e.target===ov) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && ov.classList.contains('show')) close(); });
+})();
+</script>
+</body>
+</html>
