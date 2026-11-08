@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="neothrone — Live Trading Statistics & Performance Transparency.">
+  <title>Statistik Detail & Performa EA | neothrone</title>
+    <meta name="theme-color" content="#0B1220">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/neothrone-logo-light.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/neothrone-logo-dark.svg" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <script src="assets/js/theme.js"></script>
+</head>
+<body class="page-stat">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" role="img" aria-label="Logo neothrone"></span>
+      <span>
+        <div class="brand-name">neothrone</div>
+        <div class="brand-tag">LIVE STATISTICS</div>
+      </span>
+    </a>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema">☀</button>
+      <a href="index.html" class="back-btn">← Kembali ke Beranda</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <div>
+        <h1>Performa Live Trading</h1>
+        <p>Data real-time yang disinkronkan langsung dari Expert Advisor (EA) MT5.</p>
+      </div>
+    </div>
+
+    <!-- Ringkasan Statistik Keseluruhan -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-label">Rata-rata Monthly Profit</div>
+        <div class="summary-value" id="avgMonthly">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Rata-rata Win Rate</div>
+        <div class="summary-value" id="avgWinRate">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Total Akun Terhubung</div>
+        <div class="summary-value" id="totalAccounts">-</div>
+      </div>
+    </div>
+
+    <!-- Menu Pencarian & Filter Bulanan -->
+    <div class="filter-section">
+      <input type="text" id="searchAccountId" placeholder="Cari 3 digit terakhir ID Akun..." oninput="filterData()">
+      <select id="filterMonth" onchange="filterData()">
+        <option value="">Semua Bulan (All Time)</option>
+        <option value="01">Januari</option>
+        <option value="02">Februari</option>
+        <option value="03">Maret</option>
+        <option value="04">April</option>
+        <option value="05">Mei</option>
+        <option value="06">Juni</option>
+        <option value="07">Juli</option>
+        <option value="08">Agustus</option>
+        <option value="09">September</option>
+        <option value="10">Oktober</option>
+        <option value="11">November</option>
+        <option value="12">Desember</option>
+      </select>
+    </div>
+
+    <!-- Tabel Data Spesifik Akun & Posisi -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Akun</th>
+            <th>Total Profit</th>
+            <th>Avg. Monthly</th>
+            <th>Win Rate</th>
+            <th>Entry Posisi</th>
+            <th>Pair Terakhir</th>
+            <th>Profit Terakhir</th>
+          </tr>
+        </thead>
+        <tbody id="statsTableBody">
+          <tr>
+            <td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Menghubungkan ke database Supabase...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> neothrone. All rights reserved.</span>
+  </footer>
+
+  <!-- Integrasi Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // =========================================================================
+    // SILAKAN ISI URL DAN ANON KEY SUPABASE ANDA DI SINI
+    // =========================================================================
+    const SUPABASE_URL = 'https://nzrjskgbcnbmilvzrqqr.supabase.co/';
+    const SUPABASE_ANON_KEY = 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let allTradingData = [];
+
+    async function fetchLiveTradingData() {
+      const tbody = document.getElementById('statsTableBody');
+      try {
+        const { data, error } = await supabaseClient
+          .from('trading_stats')
+          .select('*')
+          .order('updated_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Belum ada data akun MT5 yang masuk di database.</td></tr>`;
+          document.getElementById('avgMonthly').textContent = '0%';
+          document.getElementById('avgWinRate').textContent = '0%';
+          document.getElementById('totalAccounts').textContent = '0';
+          return;
+        }
+
+        allTradingData = data;
+        renderTable(allTradingData);
+
+      } catch (err) {
+        console.error('Gagal mengambil data:', err.message);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--down); padding: 30px;">Gagal memuat data dari Supabase. Pastikan URL dan Anon Key sudah diisi dengan benar.</td></tr>`;
+      }
+    }
+
+    // Fungsi Sensor ID Akun (Menyisakan 3 digit terakhir)
+    function maskAccountId(accountId) {
+      if (!accountId) return '-';
+      const strId = String(accountId);
+      if (strId.length <= 3) return strId;
+      const maskedPart = '*'.repeat(strId.length - 3);
+      const visiblePart = strId.slice(-3);
+      return maskedPart + visiblePart;
+    }
+
+    // Fungsi Render Tabel & Kalkulasi Ringkasan Berdasarkan Data Aktif
+    function renderTable(data) {
+      const tbody = document.getElementById('statsTableBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Tidak ada data yang sesuai dengan pencarian atau filter.</td></tr>`;
+        document.getElementById('avgMonthly').textContent = '0%';
+        document.getElementById('avgWinRate').textContent = '0%';
+        document.getElementById('totalAccounts').textContent = '0';
+        return;
+      }
+
+      let sumMonthly = 0;
+      let sumWinRate = 0;
+
+      data.forEach(row => {
+        sumMonthly += Number(row.monthly_profit || 0);
+        sumWinRate += Number(row.win_rate || 0);
+
+        let positionBadge = '-';
+        if (row.entry_position) {
+          const pos = row.entry_position.toUpperCase();
+          positionBadge = `<span class="${pos === 'BUY' ? 'badge-buy' : 'badge-sell'}">${pos}</span>`;
+        }
+
+        const totalProfitClass = Number(row.total_profit) >= 0 ? 'profit-pos' : 'profit-neg';
+        const lastProfitClass = Number(row.last_entry_profit) >= 0 ? 'profit-pos' : 'profit-neg';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 700; color: var(--accent-text);">${maskAccountId(row.account_id)}</td>
+          <td class="${totalProfitClass}">$${Number(row.total_profit || 0).toLocaleString()}</td>
+          <td>+${Number(row.monthly_profit || 0)}%</td>
+          <td>${Number(row.win_rate || 0)}%</td>
+          <td>${positionBadge}</td>
+          <td style="font-weight: 600;">${row.last_entry_pair || '-'}</td>
+          <td class="${lastProfitClass}">$${Number(row.last_entry_profit || 0).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const count = data.length;
+      document.getElementById('avgMonthly').textContent = `+${(sumMonthly / count).toFixed(1)}%`;
+      document.getElementById('avgWinRate').textContent = `${(sumWinRate / count).toFixed(1)}%`;
+      document.getElementById('totalAccounts').textContent = count;
+    }
+
+    // Fungsi Filter Data berdasarkan Search input & Dropdown Bulan
+    function filterData() {
+      const searchValue = document.getElementById('searchAccountId').value.trim().toLowerCase();
+      const selectedMonth = document.getElementById('filterMonth').value;
+
+      const filtered = allTradingData.filter(row => {
+        const masked = maskAccountId(row.account_id).toLowerCase();
+        const fullId = String(row.account_id || '').toLowerCase();
+        
+        // Cocokkan pencarian dengan ID asli maupun yang tersensor
+        const matchesSearch = masked.includes(searchValue) || fullId.includes(searchValue);
+
+        // Filter berdasarkan bulan dari kolom waktu (asumsi kolom waktu bernama `updated_at` atau `created_at` berformat ISO string)
+        let matchesMonth = true;
+        if (selectedMonth) {
+          const rowDate = new Date(row.updated_at || row.created_at);
+          const monthStr = String(rowDate.getMonth() + 1).padStart(2, '0');
+          matchesMonth = (monthStr === selectedMonth);
+        }
+
+        return matchesSearch && matchesMonth;
+      });
+
+      renderTable(filtered);
+    }
+
+    fetchLiveTradingData();
+  </script>
+</body>
+</html>
