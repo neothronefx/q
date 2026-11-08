@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="neothrone — Live Trading Statistics & Performance Transparency.">
+  <title>Statistik Detail & Performa EA | neothrone</title>
+    <meta name="theme-color" content="#0B1220">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiMxMjFEM0QiLz4KPC9zdmc+Cg==" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiNGMUY1RjkiLz4KPC9zdmc+Cg==" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+/* ==========================================================================
+   neothrone — token tema bersama (dimuat semua halaman)
+   Navy #0B1220 · Kartu #121A2B · Teal #2DD4BF · Emas #F5B942 (elemen premium)
+   Judul: Space Grotesk · Teks: Inter · Angka: JetBrains Mono
+   Mode gelap = default. Mode terang lewat data-theme="light" atau preferensi sistem.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* token merek */
+  --navy: #0B1220;
+  --card-navy: #121A2B;
+  --teal: #2DD4BF;
+  --gold: #F5B942;
+
+  /* mode gelap */
+  --bg: #0B1220;
+  --card: #121A2B;
+  --card-2: #18223A;
+  --input: #0E1626;
+  --th-bg: #18223A;
+  --head-bg: rgba(11, 18, 32, .88);
+  --overlay: rgba(5, 9, 18, .78);
+  --border: rgba(148, 163, 184, .16);
+  --border-strong: rgba(45, 212, 191, .38);
+  --text: #E8EDF5;
+  --muted: #8FA0B8;
+  --accent: #2DD4BF;
+  --accent-text: #2DD4BF;
+  --accent-ink: #062B27;
+  --premium: #F5B942;
+  --premium-text: #F5B942;
+  --premium-ink: #2A1B00;
+  --up: #2DD4BF;
+  --down: #F0605D;
+  --impact: #E5484D;
+  --glow: rgba(45, 212, 191, .10);
+  --grid: rgba(45, 212, 191, .06);
+  --shadow: 0 18px 40px rgba(0, 0, 0, .35);
+
+  /* logo: file "dark" = huruf N putih (untuk latar navy), "light" = huruf N navy */
+  --logo: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiNGMUY1RjkiLz4KPC9zdmc+Cg==");
+
+  --font-head: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* alias lama agar kode inline yang masih memakai nama ini tetap aman */
+  --red: var(--down);
+  --cyan: var(--accent-text);
+  --panel: var(--card);
+  --line: var(--border-strong);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F3F6FB;
+  --card: #FFFFFF;
+  --card-2: #EEF2F8;
+  --input: #F7F9FC;
+  --th-bg: #EAF0F7;
+  --head-bg: rgba(255, 255, 255, .88);
+  --overlay: rgba(11, 18, 32, .45);
+  --border: rgba(11, 18, 32, .10);
+  --border-strong: rgba(12, 143, 128, .45);
+  --text: #0B1220;
+  --muted: #55657C;
+  --accent-text: #0C8F80;      /* teal lebih gelap agar teks terbaca di latar terang */
+  --premium-text: #8A5A0A;
+  --up: #0C8F80;
+  --down: #D8433F;
+  --glow: rgba(45, 212, 191, .16);
+  --grid: rgba(12, 143, 128, .07);
+  --shadow: 0 14px 34px rgba(11, 18, 32, .09);
+  --logo: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiMxMjFEM0QiLz4KPC9zdmc+Cg==");
+}
+</style>
+  <style>
+/* ==========================================================================
+   neothrone — gaya halaman publik: index, statistic, news_calendar
+   (token warna/font ada di theme.css; portal memakai portal.css)
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+h1, h2, h3 { font-family: var(--font-head); }
+
+/* ---------- Topbar ---------- */
+.topbar {
+  min-height: 88px;
+  padding: 14px clamp(18px, 3vw, 46px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--head-bg);
+  backdrop-filter: blur(14px);
+  position: relative; z-index: 50;
+}
+.brand { display: flex; align-items: center; gap: 15px; }
+.brand-mark {
+  width: 49px; height: 49px; flex: 0 0 auto;
+  background: var(--logo) center / contain no-repeat;
+}
+.brand-name {
+  font-family: var(--font-head); font-size: clamp(18px, 1.8vw, 27px); line-height: 1.05;
+  letter-spacing: .08em; font-weight: 700; text-transform: uppercase;
+}
+.brand-tag { color: var(--accent-text); font-size: 10px; font-weight: 600; letter-spacing: .22em; margin-top: 7px; }
+
+/* ---------- Navigasi ---------- */
+.nav-menu { display: flex; align-items: center; gap: 24px; }
+.nav-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--muted); font-size: 14px; font-weight: 600; transition: color .2s;
+}
+.nav-item:hover { color: var(--accent-text); }
+
+/* badge premium / coming soon (emas) */
+.badge-coming-soon {
+  font-size: 10px; font-weight: 700; color: var(--premium-text);
+  background: color-mix(in srgb, var(--premium) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--premium) 45%, transparent);
+  padding: 2px 8px; border-radius: 20px; letter-spacing: .05em; text-transform: uppercase;
+}
+
+/* ---------- Jam live ---------- */
+.header-clock-box {
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--card); border: 1px solid var(--border-strong);
+  padding: 8px 16px; border-radius: 14px; min-width: 210px;
+  box-shadow: var(--shadow);
+}
+.clock-header-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .1em;
+  border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 2px;
+}
+.chrono-label { display: flex; align-items: center; gap: 4px; }
+.live-dot-indicator {
+  display: inline-block; width: 6px; height: 6px; background-color: var(--accent);
+  border-radius: 50%; box-shadow: 0 0 6px var(--accent);
+}
+.live-text { color: var(--accent-text); font-weight: 700; }
+.clock-main-row { display: flex; align-items: baseline; gap: 6px; justify-content: center; }
+.clock-time { font-family: var(--font-mono); font-size: 17px; font-weight: 600; color: var(--accent-text); letter-spacing: .03em; }
+.clock-ampm { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--muted); }
+.clock-date { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--muted); text-align: center; }
+
+.topbar-right { display: flex; align-items: center; gap: 18px; }
+
+/* ---------- Tombol tema ---------- */
+.theme-toggle {
+  width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto;
+  border: 1px solid var(--border); border-radius: 50%; background: var(--card);
+  color: var(--text); font-size: 17px; line-height: 1; cursor: pointer;
+  transition: border-color .2s, transform .2s;
+}
+.theme-toggle:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+/* ---------- Tombol akun ---------- */
+.account-btn {
+  display: flex; align-items: center; gap: 10px; border: 1px solid var(--accent);
+  color: var(--accent-text); background: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 10px 18px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: all .2s ease;
+  position: relative; z-index: 999; pointer-events: auto !important;
+}
+.account-btn:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.account-btn svg { width: 18px; height: 18px; pointer-events: none; }
+.account-btn span { pointer-events: none; }
+
+/* ---------- Modal masuk / daftar ---------- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--overlay); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s ease; padding: 16px;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: var(--card); border: 1px solid var(--border-strong);
+  border-radius: 20px; width: 100%; max-width: 420px; padding: 28px;
+  box-shadow: var(--shadow); position: relative;
+  transform: translateY(20px); transition: transform .3s ease;
+}
+.modal-overlay.active .modal-card { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 18px; right: 18px; background: none; border: none;
+  color: var(--muted); cursor: pointer; padding: 4px; border-radius: 50%; display: grid; place-items: center;
+}
+.modal-close:hover { color: var(--text); background: var(--card-2); }
+.modal-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
+.tab-btn {
+  flex: 1; padding: 10px; background: none; border: none; color: var(--muted);
+  font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s;
+}
+.tab-btn.active { color: var(--accent-text); border-bottom-color: var(--accent); }
+.auth-form { display: none; flex-direction: column; gap: 16px; }
+.auth-form.active { display: flex; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.form-group input {
+  background: var(--input); border: 1px solid var(--border);
+  padding: 12px 16px; border-radius: 10px; color: var(--text); outline: none;
+  font-family: var(--font-body); transition: border-color .2s;
+}
+.form-group input:focus { border-color: var(--accent); }
+
+/* ---------- Hero (index) ---------- */
+main { padding: 30px clamp(18px, 2.7vw, 40px) 48px; }
+.hero {
+  min-height: 650px; position: relative; overflow: hidden; isolation: isolate;
+  border: 1px solid var(--border-strong); border-radius: 23px;
+  background:
+    radial-gradient(ellipse at 68% 45%, var(--glow), transparent 42%),
+    var(--card);
+  box-shadow: var(--shadow);
+  display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(400px, .88fr);
+  align-items: center; gap: 30px; padding: clamp(28px, 4vw, 58px);
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .7;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(90deg, transparent, black 35%, black);
+}
+.hero::after {
+  content: ""; position: absolute; z-index: -1; width: 480px; height: 480px; right: 25%; top: 50%;
+  transform: translate(50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, var(--glow), transparent 68%); pointer-events: none;
+}
+.hero-copy { max-width: 760px; }
+.version {
+  display: inline-flex; align-items: center; gap: 9px; color: var(--premium-text);
+  border: 1px solid color-mix(in srgb, var(--premium) 55%, transparent); border-radius: 24px;
+  padding: 8px 15px; font-size: 13px; font-weight: 600;
+  background: color-mix(in srgb, var(--premium) 10%, transparent); margin-bottom: 25px;
+}
+.version svg { width: 18px; height: 18px; }
+h1 { font-size: clamp(38px, 4.1vw, 66px); letter-spacing: -.035em; line-height: 1.06; margin: 0 0 24px; font-weight: 700; }
+.gradient-text {
+  background: linear-gradient(95deg, var(--accent-text) 0%, var(--accent) 60%, var(--accent-text) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.intro { color: var(--muted); font-size: clamp(15px, 1.22vw, 19px); line-height: 1.65; max-width: 690px; margin: 0 0 31px; }
+.actions { display: flex; gap: 17px; flex-wrap: wrap; }
+.btn {
+  min-height: 62px; padding: 0 25px; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  border-radius: 14px; font-weight: 700; cursor: pointer; border: 1px solid transparent;
+  transition: transform .2s, filter .2s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn svg { width: 22px; height: 22px; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-secondary { background: var(--card-2); border-color: var(--border-strong); color: var(--text); }
+
+/* ---------- Kartu metrik (index) ---------- */
+.metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; position: relative; }
+.metric {
+  min-height: 155px; padding: 24px 23px; border: 1px solid var(--border);
+  border-radius: 18px; background: var(--card); box-shadow: var(--shadow);
+}
+.metric-label { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; }
+.metric-label svg { width: 23px; height: 23px; color: var(--accent-text); flex: 0 0 auto; }
+.metric:nth-child(3) { border-color: color-mix(in srgb, var(--premium) 50%, transparent); }  /* kartu premium */
+.metric:nth-child(3) .metric-label svg { color: var(--premium-text); }
+.metric-value {
+  font-family: var(--font-mono); font-size: clamp(27px, 2.5vw, 39px); line-height: 1.2;
+  letter-spacing: -.04em; font-weight: 600; margin: 13px 0 7px; color: var(--accent-text);
+}
+.metric:nth-child(3) .metric-value { color: var(--premium-text); }
+.metric-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.disclaimer { color: var(--muted); opacity: .85; font-size: 11px; line-height: 1.5; margin: 16px 2px 0; }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--border); padding: 22px clamp(18px, 3vw, 46px); color: var(--muted);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px;
+}
+
+/* ==========================================================================
+   Halaman statistic
+   ========================================================================== */
+.page-stat main { padding: 40px clamp(18px, 3vw, 46px); max-width: 1280px; margin: 0 auto; }
+.page-stat .brand-name { font-size: 22px; }
+.page-stat footer { justify-content: center; text-align: center; margin-top: 60px; }
+.page-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+.page-header h1 { font-size: clamp(26px, 2.8vw, 38px); margin: 0 0 8px; font-weight: 700; letter-spacing: -.02em; }
+.page-header p { color: var(--muted); font-size: 15px; margin: 0; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px; color: var(--accent-text);
+  font-weight: 600; font-size: 14px; border: 1px solid var(--border-strong);
+  padding: 8px 16px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 7%, transparent);
+  transition: background .2s;
+}
+.back-btn:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 35px; }
+.summary-card { padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); }
+.summary-label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.summary-value { font-family: var(--font-mono); font-size: 28px; font-weight: 600; color: var(--accent-text); letter-spacing: -.03em; }
+
+.filter-section { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-section input, .filter-section select {
+  background: var(--input); border: 1px solid var(--border); color: var(--text);
+  padding: 10px 16px; border-radius: 10px; font-size: 14px; font-family: var(--font-body);
+  outline: none; transition: border-color .2s;
+}
+.filter-section input:focus, .filter-section select:focus { border-color: var(--accent); }
+.filter-section input { flex: 1; min-width: 220px; }
+
+.table-container {
+  width: 100%; overflow-x: auto; border: 1px solid var(--border);
+  border-radius: 18px; background: var(--card); box-shadow: var(--shadow);
+}
+.table-container table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; white-space: nowrap; }
+.table-container th, .table-container td { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.table-container th {
+  background: var(--th-bg); color: var(--muted); font-weight: 600; font-size: 12px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.table-container tr:last-child td { border-bottom: none; }
+.table-container tr:hover td { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+/* kolom angka: Total Profit, Avg. Monthly, Win Rate, Profit Terakhir, ID akun */
+.table-container td:nth-child(1), .table-container td:nth-child(2), .table-container td:nth-child(3),
+.table-container td:nth-child(4), .table-container td:nth-child(7) {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500;
+}
+.badge-buy { color: var(--up); background: color-mix(in srgb, var(--accent) 14%, transparent); padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+.badge-sell { color: var(--down); background: color-mix(in srgb, var(--down) 14%, transparent); padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+.profit-pos { color: var(--up); font-weight: 600; }
+.profit-neg { color: var(--down); font-weight: 600; }
+
+/* ==========================================================================
+   Halaman news calendar
+   ========================================================================== */
+.ffwrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
+table.ff { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 860px; }
+table.ff th {
+  background: var(--th-bg); color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: .05em;
+  text-transform: uppercase; padding: 11px 10px; text-align: left; white-space: nowrap;
+}
+table.ff td { padding: 12px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.ff tr.g0 td { background: var(--card); }
+table.ff tr.g1 td { background: var(--card-2); }
+table.ff td.day { text-align: center; color: var(--text); font-weight: 600; line-height: 1.35; border-right: 1px solid var(--border); }
+table.ff td.tm { color: var(--muted); white-space: nowrap; font-family: var(--font-mono); }
+table.ff td.cur { font-weight: 700; text-align: center; font-family: var(--font-mono); }
+table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.imp { display: inline-block; width: 20px; height: 16px; border-radius: 3px; background: var(--impact); }
+.ffnote { color: var(--muted); font-size: 12.5px; margin: 10px 2px 0; }
+.pend { color: var(--premium-text); font-size: 12px; font-weight: 600; }
+.live-note { display: inline-flex; align-items: center; gap: 6px; }
+.cal-section { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+.cal-section h1 { margin: 0 0 6px; font-size: 30px; font-weight: 700; letter-spacing: -.02em; }
+.cal-section p.sub { color: var(--muted); margin: 0 0 16px; }
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1100px) {
+  .topbar { gap: 16px; }
+  .brand { min-width: auto; }
+  .brand-tag { letter-spacing: .12em; }
+  .hero { grid-template-columns: 1fr; gap: 35px; }
+  .hero-copy { max-width: 900px; }
+  .metrics { max-width: 800px; width: 100%; }
+}
+@media (max-width: 720px) {
+  .topbar { min-height: 76px; padding: 12px 16px; flex-wrap: wrap; gap: 12px; }
+  .brand-mark { width: 39px; height: 39px; }
+  .brand { gap: 9px; flex: 1; }
+  .brand-name { font-size: 17px; }
+  .page-stat .brand-name { font-size: 17px; }
+  .brand-tag { font-size: 8px; }
+  .topbar-right { gap: 10px; }
+  .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
+  .nav-menu { display: flex; order: 3; width: 100%; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .nav-item { font-size: 13px; padding: 7px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); }
+  .header-clock-box { min-width: auto; padding: 6px 10px; }
+  .clock-time { font-size: 14px; }
+  .account-btn { padding: 8px 12px; font-size: 12px; }
+  main { padding: 18px 12px 30px; }
+  .page-stat main { padding: 24px 14px; }
+  .hero { padding: 25px 20px; min-height: 0; border-radius: 18px; gap: 28px; }
+  .version { font-size: 11px; margin-bottom: 19px; }
+  h1 { font-size: clamp(35px, 10vw, 49px); }
+  .intro { font-size: 15px; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; min-height: 56px; }
+  .metrics { gap: 10px; }
+  .metric { padding: 16px 13px; min-height: 132px; border-radius: 13px; }
+  .metric-label { font-size: 12px; gap: 6px; align-items: flex-start; }
+  .metric-label svg { width: 18px; height: 18px; }
+  .metric-value { font-size: clamp(22px, 6.4vw, 30px); margin-top: 11px; }
+  .metric-note { font-size: 10px; }
+  footer { padding: 18px 14px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+  <script>
+/* Pengalih tema terang/gelap. Default selalu GELAP (navy); terang hanya jika dipilih lewat tombol dan disimpan di browser. */
+(function () {
+  var root = document.documentElement;
+  try {
+    var saved = localStorage.getItem("neothrone-theme");
+    root.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+  } catch (e) {}
+
+  function current() {
+    return root.getAttribute("data-theme") === "light" ? "light" : "dark";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var btns = document.querySelectorAll("#theme-toggle, [data-theme-toggle]");
+    if (!btns.length) return;
+    function paint() {
+      btns.forEach(function (b) {
+        b.textContent = current() === "dark" ? "☀" : "☾";
+        b.setAttribute("aria-label", current() === "dark" ? "Mode terang" : "Mode gelap");
+      });
+    }
+    paint();
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var next = current() === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        try { localStorage.setItem("neothrone-theme", next); } catch (e) {}
+        paint();
+      });
+    });
+  });
+})();
+</script>
+</head>
+<body class="page-stat">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" role="img" aria-label="Logo neothrone"></span>
+      <span>
+        <div class="brand-name">neothrone</div>
+        <div class="brand-tag">LIVE STATISTICS</div>
+      </span>
+    </a>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema">☀</button>
+      <a href="index.html" class="back-btn">← Kembali ke Beranda</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <div>
+        <h1>Performa Live Trading</h1>
+        <p>Data real-time yang disinkronkan langsung dari Expert Advisor (EA) MT5.</p>
+      </div>
+    </div>
+
+    <!-- Ringkasan Statistik Keseluruhan -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-label">Rata-rata Monthly Profit</div>
+        <div class="summary-value" id="avgMonthly">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Rata-rata Win Rate</div>
+        <div class="summary-value" id="avgWinRate">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Total Akun Terhubung</div>
+        <div class="summary-value" id="totalAccounts">-</div>
+      </div>
+    </div>
+
+    <!-- Menu Pencarian & Filter Bulanan -->
+    <div class="filter-section">
+      <input type="text" id="searchAccountId" placeholder="Cari 3 digit terakhir ID Akun..." oninput="filterData()">
+      <select id="filterMonth" onchange="filterData()">
+        <option value="">Semua Bulan (All Time)</option>
+        <option value="01">Januari</option>
+        <option value="02">Februari</option>
+        <option value="03">Maret</option>
+        <option value="04">April</option>
+        <option value="05">Mei</option>
+        <option value="06">Juni</option>
+        <option value="07">Juli</option>
+        <option value="08">Agustus</option>
+        <option value="09">September</option>
+        <option value="10">Oktober</option>
+        <option value="11">November</option>
+        <option value="12">Desember</option>
+      </select>
+    </div>
+
+    <!-- Tabel Data Spesifik Akun & Posisi -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Akun</th>
+            <th>Total Profit</th>
+            <th>Avg. Monthly</th>
+            <th>Win Rate</th>
+            <th>Entry Posisi</th>
+            <th>Pair Terakhir</th>
+            <th>Profit Terakhir</th>
+          </tr>
+        </thead>
+        <tbody id="statsTableBody">
+          <tr>
+            <td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Menghubungkan ke database Supabase...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> neothrone. All rights reserved.</span>
+  </footer>
+
+  <!-- Integrasi Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // =========================================================================
+    // SILAKAN ISI URL DAN ANON KEY SUPABASE ANDA DI SINI
+    // =========================================================================
+    const SUPABASE_URL = 'https://nzrjskgbcnbmilvzrqqr.supabase.co/';
+    const SUPABASE_ANON_KEY = 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let allTradingData = [];
+
+    async function fetchLiveTradingData() {
+      const tbody = document.getElementById('statsTableBody');
+      try {
+        const { data, error } = await supabaseClient
+          .from('trading_stats')
+          .select('*')
+          .order('updated_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Belum ada data akun MT5 yang masuk di database.</td></tr>`;
+          document.getElementById('avgMonthly').textContent = '0%';
+          document.getElementById('avgWinRate').textContent = '0%';
+          document.getElementById('totalAccounts').textContent = '0';
+          return;
+        }
+
+        allTradingData = data;
+        renderTable(allTradingData);
+
+      } catch (err) {
+        console.error('Gagal mengambil data:', err.message);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--down); padding: 30px;">Gagal memuat data dari Supabase. Pastikan URL dan Anon Key sudah diisi dengan benar.</td></tr>`;
+      }
+    }
+
+    // Fungsi Sensor ID Akun (Menyisakan 3 digit terakhir)
+    function maskAccountId(accountId) {
+      if (!accountId) return '-';
+      const strId = String(accountId);
+      if (strId.length <= 3) return strId;
+      const maskedPart = '*'.repeat(strId.length - 3);
+      const visiblePart = strId.slice(-3);
+      return maskedPart + visiblePart;
+    }
+
+    // Fungsi Render Tabel & Kalkulasi Ringkasan Berdasarkan Data Aktif
+    function renderTable(data) {
+      const tbody = document.getElementById('statsTableBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Tidak ada data yang sesuai dengan pencarian atau filter.</td></tr>`;
+        document.getElementById('avgMonthly').textContent = '0%';
+        document.getElementById('avgWinRate').textContent = '0%';
+        document.getElementById('totalAccounts').textContent = '0';
+        return;
+      }
+
+      let sumMonthly = 0;
+      let sumWinRate = 0;
+
+      data.forEach(row => {
+        sumMonthly += Number(row.monthly_profit || 0);
+        sumWinRate += Number(row.win_rate || 0);
+
+        let positionBadge = '-';
+        if (row.entry_position) {
+          const pos = row.entry_position.toUpperCase();
+          positionBadge = `<span class="${pos === 'BUY' ? 'badge-buy' : 'badge-sell'}">${pos}</span>`;
+        }
+
+        const totalProfitClass = Number(row.total_profit) >= 0 ? 'profit-pos' : 'profit-neg';
+        const lastProfitClass = Number(row.last_entry_profit) >= 0 ? 'profit-pos' : 'profit-neg';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 700; color: var(--accent-text);">${maskAccountId(row.account_id)}</td>
+          <td class="${totalProfitClass}">$${Number(row.total_profit || 0).toLocaleString()}</td>
+          <td>+${Number(row.monthly_profit || 0)}%</td>
+          <td>${Number(row.win_rate || 0)}%</td>
+          <td>${positionBadge}</td>
+          <td style="font-weight: 600;">${row.last_entry_pair || '-'}</td>
+          <td class="${lastProfitClass}">$${Number(row.last_entry_profit || 0).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const count = data.length;
+      document.getElementById('avgMonthly').textContent = `+${(sumMonthly / count).toFixed(1)}%`;
+      document.getElementById('avgWinRate').textContent = `${(sumWinRate / count).toFixed(1)}%`;
+      document.getElementById('totalAccounts').textContent = count;
+    }
+
+    // Fungsi Filter Data berdasarkan Search input & Dropdown Bulan
+    function filterData() {
+      const searchValue = document.getElementById('searchAccountId').value.trim().toLowerCase();
+      const selectedMonth = document.getElementById('filterMonth').value;
+
+      const filtered = allTradingData.filter(row => {
+        const masked = maskAccountId(row.account_id).toLowerCase();
+        const fullId = String(row.account_id || '').toLowerCase();
+        
+        // Cocokkan pencarian dengan ID asli maupun yang tersensor
+        const matchesSearch = masked.includes(searchValue) || fullId.includes(searchValue);
+
+        // Filter berdasarkan bulan dari kolom waktu (asumsi kolom waktu bernama `updated_at` atau `created_at` berformat ISO string)
+        let matchesMonth = true;
+        if (selectedMonth) {
+          const rowDate = new Date(row.updated_at || row.created_at);
+          const monthStr = String(rowDate.getMonth() + 1).padStart(2, '0');
+          matchesMonth = (monthStr === selectedMonth);
+        }
+
+        return matchesSearch && matchesMonth;
+      });
+
+      renderTable(filtered);
+    }
+
+    fetchLiveTradingData();
+  </script>
+</body>
+</html>

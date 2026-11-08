@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="neothrone — Automated Trading Systems. Akses EA, performa, backtest, dan manajemen lisensi trading.">
+  <title>News Calendar | neothrone | Automated Trading Systems</title>
+    <meta name="theme-color" content="#0B1220">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiMxMjFEM0QiLz4KPC9zdmc+Cg==" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiNGMUY1RjkiLz4KPC9zdmc+Cg==" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+/* ==========================================================================
+   neothrone — token tema bersama (dimuat semua halaman)
+   Navy #0B1220 · Kartu #121A2B · Teal #2DD4BF · Emas #F5B942 (elemen premium)
+   Judul: Space Grotesk · Teks: Inter · Angka: JetBrains Mono
+   Mode gelap = default. Mode terang lewat data-theme="light" atau preferensi sistem.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* token merek */
+  --navy: #0B1220;
+  --card-navy: #121A2B;
+  --teal: #2DD4BF;
+  --gold: #F5B942;
+
+  /* mode gelap */
+  --bg: #0B1220;
+  --card: #121A2B;
+  --card-2: #18223A;
+  --input: #0E1626;
+  --th-bg: #18223A;
+  --head-bg: rgba(11, 18, 32, .88);
+  --overlay: rgba(5, 9, 18, .78);
+  --border: rgba(148, 163, 184, .16);
+  --border-strong: rgba(45, 212, 191, .38);
+  --text: #E8EDF5;
+  --muted: #8FA0B8;
+  --accent: #2DD4BF;
+  --accent-text: #2DD4BF;
+  --accent-ink: #062B27;
+  --premium: #F5B942;
+  --premium-text: #F5B942;
+  --premium-ink: #2A1B00;
+  --up: #2DD4BF;
+  --down: #F0605D;
+  --impact: #E5484D;
+  --glow: rgba(45, 212, 191, .10);
+  --grid: rgba(45, 212, 191, .06);
+  --shadow: 0 18px 40px rgba(0, 0, 0, .35);
+
+  /* logo: file "dark" = huruf N putih (untuk latar navy), "light" = huruf N navy */
+  --logo: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiNGMUY1RjkiLz4KPC9zdmc+Cg==");
+
+  --font-head: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* alias lama agar kode inline yang masih memakai nama ini tetap aman */
+  --red: var(--down);
+  --cyan: var(--accent-text);
+  --panel: var(--card);
+  --line: var(--border-strong);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F3F6FB;
+  --card: #FFFFFF;
+  --card-2: #EEF2F8;
+  --input: #F7F9FC;
+  --th-bg: #EAF0F7;
+  --head-bg: rgba(255, 255, 255, .88);
+  --overlay: rgba(11, 18, 32, .45);
+  --border: rgba(11, 18, 32, .10);
+  --border-strong: rgba(12, 143, 128, .45);
+  --text: #0B1220;
+  --muted: #55657C;
+  --accent-text: #0C8F80;      /* teal lebih gelap agar teks terbaca di latar terang */
+  --premium-text: #8A5A0A;
+  --up: #0C8F80;
+  --down: #D8433F;
+  --glow: rgba(45, 212, 191, .16);
+  --grid: rgba(12, 143, 128, .07);
+  --shadow: 0 14px 34px rgba(11, 18, 32, .09);
+  --logo: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiMxMjFEM0QiLz4KPC9zdmc+Cg==");
+}
+</style>
+  <style>
+/* ==========================================================================
+   neothrone — gaya halaman publik: index, statistic, news_calendar
+   (token warna/font ada di theme.css; portal memakai portal.css)
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+h1, h2, h3 { font-family: var(--font-head); }
+
+/* ---------- Topbar ---------- */
+.topbar {
+  min-height: 88px;
+  padding: 14px clamp(18px, 3vw, 46px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--head-bg);
+  backdrop-filter: blur(14px);
+  position: relative; z-index: 50;
+}
+.brand { display: flex; align-items: center; gap: 15px; }
+.brand-mark {
+  width: 49px; height: 49px; flex: 0 0 auto;
+  background: var(--logo) center / contain no-repeat;
+}
+.brand-name {
+  font-family: var(--font-head); font-size: clamp(18px, 1.8vw, 27px); line-height: 1.05;
+  letter-spacing: .08em; font-weight: 700; text-transform: uppercase;
+}
+.brand-tag { color: var(--accent-text); font-size: 10px; font-weight: 600; letter-spacing: .22em; margin-top: 7px; }
+
+/* ---------- Navigasi ---------- */
+.nav-menu { display: flex; align-items: center; gap: 24px; }
+.nav-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--muted); font-size: 14px; font-weight: 600; transition: color .2s;
+}
+.nav-item:hover { color: var(--accent-text); }
+
+/* badge premium / coming soon (emas) */
+.badge-coming-soon {
+  font-size: 10px; font-weight: 700; color: var(--premium-text);
+  background: color-mix(in srgb, var(--premium) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--premium) 45%, transparent);
+  padding: 2px 8px; border-radius: 20px; letter-spacing: .05em; text-transform: uppercase;
+}
+
+/* ---------- Jam live ---------- */
+.header-clock-box {
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--card); border: 1px solid var(--border-strong);
+  padding: 8px 16px; border-radius: 14px; min-width: 210px;
+  box-shadow: var(--shadow);
+}
+.clock-header-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .1em;
+  border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 2px;
+}
+.chrono-label { display: flex; align-items: center; gap: 4px; }
+.live-dot-indicator {
+  display: inline-block; width: 6px; height: 6px; background-color: var(--accent);
+  border-radius: 50%; box-shadow: 0 0 6px var(--accent);
+}
+.live-text { color: var(--accent-text); font-weight: 700; }
+.clock-main-row { display: flex; align-items: baseline; gap: 6px; justify-content: center; }
+.clock-time { font-family: var(--font-mono); font-size: 17px; font-weight: 600; color: var(--accent-text); letter-spacing: .03em; }
+.clock-ampm { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--muted); }
+.clock-date { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--muted); text-align: center; }
+
+.topbar-right { display: flex; align-items: center; gap: 18px; }
+
+/* ---------- Tombol tema ---------- */
+.theme-toggle {
+  width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto;
+  border: 1px solid var(--border); border-radius: 50%; background: var(--card);
+  color: var(--text); font-size: 17px; line-height: 1; cursor: pointer;
+  transition: border-color .2s, transform .2s;
+}
+.theme-toggle:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+/* ---------- Tombol akun ---------- */
+.account-btn {
+  display: flex; align-items: center; gap: 10px; border: 1px solid var(--accent);
+  color: var(--accent-text); background: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 10px 18px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: all .2s ease;
+  position: relative; z-index: 999; pointer-events: auto !important;
+}
+.account-btn:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.account-btn svg { width: 18px; height: 18px; pointer-events: none; }
+.account-btn span { pointer-events: none; }
+
+/* ---------- Modal masuk / daftar ---------- */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--overlay); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s ease; padding: 16px;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: var(--card); border: 1px solid var(--border-strong);
+  border-radius: 20px; width: 100%; max-width: 420px; padding: 28px;
+  box-shadow: var(--shadow); position: relative;
+  transform: translateY(20px); transition: transform .3s ease;
+}
+.modal-overlay.active .modal-card { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 18px; right: 18px; background: none; border: none;
+  color: var(--muted); cursor: pointer; padding: 4px; border-radius: 50%; display: grid; place-items: center;
+}
+.modal-close:hover { color: var(--text); background: var(--card-2); }
+.modal-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
+.tab-btn {
+  flex: 1; padding: 10px; background: none; border: none; color: var(--muted);
+  font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s;
+}
+.tab-btn.active { color: var(--accent-text); border-bottom-color: var(--accent); }
+.auth-form { display: none; flex-direction: column; gap: 16px; }
+.auth-form.active { display: flex; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.form-group input {
+  background: var(--input); border: 1px solid var(--border);
+  padding: 12px 16px; border-radius: 10px; color: var(--text); outline: none;
+  font-family: var(--font-body); transition: border-color .2s;
+}
+.form-group input:focus { border-color: var(--accent); }
+
+/* ---------- Hero (index) ---------- */
+main { padding: 30px clamp(18px, 2.7vw, 40px) 48px; }
+.hero {
+  min-height: 650px; position: relative; overflow: hidden; isolation: isolate;
+  border: 1px solid var(--border-strong); border-radius: 23px;
+  background:
+    radial-gradient(ellipse at 68% 45%, var(--glow), transparent 42%),
+    var(--card);
+  box-shadow: var(--shadow);
+  display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(400px, .88fr);
+  align-items: center; gap: 30px; padding: clamp(28px, 4vw, 58px);
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .7;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(90deg, transparent, black 35%, black);
+}
+.hero::after {
+  content: ""; position: absolute; z-index: -1; width: 480px; height: 480px; right: 25%; top: 50%;
+  transform: translate(50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, var(--glow), transparent 68%); pointer-events: none;
+}
+.hero-copy { max-width: 760px; }
+.version {
+  display: inline-flex; align-items: center; gap: 9px; color: var(--premium-text);
+  border: 1px solid color-mix(in srgb, var(--premium) 55%, transparent); border-radius: 24px;
+  padding: 8px 15px; font-size: 13px; font-weight: 600;
+  background: color-mix(in srgb, var(--premium) 10%, transparent); margin-bottom: 25px;
+}
+.version svg { width: 18px; height: 18px; }
+h1 { font-size: clamp(38px, 4.1vw, 66px); letter-spacing: -.035em; line-height: 1.06; margin: 0 0 24px; font-weight: 700; }
+.gradient-text {
+  background: linear-gradient(95deg, var(--accent-text) 0%, var(--accent) 60%, var(--accent-text) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.intro { color: var(--muted); font-size: clamp(15px, 1.22vw, 19px); line-height: 1.65; max-width: 690px; margin: 0 0 31px; }
+.actions { display: flex; gap: 17px; flex-wrap: wrap; }
+.btn {
+  min-height: 62px; padding: 0 25px; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  border-radius: 14px; font-weight: 700; cursor: pointer; border: 1px solid transparent;
+  transition: transform .2s, filter .2s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn svg { width: 22px; height: 22px; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-secondary { background: var(--card-2); border-color: var(--border-strong); color: var(--text); }
+
+/* ---------- Kartu metrik (index) ---------- */
+.metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; position: relative; }
+.metric {
+  min-height: 155px; padding: 24px 23px; border: 1px solid var(--border);
+  border-radius: 18px; background: var(--card); box-shadow: var(--shadow);
+}
+.metric-label { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; }
+.metric-label svg { width: 23px; height: 23px; color: var(--accent-text); flex: 0 0 auto; }
+.metric:nth-child(3) { border-color: color-mix(in srgb, var(--premium) 50%, transparent); }  /* kartu premium */
+.metric:nth-child(3) .metric-label svg { color: var(--premium-text); }
+.metric-value {
+  font-family: var(--font-mono); font-size: clamp(27px, 2.5vw, 39px); line-height: 1.2;
+  letter-spacing: -.04em; font-weight: 600; margin: 13px 0 7px; color: var(--accent-text);
+}
+.metric:nth-child(3) .metric-value { color: var(--premium-text); }
+.metric-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.disclaimer { color: var(--muted); opacity: .85; font-size: 11px; line-height: 1.5; margin: 16px 2px 0; }
+
+/* ---------- Footer ---------- */
+footer {
+  border-top: 1px solid var(--border); padding: 22px clamp(18px, 3vw, 46px); color: var(--muted);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px;
+}
+
+/* ==========================================================================
+   Halaman statistic
+   ========================================================================== */
+.page-stat main { padding: 40px clamp(18px, 3vw, 46px); max-width: 1280px; margin: 0 auto; }
+.page-stat .brand-name { font-size: 22px; }
+.page-stat footer { justify-content: center; text-align: center; margin-top: 60px; }
+.page-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+.page-header h1 { font-size: clamp(26px, 2.8vw, 38px); margin: 0 0 8px; font-weight: 700; letter-spacing: -.02em; }
+.page-header p { color: var(--muted); font-size: 15px; margin: 0; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px; color: var(--accent-text);
+  font-weight: 600; font-size: 14px; border: 1px solid var(--border-strong);
+  padding: 8px 16px; border-radius: 10px; background: color-mix(in srgb, var(--accent) 7%, transparent);
+  transition: background .2s;
+}
+.back-btn:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 35px; }
+.summary-card { padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); }
+.summary-label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.summary-value { font-family: var(--font-mono); font-size: 28px; font-weight: 600; color: var(--accent-text); letter-spacing: -.03em; }
+
+.filter-section { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-section input, .filter-section select {
+  background: var(--input); border: 1px solid var(--border); color: var(--text);
+  padding: 10px 16px; border-radius: 10px; font-size: 14px; font-family: var(--font-body);
+  outline: none; transition: border-color .2s;
+}
+.filter-section input:focus, .filter-section select:focus { border-color: var(--accent); }
+.filter-section input { flex: 1; min-width: 220px; }
+
+.table-container {
+  width: 100%; overflow-x: auto; border: 1px solid var(--border);
+  border-radius: 18px; background: var(--card); box-shadow: var(--shadow);
+}
+.table-container table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; white-space: nowrap; }
+.table-container th, .table-container td { padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.table-container th {
+  background: var(--th-bg); color: var(--muted); font-weight: 600; font-size: 12px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.table-container tr:last-child td { border-bottom: none; }
+.table-container tr:hover td { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+/* kolom angka: Total Profit, Avg. Monthly, Win Rate, Profit Terakhir, ID akun */
+.table-container td:nth-child(1), .table-container td:nth-child(2), .table-container td:nth-child(3),
+.table-container td:nth-child(4), .table-container td:nth-child(7) {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500;
+}
+.badge-buy { color: var(--up); background: color-mix(in srgb, var(--accent) 14%, transparent); padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+.badge-sell { color: var(--down); background: color-mix(in srgb, var(--down) 14%, transparent); padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+.profit-pos { color: var(--up); font-weight: 600; }
+.profit-neg { color: var(--down); font-weight: 600; }
+
+/* ==========================================================================
+   Halaman news calendar
+   ========================================================================== */
+.ffwrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
+table.ff { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 860px; }
+table.ff th {
+  background: var(--th-bg); color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: .05em;
+  text-transform: uppercase; padding: 11px 10px; text-align: left; white-space: nowrap;
+}
+table.ff td { padding: 12px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.ff tr.g0 td { background: var(--card); }
+table.ff tr.g1 td { background: var(--card-2); }
+table.ff td.day { text-align: center; color: var(--text); font-weight: 600; line-height: 1.35; border-right: 1px solid var(--border); }
+table.ff td.tm { color: var(--muted); white-space: nowrap; font-family: var(--font-mono); }
+table.ff td.cur { font-weight: 700; text-align: center; font-family: var(--font-mono); }
+table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.imp { display: inline-block; width: 20px; height: 16px; border-radius: 3px; background: var(--impact); }
+.ffnote { color: var(--muted); font-size: 12.5px; margin: 10px 2px 0; }
+.pend { color: var(--premium-text); font-size: 12px; font-weight: 600; }
+.live-note { display: inline-flex; align-items: center; gap: 6px; }
+.cal-section { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+.cal-section h1 { margin: 0 0 6px; font-size: 30px; font-weight: 700; letter-spacing: -.02em; }
+.cal-section p.sub { color: var(--muted); margin: 0 0 16px; }
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1100px) {
+  .topbar { gap: 16px; }
+  .brand { min-width: auto; }
+  .brand-tag { letter-spacing: .12em; }
+  .hero { grid-template-columns: 1fr; gap: 35px; }
+  .hero-copy { max-width: 900px; }
+  .metrics { max-width: 800px; width: 100%; }
+}
+@media (max-width: 720px) {
+  .topbar { min-height: 76px; padding: 12px 16px; flex-wrap: wrap; gap: 12px; }
+  .brand-mark { width: 39px; height: 39px; }
+  .brand { gap: 9px; flex: 1; }
+  .brand-name { font-size: 17px; }
+  .page-stat .brand-name { font-size: 17px; }
+  .brand-tag { font-size: 8px; }
+  .topbar-right { gap: 10px; }
+  .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
+  .nav-menu { display: flex; order: 3; width: 100%; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .nav-item { font-size: 13px; padding: 7px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); }
+  .header-clock-box { min-width: auto; padding: 6px 10px; }
+  .clock-time { font-size: 14px; }
+  .account-btn { padding: 8px 12px; font-size: 12px; }
+  main { padding: 18px 12px 30px; }
+  .page-stat main { padding: 24px 14px; }
+  .hero { padding: 25px 20px; min-height: 0; border-radius: 18px; gap: 28px; }
+  .version { font-size: 11px; margin-bottom: 19px; }
+  h1 { font-size: clamp(35px, 10vw, 49px); }
+  .intro { font-size: 15px; }
+  .actions { flex-direction: column; }
+  .btn { width: 100%; min-height: 56px; }
+  .metrics { gap: 10px; }
+  .metric { padding: 16px 13px; min-height: 132px; border-radius: 13px; }
+  .metric-label { font-size: 12px; gap: 6px; align-items: flex-start; }
+  .metric-label svg { width: 18px; height: 18px; }
+  .metric-value { font-size: clamp(22px, 6.4vw, 30px); margin-top: 11px; }
+  .metric-note { font-size: 10px; }
+  footer { padding: 18px 14px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+  <script>
+/* Pengalih tema terang/gelap. Default selalu GELAP (navy); terang hanya jika dipilih lewat tombol dan disimpan di browser. */
+(function () {
+  var root = document.documentElement;
+  try {
+    var saved = localStorage.getItem("neothrone-theme");
+    root.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+  } catch (e) {}
+
+  function current() {
+    return root.getAttribute("data-theme") === "light" ? "light" : "dark";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var btns = document.querySelectorAll("#theme-toggle, [data-theme-toggle]");
+    if (!btns.length) return;
+    function paint() {
+      btns.forEach(function (b) {
+        b.textContent = current() === "dark" ? "☀" : "☾";
+        b.setAttribute("aria-label", current() === "dark" ? "Mode terang" : "Mode gelap");
+      });
+    }
+    paint();
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var next = current() === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        try { localStorage.setItem("neothrone-theme", next); } catch (e) {}
+        paint();
+      });
+    });
+  });
+})();
+</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="neothrone beranda">
+      <span class="brand-mark" role="img" aria-label="Logo neothrone"></span>
+      <span>
+        <div class="brand-name">neothrone</div>
+        <div class="brand-tag">AUTOMATED TRADING SYSTEMS</div>
+      </span>
+    </a>
+
+<!-- Menu Navigasi -->
+<nav class="nav-menu">
+  <a href="index.html" class="nav-item">Beranda</a>
+  <a href="statistic.html" class="nav-item">Live Statistic</a>
+  <a href="news_calendar.html" class="nav-item">News Calendar</a>
+</nav>
+
+    <div class="topbar-right">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema">☀</button>
+      <!-- Live Clock Widget -->
+      <div class="header-clock-box">
+        <div class="clock-header-row">
+          <span class="chrono-label">
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            TIME
+          </span>
+          <span class="chrono-status">
+            <span class="live-dot-indicator"></span> <span class="live-text">LIVE</span>
+          </span>
+        </div>
+        <div class="clock-main-row">
+          <div class="clock-time" id="liveClockTime">00:00:00</div>
+          <div class="clock-ampm" id="liveClockAmPm"></div>
+        </div>
+        <div class="clock-date" id="liveClockDate">Sunday · 11 October 2026</div>
+      </div>
+
+      <!-- Tombol Pemicu Modal Masuk / Daftar -->
+      <button class="account-btn" id="openAuthModal" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
+        <span id="authBtnText">Masuk / Daftar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Structure Popup Modal -->
+  <div class="modal-overlay" id="authModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeAuthModal" aria-label="Tutup Popup">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" id="loginTab">Masuk</button>
+        <button class="tab-btn" id="registerTab">Daftar</button>
+      </div>
+
+      <!-- Form Login -->
+      <form class="auth-form active" id="loginForm" onsubmit="event.preventDefault();">
+        <div class="form-group">
+          <label for="loginEmail">Email / Username</label>
+          <input type="text" id="loginEmail" placeholder="Masukkan email atau username" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Kata Sandi</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">Masuk Akun</button>
+      </form>
+
+      <!-- Form Register -->
+      <form class="auth-form" id="registerForm" onsubmit="event.preventDefault();">
+        <div class="form-group">
+          <label for="regName">Nama Lengkap</label>
+          <input type="text" id="regName" placeholder="Masukkan nama lengkap" required>
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="nama@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="regPassword">Kata Sandi</label>
+          <input type="password" id="regPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">Buat Akun</button>
+      </form>
+    </div>
+  </div>
+
+  <main>
+    <section class="cal-section" id="calendar" aria-labelledby="calTitle">
+      <h1 id="calTitle">News Calendar</h1>
+      <p class="sub">Jadwal berita High Impact langsung dari Forex Factory.</p>
+      <div class="ffwrap"><table class="ff"><thead><tr>
+        <th>Date</th><th id="ffTz">Time</th><th>Currency</th><th>Impact</th><th>Event</th><th>Actual</th><th>Forecast</th><th>Previous</th>
+      </tr></thead><tbody id="ffBody"><tr><td colspan="8" style="color:var(--muted)">Memuat...</td></tr></tbody></table></div>
+      <p class="ffnote">Sumber: Forex Factory. Jam sesuai zona waktu perangkat kamu. Data actual diperbarui otomatis. Login ke portal member untuk mengatur pair entry EA.</p>
+    </section>
+
+    <p class="disclaimer">Catatan: angka performa di atas diambil secara real-time untuk bulan berjalan dan otomatis di-reset saat pergantian bulan kalender.</p>
+
+    <section id="download" style="height:1px; overflow:hidden" aria-label="Area tujuan download"></section>
+    <section id="backtest" style="height:1px; overflow:hidden" aria-label="Area tujuan backtest"></section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> neothrone. All rights reserved.</span>
+    <span>Automated Trading Systems · Trading involves risk.</span>
+  </footer>
+
+  <!-- Supabase JS & UAParser JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/1.0.37/ua-parser.min.js"></script>
+  
+  <script>
+    // Live Clock Functionality
+    function updateLiveClock() {
+      const now = new Date();
+      const tzPart = new Intl.DateTimeFormat('en', { timeZoneName: 'short' }).formatToParts(now).find(p => p.type === 'timeZoneName');
+      const ampm = tzPart ? tzPart.value : '';          // zona waktu (mis. GMT+7), bukan AM/PM
+      const hh = String(now.getHours()).padStart(2, '0'); // format 24 jam
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      const timeStr = `${hh}:${min}:${ss}`;
+
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      
+      const dayName = days[now.getDay()];
+      const dayNum = now.getDate();
+      const monthName = months[now.getMonth()];
+      const year = now.getFullYear();
+
+      const dateStr = `${dayName} · ${dayNum} ${monthName} ${year}`;
+
+      const elTime = document.getElementById('liveClockTime');
+      const elAmPm = document.getElementById('liveClockAmPm');
+      const elDate = document.getElementById('liveClockDate');
+
+      if (elTime) elTime.textContent = timeStr;
+      if (elAmPm) elAmPm.textContent = ampm;
+      if (elDate) elDate.textContent = dateStr;
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    const SUPABASE_URL = 'https://nzrjskgbcnbmilvzrqqr.supabase.co/';
+    const SUPABASE_ANON_KEY = 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Modal Popup Script
+    const openBtn = document.getElementById('openAuthModal');
+    const closeBtn = document.getElementById('closeAuthModal');
+    const modal = document.getElementById('authModal');
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const heroRegisterBtn = document.getElementById('heroRegisterBtn');
+
+    function openModal(tab = 'login') {
+      if (modal) {
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        switchTab(tab);
+      }
+    }
+
+    function closeModal() {
+      if (modal) {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    function switchTab(tab) {
+      if (!loginTab || !registerTab || !loginForm || !registerForm) return;
+      if (tab === 'login') {
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+        loginForm.classList.add('active');
+        registerForm.classList.remove('active');
+      } else {
+        registerTab.classList.add('active');
+        loginTab.classList.remove('active');
+        registerForm.classList.add('active');
+        loginForm.classList.remove('active');
+      }
+    }
+
+    if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal('login'); });
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (heroRegisterBtn) heroRegisterBtn.addEventListener('click', (e) => { e.preventDefault(); openModal('register'); });
+    if (loginTab) loginTab.addEventListener('click', () => switchTab('login'));
+    if (registerTab) registerTab.addEventListener('click', () => switchTab('register'));
+
+    if (modal) {
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
+    });
+
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Handle Login Supabase
+    if (loginForm) {
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+
+          const user = data.user;
+          const username = user.user_metadata?.username || user.user_metadata?.full_name || user.email.split('@')[0];
+
+          alert('Login berhasil! Mengalihkan...');
+          closeModal();
+
+          // Admin langsung diarahkan ke Admin Console, member ke portal
+          let isAdmin = false;
+          try {
+            const { data: adminFlag } = await supabaseClient.rpc('is_kingtherious_admin');
+            isAdmin = adminFlag === true;
+          } catch (_) { /* jika gagal, anggap member biasa */ }
+
+          window.location.href = isAdmin
+            ? 'useradmin.html'
+            : `portal.html?user=${encodeURIComponent(username)}`;
+        } catch (err) {
+          alert('Gagal Masuk: ' + err.message);
+        }
+      });
+    }
+
+    function updateUIAfterLogin(user) {
+      const btnText = document.getElementById('authBtnText');
+      if (btnText && user) {
+        const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
+        btnText.textContent = displayName;
+        
+        const openBtn = document.getElementById('openAuthModal');
+        if (openBtn) {
+          openBtn.onclick = function() {
+            if (confirm('Keluar dari akun (Logout)?')) {
+              supabaseClient.auth.signOut().then(() => {
+                alert('Berhasil keluar.');
+                window.location.reload();
+              });
+            }
+          };
+        }
+      }
+    }
+
+    async function checkActiveSession() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session && session.user) updateUIAfterLogin(session.user);
+    }
+    checkActiveSession();
+
+    if (registerForm) {
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        try {
+          const { error } = await supabaseClient.auth.signUp({
+            email, password, options: { data: { full_name: name } }
+          });
+          if (error) throw error;
+          alert('Registrasi berhasil! Silakan periksa email Anda.');
+          switchTab('login');
+        } catch (err) {
+          alert('Gagal Mendaftar: ' + err.message);
+        }
+      });
+    }
+
+    // Real-time Metrics Khusus Bulan Berjalan
+    async function fetchIndexMetricsCurrentMonth() {
+      try {
+        const { data, error } = await supabaseClient.from('trading_stats').select('*');
+        if (error) throw error;
+        const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+
+        if (!data || data.length === 0) {
+          set('statMonthly', '0%'); set('statWinRate', '0%'); set('statTotalProfit', '$0'); set('statAccounts', '0');
+          return;
+        }
+
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+
+        const currentMonthData = data.filter(row => {
+          const date = new Date(row.updated_at || row.created_at);
+          return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+        });
+
+        if (currentMonthData.length === 0) {
+          set('statMonthly', '0%'); set('statWinRate', '0%'); set('statTotalProfit', '$0'); set('statAccounts', '0');
+          return;
+        }
+
+        let sumMonthly = 0, sumWinRate = 0, sumTotalProfit = 0;
+        currentMonthData.forEach(row => {
+          sumMonthly += Number(row.monthly_profit || 0);
+          sumWinRate += Number(row.win_rate || 0);
+          sumTotalProfit += Number(row.total_profit || 0);
+        });
+
+        const count = currentMonthData.length;
+        set('statMonthly', `${(sumMonthly / count) >= 0 ? '+' : ''}${(sumMonthly / count).toFixed(1)}%`);
+        set('statWinRate', `${(sumWinRate / count).toFixed(1)}%`);
+        set('statTotalProfit', `$${sumTotalProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+        set('statAccounts', count);
+      } catch (err) {
+        console.error('Gagal memuat metrik beranda:', err.message);
+      }
+    }
+    fetchIndexMetricsCurrentMonth();
+
+    // --- Identitas pengunjung (membantu admin mengenali siapa yang berkunjung) ---
+    // Mengirim email/nama akun bila sedang login, ditambah zona waktu, referrer, layar, dan bahasa.
+    // Tidak ada IP atau kata sandi yang dikirim dari browser; IP dibaca di server (fungsi identify_visitor).
+    function ntIdentify(client) {
+      try {
+        var st = window.sessionStorage, sid = st.getItem('kt_sid');
+        if (!sid) {
+          sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 's' + Date.now() + Math.random().toString(36).slice(2, 10);
+          st.setItem('kt_sid', sid);
+        }
+        client.auth.getSession().then(function (r) {
+          var u = r && r.data && r.data.session && r.data.session.user, m = (u && u.user_metadata) || {};
+          return client.rpc('identify_visitor', {
+            p_session_id: sid,
+            p_email: u ? u.email : null,
+            p_name: u ? (m.full_name || m.name || m.display_name || m.username || null) : null,
+            p_user_id: u ? u.id : null,
+            p_timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone || null),
+            p_referrer: document.referrer || null,
+            p_screen: screen.width + 'x' + screen.height,
+            p_lang: navigator.language || null,
+            p_page: location.pathname.split('/').pop() || 'index.html'
+          });
+        }).then(function (res) {
+          if (res && res.error) console.warn('identify_visitor:', res.error.message);
+        }).catch(function () {});
+      } catch (e) {}
+    }
+    ntIdentify(supabaseClient);
+
+    // --- Script Pelacak Pengunjung dengan UAParser yang Lengkap & Aman ---
+    (async function trackVisitorSession() {
+      try {
+        const startTime = Date.now();
+        let clickCount = 0;
+        let interactions = [];
+        const path = window.location.pathname.split('/').pop() || 'index.html';
+
+        let ip = 'Unknown';
+        try {
+          const ipRes = await fetch('https://api.ipify.org?format=json');
+          const ipData = await ipRes.json();
+          ip = ipData.ip;
+        } catch (e) {}
+
+        // Deteksi Detail Perangkat menggunakan UAParser.js
+        let deviceName = 'Desktop PC';
+        try {
+          const parser = new UAParser();
+          const result = parser.getResult();
+          const brand = result.device.vendor || ''; 
+          const model = result.device.model || '';  
+          const os = result.os.name || 'Unknown OS';   
+          const browser = result.browser.name || 'Browser'; 
+
+          if (brand || model) {
+            deviceName = `${brand} ${model}`.trim();
+          } else if (/mobile/i.test(navigator.userAgent)) {
+            deviceName = `Mobile (${os} - ${browser})`;
+          } else {
+            deviceName = `Desktop (${os} - ${browser})`;
+          }
+        } catch (err) {
+          deviceName = navigator.platform || 'Unknown Device';
+        }
+
+        document.addEventListener('click', (e) => {
+          clickCount++;
+          const targetName = e.target.innerText || e.target.tagName || 'Element';
+          if (interactions.length < 5) {
+            interactions.push(`Klik: ${targetName.trim().substring(0, 15)}`);
+          }
+        });
+
+        window.addEventListener('beforeunload', () => {
+          const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+          const userFlow = `Mulai dari ${path} (${durationSeconds}s)`;
+          const clicksEvents = interactions.join(', ') || 'Tanpa klik';
+
+          supabaseClient.from('visitor_logs').insert([
+            {
+              ip_address: ip,
+              device_name: deviceName,
+              page_visited: path,
+              duration_seconds: durationSeconds,
+              user_flow: userFlow,
+              clicks_events: clicksEvents,
+              click_count: clickCount
+            }
+          ]).then(({ error }) => {
+            if (error) console.error('Gagal mencatat log pengunjung:', error.message);
+          });
+        });
+      } catch (err) {
+        console.error('Tracker error:', err);
+      }
+    })();
+  </script>
+<script>
+function ffEsc(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function ffFmt(iso){const d=new Date(iso);return{dayKey:d.toDateString(),day:d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}),tm:d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}).replace(' ','').toLowerCase()};}
+// Sel "Actual": kalau berita sudah lewat tapi actual belum ada -> tampil "Menunggu rilis"
+function ffActual(e){
+  const a=(e.actual??'').toString().trim();
+  if(a) return ffEsc(a);
+  return (new Date(e.event_time).getTime()<=Date.now()) ? '<span class="pend" title="Berita sudah lewat, data actual belum masuk ke database">Menunggu…</span>' : '';
+}
+let ffIds='';
+async function ffFetch(){
+  const start=new Date(); start.setHours(0,0,0,0);
+  const {data,error}=await supabaseClient.from('news_calendar').select('*').eq('impact','High').gte('event_time',start.toISOString()).order('event_time',{ascending:true}).limit(200);
+  if(error) throw error;
+  return data||[];
+}
+function ffRenderAll(data){
+  const body=document.getElementById('ffBody');
+  if(!data.length){body.innerHTML='<tr><td colspan="8" style="color:var(--muted)">Belum ada berita High Impact.</td></tr>';return;}
+  const days=[],dm={};
+  data.forEach(e=>{const f=ffFmt(e.event_time);let d=dm[f.dayKey];if(!d){d=dm[f.dayKey]={label:f.day,slots:[],sm:{},n:0};days.push(d);}
+    const k=e.event_time+'|'+e.currency;let s=d.sm[k];if(!s){s=d.sm[k]={tm:f.tm,cur:e.currency,items:[]};d.slots.push(s);}s.items.push(e);d.n++;});
+  let html='',g=0;
+  days.forEach(day=>{let first=true;day.slots.forEach(s=>{const cls='g'+(g%2);g++;
+    s.items.forEach((e,i)=>{html+=`<tr class="${cls}">`;
+      if(first){html+=`<td class="day" rowspan="${day.n}">${ffEsc(day.label)}</td>`;first=false;}
+      if(i===0)html+=`<td class="tm" rowspan="${s.items.length}">${ffEsc(s.tm)}</td><td class="cur" rowspan="${s.items.length}">${ffEsc(s.cur)}</td><td rowspan="${s.items.length}"><span class="imp"></span></td>`;
+      html+=`<td>${ffEsc(e.title)}</td><td class="num" data-f="a" data-id="${ffEsc(e.id)}" data-t="${ffEsc(e.event_time)}">${ffActual(e)}</td><td class="num" data-f="f" data-id="${ffEsc(e.id)}">${ffEsc(e.forecast||'')}</td><td class="num" data-f="p" data-id="${ffEsc(e.id)}">${ffEsc(e.previous||'')}</td></tr>`;});});});
+  body.innerHTML=html;
+}
+// Update angka (actual/forecast/previous) di tempat tanpa menggambar ulang seluruh tabel
+function ffPatch(data){
+  data.forEach(e=>{
+    const q=f=>document.querySelector(`#ffBody td[data-f="${f}"][data-id="${CSS.escape(String(e.id))}"]`);
+    const a=q('a'),f=q('f'),p=q('p');
+    if(a) a.innerHTML=ffActual(e);
+    if(f) f.textContent=e.forecast||'';
+    if(p) p.textContent=e.previous||'';
+  });
+}
+async function ffRefresh(){
+  const body=document.getElementById('ffBody');
+  try{
+    const data=await ffFetch();
+    const ids=data.map(e=>e.id).join(',');
+    if(ids!==ffIds){ffIds=ids;ffRenderAll(data);} else ffPatch(data);
+  }catch(err){
+    if(!ffIds) body.innerHTML='<tr><td colspan="8" style="color:var(--down)">Gagal memuat kalender: '+ffEsc(err.message)+'</td></tr>';
+  }
+}
+document.getElementById('ffTz').textContent='Time ('+(Intl.DateTimeFormat().resolvedOptions().timeZone||'local')+')';
+ffRefresh();
+setInterval(ffRefresh,30000);                       // cek data terbaru tiap 30 detik
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) ffRefresh(); });
+// Realtime: begitu admin/sync mengisi actual di tabel, halaman langsung update
+try{
+  let rt; supabaseClient.channel('news_calendar_live')
+    .on('postgres_changes',{event:'*',schema:'public',table:'news_calendar'},()=>{clearTimeout(rt);rt=setTimeout(ffRefresh,800);})
+    .subscribe();
+}catch(_){}
+</script>
+</body>
+</html>
