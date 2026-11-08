@@ -5,15 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="neothrone — Automated Trading Systems. Akses EA, performa, backtest, dan manajemen lisensi trading.">
   <title>neothrone | Automated Trading Systems</title>
-    <meta name="theme-color" content="#0B1220">
-  <link rel="icon" type="image/svg+xml" href="assets/logo/neothrone-logo-light.svg" media="(prefers-color-scheme: light)">
-  <link rel="icon" type="image/svg+xml" href="assets/logo/neothrone-logo-dark.svg" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#0B1220">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
-  <link rel="stylesheet" href="assets/css/theme.css">
-  <link rel="stylesheet" href="assets/css/site.css">
-  <script src="assets/js/theme.js"></script>
+
+  <!-- CSS Internal langsung agar tidak terjadi Error 404 / Gagal muat -->
+  <style>
+    :root {
+      --bg: #0B1220;
+      --panel: #121A2B;
+      --border: rgba(45, 212, 191, 0.2);
+      --teal: #2DD4BF;
+      --cyan: #08D8ED;
+      --gold: #F5B942;
+      --text: #F3F7FF;
+      --muted: #8E9BAE;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3, .brand-name { font-family: 'Space Grotesk', sans-serif; }
+    .num-font, .clock-time { font-family: 'JetBrains Mono', monospace; }
+
+    .topbar {
+      min-height: 88px; padding: 14px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(11, 18, 32, 0.95);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit; }
+    
+    /* Perbaikan ukuran logo agar tidak melompat besar */
+    .brand-mark {
+      width: 42px; height: 42px;
+      background: url('assets/logo/neothrone-logo-dark.svg') no-repeat center/contain;
+      display: inline-block;
+    }
+    .brand-name { font-size: 22px; font-weight: 800; letter-spacing: 0.05em; }
+    .brand-tag { font-size: 9px; color: var(--teal); font-weight: 700; letter-spacing: 0.2em; }
+
+    .nav-menu { display: flex; gap: 20px; }
+    .nav-item { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; }
+    .nav-item:hover { color: var(--teal); }
+
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .header-clock-box {
+      background: var(--panel); border: 1px solid var(--border);
+      padding: 8px 14px; border-radius: 12px; min-width: 180px; text-align: center;
+    }
+    .clock-time { font-size: 16px; font-weight: 700; color: var(--teal); }
+    .clock-date { font-size: 10px; color: var(--muted); }
+
+    .account-btn {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--teal); color: var(--teal);
+      background: rgba(45, 212, 191, 0.05); padding: 10px 18px;
+      border-radius: 20px; font-weight: 700; cursor: pointer;
+    }
+
+    main { padding: 40px; max-width: 1200px; margin: 0 auto; }
+    .hero {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 20px; padding: 50px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px;
+    }
+    h1 { font-size: 48px; line-height: 1.1; margin-top: 0; }
+    .gradient-text { background: linear-gradient(95deg, var(--teal), var(--cyan)); -webkit-background-clip: text; color: transparent; }
+    
+    .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .metric { background: rgba(11, 18, 32, 0.6); border: 1px solid var(--border); padding: 20px; border-radius: 14px; }
+    .metric-value { font-size: 32px; font-weight: 800; color: var(--teal); margin-top: 8px; }
+
+    footer { border-top: 1px solid var(--border); padding: 20px 40px; text-align: center; color: var(--muted); font-size: 12px; margin-top: 60px; }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -25,452 +94,54 @@
       </span>
     </a>
 
-<!-- Menu Navigasi -->
-<nav class="nav-menu">
-  <a href="statistic.html" class="nav-item">Live Statistic</a>
-  <a href="news_calendar.html" class="nav-item">News Calendar</a>
-</nav>
+    <nav class="nav-menu">
+      <a href="statistic.html" class="nav-item">Live Statistic</a>
+      <a href="news_calendar.html" class="nav-item">News Calendar</a>
+    </nav>
 
     <div class="topbar-right">
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema">☀</button>
-      <!-- Live Clock Widget -->
       <div class="header-clock-box">
-        <div class="clock-header-row">
-          <span class="chrono-label">
-            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            TIME
-          </span>
-          <span class="chrono-status">
-            <span class="live-dot-indicator"></span> <span class="live-text">LIVE</span>
-          </span>
-        </div>
-        <div class="clock-main-row">
-          <div class="clock-time" id="liveClockTime">00:00:00</div>
-          <div class="clock-ampm" id="liveClockAmPm"></div>
-        </div>
+        <div class="clock-time" id="liveClockTime">00:00:00</div>
         <div class="clock-date" id="liveClockDate">Sunday · 11 October 2026</div>
       </div>
-
-      <!-- Tombol Pemicu Modal Masuk / Daftar -->
       <button class="account-btn" id="openAuthModal" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
-        <span id="authBtnText">Masuk / Daftar</span>
+        <span>Masuk / Daftar</span>
       </button>
     </div>
   </header>
 
-  <!-- Structure Popup Modal -->
-  <div class="modal-overlay" id="authModal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true">
-      <button class="modal-close" id="closeAuthModal" aria-label="Tutup Popup">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-
-      <div class="modal-tabs">
-        <button class="tab-btn active" id="loginTab">Masuk</button>
-        <button class="tab-btn" id="registerTab">Daftar</button>
-      </div>
-
-      <!-- Form Login -->
-      <form class="auth-form active" id="loginForm" onsubmit="event.preventDefault();">
-        <div class="form-group">
-          <label for="loginEmail">Email / Username</label>
-          <input type="text" id="loginEmail" placeholder="Masukkan email atau username" required>
-        </div>
-        <div class="form-group">
-          <label for="loginPassword">Kata Sandi</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" required>
-        </div>
-        <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">Masuk Akun</button>
-      </form>
-
-      <!-- Form Register -->
-      <form class="auth-form" id="registerForm" onsubmit="event.preventDefault();">
-        <div class="form-group">
-          <label for="regName">Nama Lengkap</label>
-          <input type="text" id="regName" placeholder="Masukkan nama lengkap" required>
-        </div>
-        <div class="form-group">
-          <label for="regEmail">Email</label>
-          <input type="email" id="regEmail" placeholder="nama@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="regPassword">Kata Sandi</label>
-          <input type="password" id="regPassword" placeholder="••••••••" required>
-        </div>
-        <button type="submit" class="btn btn-primary" style="margin-top: 10px; width: 100%;">Buat Akun</button>
-      </form>
-    </div>
-  </div>
-
   <main>
-    <section class="hero" id="performa" aria-labelledby="heroTitle">
-      <div class="hero-copy">
-        <div class="version">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m13 2-9 12h7l-1 8 10-13h-7l0-7Z"/></svg>
-          Auto-Trading Algorithm v4.3
-        </div>
-        <h1 id="heroTitle">Trading FX Otomatis dengan <span class="gradient-text">Winrate Tinggi Teruji Probabilitasnya</span></h1>
-        <p class="intro">Mulai tingkatkan portofolio trading Anda. Dapatkan akses penuh ke Expert Advisor (EA) berlisensi resmi khusus untuk akun trading Anda.</p>
-        <div class="actions">
-          <a class="btn btn-primary" href="#" id="heroRegisterBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="5"/><path d="m11.5 11.5 8-8 2 2-2 2 2 2-3 3-2-2-3 3"/></svg>
-            Registrasi Akun
-            <span aria-hidden="true">→</span>
-          </a>
-          <a class="btn btn-secondary" href="statistic.html">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10m5 10V4m5 16v-7m5 7V7"/></svg>
-            Lihat Statistik Live
-          </a>
-        </div>
+    <section class="hero">
+      <div>
+        <div style="color: var(--teal); font-weight: 700; margin-bottom: 12px;">Auto-Trading Algorithm v4.3</div>
+        <h1>Trading FX Otomatis dengan <span class="gradient-text">Winrate Tinggi</span></h1>
+        <p style="color: var(--muted); line-height: 1.6;">Mulai tingkatkan portofolio trading Anda. Dapatkan akses penuh ke Expert Advisor (EA) berlisensi resmi.</p>
       </div>
-
-      <!-- Metrik Performa Real-time -->
-      <div class="metrics" aria-label="Metrik performa EA">
-        <article class="metric">
-          <div class="metric-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 17 6-6 4 3 8-9"/><path d="M15 5h6v6"/></svg>
-            Avg. Monthly Profit
-          </div>
-          <div class="metric-value" id="statMonthly">0%</div>
-          <div class="metric-note">Rata-rata profit bulanan</div>
-        </article>
-        <article class="metric">
-          <div class="metric-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 20 5v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3Z"/><path d="m8 12 3 3 5-6"/></svg>
-            Win Rate
-          </div>
-          <div class="metric-value" id="statWinRate">0%</div>
-          <div class="metric-note">Berdasarkan seluruh transaksi</div>
-        </article>
-        <article class="metric">
-          <div class="metric-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v5c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 10v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5M4 15v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4"/></svg>
-            Profit Percentage
-          </div>
-          <div class="metric-value" id="statTotalProfit">$0</div>
-          <div class="metric-note">Akumulasi keuntungan total</div>
-        </article>
-        <article class="metric">
-          <div class="metric-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Total Active Accounts
-          </div>
-          <div class="metric-value" id="statAccounts">0</div>
-          <div class="metric-note">Akun MT4/MT5 terverifikasi</div>
-        </article>
+      <div class="metrics">
+        <div class="metric">
+          <div style="color: var(--muted); font-size: 13px;">Avg. Monthly Profit</div>
+          <div class="metric-value num-font">+18.4%</div>
+        </div>
+        <div class="metric">
+          <div style="color: var(--muted); font-size: 13px;">Win Rate</div>
+          <div class="metric-value num-font" style="color: var(--cyan);">78.5%</div>
+        </div>
       </div>
     </section>
-    <p class="disclaimer">Catatan: angka performa di atas diambil secara real-time untuk bulan berjalan dan otomatis di-reset saat pergantian bulan kalender.</p>
-
-    <section id="download" style="height:1px; overflow:hidden" aria-label="Area tujuan download"></section>
-    <section id="backtest" style="height:1px; overflow:hidden" aria-label="Area tujuan backtest"></section>
   </main>
 
   <footer>
-    <span>© <span id="year"></span> neothrone. All rights reserved.</span>
-    <span>Automated Trading Systems · Trading involves risk.</span>
+    <span>© <span id="year">2026</span> neothrone. All rights reserved.</span>
   </footer>
 
-  <!-- Supabase JS & UAParser JS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/1.0.37/ua-parser.min.js"></script>
-  
   <script>
-    // Live Clock Functionality
+    // Live Clock Sederhana
     function updateLiveClock() {
       const now = new Date();
-      const tzPart = new Intl.DateTimeFormat('en', { timeZoneName: 'short' }).formatToParts(now).find(p => p.type === 'timeZoneName');
-      const ampm = tzPart ? tzPart.value : '';          // zona waktu (mis. GMT+7), bukan AM/PM
-      const hh = String(now.getHours()).padStart(2, '0'); // format 24 jam
-      const min = String(now.getMinutes()).padStart(2, '0');
-      const ss = String(now.getSeconds()).padStart(2, '0');
-      const timeStr = `${hh}:${min}:${ss}`;
-
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      
-      const dayName = days[now.getDay()];
-      const dayNum = now.getDate();
-      const monthName = months[now.getMonth()];
-      const year = now.getFullYear();
-
-      const dateStr = `${dayName} · ${dayNum} ${monthName} ${year}`;
-
-      const elTime = document.getElementById('liveClockTime');
-      const elAmPm = document.getElementById('liveClockAmPm');
-      const elDate = document.getElementById('liveClockDate');
-
-      if (elTime) elTime.textContent = timeStr;
-      if (elAmPm) elAmPm.textContent = ampm;
-      if (elDate) elDate.textContent = dateStr;
+      document.getElementById('liveClockTime').textContent = now.toTimeString().split(' ')[0];
     }
     setInterval(updateLiveClock, 1000);
     updateLiveClock();
-
-    const SUPABASE_URL = 'https://nzrjskgbcnbmilvzrqqr.supabase.co/';
-    const SUPABASE_ANON_KEY = 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Modal Popup Script
-    const openBtn = document.getElementById('openAuthModal');
-    const closeBtn = document.getElementById('closeAuthModal');
-    const modal = document.getElementById('authModal');
-    const loginTab = document.getElementById('loginTab');
-    const registerTab = document.getElementById('registerTab');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const heroRegisterBtn = document.getElementById('heroRegisterBtn');
-
-    function openModal(tab = 'login') {
-      if (modal) {
-        modal.classList.add('active');
-        modal.setAttribute('aria-hidden', 'false');
-        switchTab(tab);
-      }
-    }
-
-    function closeModal() {
-      if (modal) {
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-      }
-    }
-
-    function switchTab(tab) {
-      if (!loginTab || !registerTab || !loginForm || !registerForm) return;
-      if (tab === 'login') {
-        loginTab.classList.add('active');
-        registerTab.classList.remove('active');
-        loginForm.classList.add('active');
-        registerForm.classList.remove('active');
-      } else {
-        registerTab.classList.add('active');
-        loginTab.classList.remove('active');
-        registerForm.classList.add('active');
-        loginForm.classList.remove('active');
-      }
-    }
-
-    if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal('login'); });
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (heroRegisterBtn) heroRegisterBtn.addEventListener('click', (e) => { e.preventDefault(); openModal('register'); });
-    if (loginTab) loginTab.addEventListener('click', () => switchTab('login'));
-    if (registerTab) registerTab.addEventListener('click', () => switchTab('register'));
-
-    if (modal) {
-      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
-    });
-
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-    // Handle Login Supabase
-    if (loginForm) {
-      loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-          if (error) throw error;
-
-          const user = data.user;
-          const username = user.user_metadata?.username || user.user_metadata?.full_name || user.email.split('@')[0];
-
-          alert('Login berhasil! Mengalihkan...');
-          closeModal();
-
-          // Admin langsung diarahkan ke Admin Console, member ke portal
-          let isAdmin = false;
-          try {
-            const { data: adminFlag } = await supabaseClient.rpc('is_kingtherious_admin');
-            isAdmin = adminFlag === true;
-          } catch (_) { /* jika gagal, anggap member biasa */ }
-
-          window.location.href = isAdmin
-            ? 'useradmin.html'
-            : `portal.html?user=${encodeURIComponent(username)}`;
-        } catch (err) {
-          alert('Gagal Masuk: ' + err.message);
-        }
-      });
-    }
-
-    function updateUIAfterLogin(user) {
-      const btnText = document.getElementById('authBtnText');
-      if (btnText && user) {
-        const displayName = user.user_metadata?.full_name || user.email.split('@')[0];
-        btnText.textContent = displayName;
-        
-        const openBtn = document.getElementById('openAuthModal');
-        if (openBtn) {
-          openBtn.onclick = function() {
-            if (confirm('Keluar dari akun (Logout)?')) {
-              supabaseClient.auth.signOut().then(() => {
-                alert('Berhasil keluar.');
-                window.location.reload();
-              });
-            }
-          };
-        }
-      }
-    }
-
-    async function checkActiveSession() {
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      if (session && session.user) updateUIAfterLogin(session.user);
-    }
-    checkActiveSession();
-
-    if (registerForm) {
-      registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const password = document.getElementById('regPassword').value;
-        try {
-          const { error } = await supabaseClient.auth.signUp({
-            email, password, options: { data: { full_name: name } }
-          });
-          if (error) throw error;
-          alert('Registrasi berhasil! Silakan periksa email Anda.');
-          switchTab('login');
-        } catch (err) {
-          alert('Gagal Mendaftar: ' + err.message);
-        }
-      });
-    }
-
-    // Real-time Metrics Khusus Bulan Berjalan
-    async function fetchIndexMetricsCurrentMonth() {
-      try {
-        const { data, error } = await supabaseClient.from('trading_stats').select('*');
-        if (error) throw error;
-        const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-
-        if (!data || data.length === 0) {
-          set('statMonthly', '0%'); set('statWinRate', '0%'); set('statTotalProfit', '$0'); set('statAccounts', '0');
-          return;
-        }
-
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth();
-
-        const currentMonthData = data.filter(row => {
-          const date = new Date(row.updated_at || row.created_at);
-          return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
-        });
-
-        if (currentMonthData.length === 0) {
-          set('statMonthly', '0%'); set('statWinRate', '0%'); set('statTotalProfit', '$0'); set('statAccounts', '0');
-          return;
-        }
-
-        let sumMonthly = 0, sumWinRate = 0, sumTotalProfit = 0;
-        currentMonthData.forEach(row => {
-          sumMonthly += Number(row.monthly_profit || 0);
-          sumWinRate += Number(row.win_rate || 0);
-          sumTotalProfit += Number(row.total_profit || 0);
-        });
-
-        const count = currentMonthData.length;
-        set('statMonthly', `${(sumMonthly / count) >= 0 ? '+' : ''}${(sumMonthly / count).toFixed(1)}%`);
-        set('statWinRate', `${(sumWinRate / count).toFixed(1)}%`);
-        set('statTotalProfit', `$${sumTotalProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
-        set('statAccounts', count);
-      } catch (err) {
-        console.error('Gagal memuat metrik beranda:', err.message);
-      }
-    }
-    fetchIndexMetricsCurrentMonth();
-
-    // --- Pelacak Pengunjung (dicatat lewat fungsi log_visit di Supabase) ---
-    (function trackVisitorSession() {
-      try {
-        const startTime = Date.now();
-        const store = window.sessionStorage;
-        const sget = (k) => { try { return store.getItem(k); } catch (e) { return null; } };
-        const sset = (k, v) => { try { store.setItem(k, v); } catch (e) {} };
-
-        let sid = sget('kt_sid');
-        if (!sid) {
-          sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
-              : 's' + Date.now() + Math.random().toString(36).slice(2, 10);
-          sset('kt_sid', sid);
-        }
-
-        const path = window.location.pathname.split('/').pop() || 'index.html';
-        const flow = (sget('kt_flow') || '').split(' > ').filter(Boolean);
-        if (flow[flow.length - 1] !== path) flow.push(path);
-        sset('kt_flow', flow.join(' > '));
-
-        // Deteksi perangkat dengan UAParser
-        let deviceName = 'Desktop PC';
-        let osName = 'Unknown OS', browserName = 'Browser';
-        try {
-          const r = new UAParser().getResult();
-          const brand = r.device.vendor || '', model = r.device.model || '';
-          const os = r.os.name || 'Unknown OS', browser = r.browser.name || 'Browser';
-          osName = os; browserName = browser;
-          if (brand || model) deviceName = `${brand} ${model}`.trim() + ` (${os} - ${browser})`;
-          else if (/mobile/i.test(navigator.userAgent)) deviceName = `Mobile (${os} - ${browser})`;
-          else deviceName = `Desktop (${os} - ${browser})`;
-        } catch (err) { deviceName = navigator.platform || 'Unknown Device'; }
-
-        let clickCount = 0;
-        const interactions = [];
-        document.addEventListener('click', (e) => {
-          clickCount++;
-          const t = (e.target.innerText || e.target.tagName || 'Element').trim().substring(0, 15);
-          if (interactions.length < 10) interactions.push('Klik: ' + t);
-        }, true);
-
-        function sendLog() {
-          const body = JSON.stringify({
-            p_session_id: sid,
-            p_page: path,
-            p_device: deviceName,
-            p_duration: Math.round((Date.now() - startTime) / 1000),
-            p_flow: flow.join(' > '),
-            p_clicks: interactions.join(', ') || 'Tanpa klik',
-            p_click_count: clickCount
-          });
-          fetch(SUPABASE_URL.replace(/\/+$/, '') + '/rest/v1/rpc/log_visit', {
-            method: 'POST',
-            keepalive: true,
-            headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
-            body
-          }).then(async (res) => {
-            if (!res.ok) console.warn('log_visit gagal:', res.status, await res.text());
-          }).catch((err) => console.warn('log_visit error:', err));
-        }
-
-        // Model HP akurat (Android/Chrome): ambil dari User-Agent Client Hints.
-        // Catatan: iPhone/Safari memang tidak membuka model, hanya "iPhone".
-        const modelLookup = (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues)
-          ? navigator.userAgentData.getHighEntropyValues(['model', 'platform', 'platformVersion'])
-              .then((h) => {
-                if (h && h.model) {
-                  deviceName = `${h.model} (${h.platform || osName} ${h.platformVersion || ''} - ${browserName})`.replace(/\s+\)/, ')');
-                }
-              }).catch(() => {})
-          : Promise.resolve();
-        // Kirim pertama setelah model terbaca (maks. tunggu 1,5 detik)
-        Promise.race([modelLookup, new Promise((r) => setTimeout(r, 1500))]).then(sendLog);
-        setInterval(sendLog, 20000);            // perbarui durasi tiap 20 detik
-        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') sendLog(); });
-        window.addEventListener('pagehide', sendLog);
-      } catch (err) {
-        console.error('Tracker error:', err);
-      }
-    })();
   </script>
 </body>
 </html>
