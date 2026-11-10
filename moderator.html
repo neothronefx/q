@@ -240,7 +240,7 @@ table th{background:var(--th-bg)}
       <button data-page="social"><span class="ico">☍</span> Sosial</button>
     </nav></div>
     
-    <div class="side-bottom"><a class="btn" id="ownerLink" href="useradmin.html" style="width:100%;display:none;text-align:center;margin-bottom:8px">Buka Admin Console</a><button class="btn" id="logoutBtn" style="width:100%">Keluar</button></div>
+    <div class="side-bottom"><button class="btn" id="logoutBtn" style="width:100%">Keluar</button></div>
   </aside>
   <main class="main">
     <header class="topline">
@@ -1778,7 +1778,6 @@ async function applyRole() {
     grp.style.display = [...grp.querySelectorAll('[data-page]')].some(b => b.style.display !== 'none') ? '' : 'none';
   });
   const pill = $('rolePill'); if (pill) pill.textContent = '● ' + (myRole === 'utama' ? 'Admin utama' : myRole === 'pengawas' ? 'Pengawas (hanya lihat)' : 'Moderator');
-  if (myRole === 'utama') $('ownerLink').style.display = 'block';
   showPage(MOD_ALLOWED[0] || 'noaccess');
 }
 
