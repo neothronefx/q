@@ -129,8 +129,9 @@ document.addEventListener('DOMContentLoaded',function(){document.querySelectorAl
 .soc-card{display:flex;flex-direction:column;align-items:center;gap:8px;width:110px;padding:12px 8px;border:1px solid var(--border);border-radius:12px;background:var(--card-2);color:var(--text);text-decoration:none;font-size:13px;text-align:center}
 .soc-card img{width:44px;height:44px;object-fit:contain;border-radius:10px}.soc-card:hover{border-color:var(--cyan)}
 .soc-thumb{width:36px;height:36px;object-fit:contain;border-radius:8px;vertical-align:middle}
-body.role-pengawas [data-set],body.role-pengawas [data-del],body.role-pengawas [data-au],body.role-pengawas [data-formacc],body.role-pengawas [data-action="add-license"],body.role-pengawas #addLicForm,
-body.role-verifikasi [data-set="blocked"],body.role-verifikasi [data-del],body.role-verifikasi [data-au="block"],body.role-verifikasi [data-au="delete"],body.role-verifikasi [data-formacc],body.role-verifikasi [data-action="add-license"],body.role-verifikasi #addLicForm{display:none!important}
+.censored{display:inline-block;padding:1px 8px;border-radius:6px;background:var(--card-2);color:var(--muted);letter-spacing:2px;user-select:none}
+body.role-admin [data-formacc],body.role-admin [data-action="add-license"],body.role-admin #addLicForm,
+body.role-moderator [data-set="blocked"],body.role-moderator [data-del],body.role-moderator [data-au="block"],body.role-moderator [data-au="delete"],body.role-moderator [data-formacc],body.role-moderator [data-action="add-license"],body.role-moderator #addLicForm{display:none!important}
 
 /* ---- tema neothrone: font, logo, tombol tema ---- */
 body{font-family:var(--font-body)}
@@ -183,7 +184,7 @@ table th{background:var(--th-bg)}
 .mod-row{display:flex;justify-content:space-between;gap:10px;margin-top:6px;min-height:16px;color:var(--muted,#8fa0b8)}
 .mod-act{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
 </style>
-<style>body.role-pengawas [data-set],body.role-pengawas [data-del],body.role-pengawas [data-au],body.role-pengawas [data-formacc],body.role-pengawas [data-crud],body.role-pengawas [data-mod-restore],body.role-pengawas [data-action="add-license"],body.role-pengawas #bcForm,body.role-pengawas #annForm,body.role-pengawas #mdlForm,body.role-pengawas #faqForm,body.role-pengawas #cmsSaveDraft,body.role-pengawas #cmsPublish,body.role-pengawas #socForm,body.role-pengawas [data-soc-del]{display:none !important}</style>
+<style>body.role-moderator [data-crud],body.role-moderator [data-mod-restore],body.role-moderator #bcForm,body.role-moderator #annForm,body.role-moderator #mdlForm,body.role-moderator #faqForm,body.role-moderator #cmsSaveDraft,body.role-moderator #cmsPublish,body.role-moderator #socForm,body.role-moderator [data-soc-del]{display:none !important}</style>
 </head>
 <body>
 <section class="login-wrap" id="loginView">
@@ -202,7 +203,7 @@ table th{background:var(--th-bg)}
       <button class="primary" type="submit">Masuk ke Dashboard</button>
       <div class="error" id="loginError" role="status"></div>
     </form>
-    <div class="note">Hanya akun moderator atau admin yang bisa masuk. Menu yang tampil mengikuti hak akses dari admin utama.</div>
+    <div class="note">Hanya akun Owner, Admin, atau Moderator yang bisa masuk. Menu yang tampil mengikuti hak akses dari Owner.</div>
     <a class="back" href="index.html">← Kembali ke website</a>
   </div>
 </section>
@@ -236,6 +237,7 @@ table th{background:var(--th-bg)}
       <button data-page="faq"><span class="ico">?</span> FAQ & Panduan</button>
     </nav></div>
     <div><div class="nav-label">KOMUNIKASI</div><nav class="side-nav">
+      <button data-page="chat"><span class="ico">💬</span> Chat Member</button>
       <button data-page="broadcast"><span class="ico">✉</span> Broadcast Pesan</button>
       <button data-page="social"><span class="ico">☍</span> Sosial</button>
     </nav></div>
@@ -520,21 +522,20 @@ table th{background:var(--th-bg)}
       </section>
     </section>
 
-    <section class="page hidden" id="page-noaccess"><section class="panel"><div class="panel-head"><h2>Belum ada menu yang diberikan</h2></div><p class="placeholder">Akun Anda sudah login, tetapi admin utama belum memberi akses ke menu apa pun. Hubungi admin utama untuk meminta akses.</p></section></section>
+    <section class="page hidden" id="page-noaccess"><section class="panel"><div class="panel-head"><h2>Belum ada menu yang diberikan</h2></div><p class="placeholder">Akun Anda sudah login, tetapi admin utama belum memberi akses ke menu apa pun. Hubungi Owner untuk meminta akses.</p></section></section>
     <section class="page hidden" id="page-admins"><section class="panel">
-      <div class="panel-head"><h2>Manajemen Admin User</h2><button class="btn teal" data-action="add-admin">+ Tambah admin</button></div>
-      <form id="addAdminForm" class="toolbar hidden" style="margin-bottom:14px"><input id="admEmail" type="email" placeholder="Email calon admin" aria-label="Email calon admin" required><select id="admRole" aria-label="Role admin"><option value="pengawas">Admin pengawas</option><option value="verifikasi">Admin verifikasi</option><option value="utama">Admin utama</option></select><button class="btn teal" type="submit">Jadikan admin</button></form>
-      <div class="toolbar" style="margin-bottom:14px"><select id="admRoleFilter" aria-label="Filter role"><option value="">Semua role</option><option value="pengawas">Admin pengawas</option><option value="verifikasi">Admin verifikasi</option><option value="utama">Admin utama</option></select><span id="admCount" class="row-note" style="min-width:0"></span></div>
-      <div class="table-wrap"><table><thead><tr><th>Email</th><th>Role</th><th>Ditambahkan</th><th>Akses menu moderator</th><th>Aksi</th></tr></thead><tbody id="admBody"><tr><td colspan="5">Memuat daftar admin...</td></tr></tbody></table></div>
-      <h3 style="margin:20px 0 10px;font-size:14px">Hak akses per role</h3>
-      <div class="table-wrap"><table><thead><tr><th>Role</th><th>Menu yang tampil</th><th>Aksi</th></tr></thead><tbody>
-        <tr><td>Admin utama</td><td>Semua menu di Admin Console</td><td>Penuh</td></tr>
-        <tr><td>Admin verifikasi (moderator)</td><td>Hanya menu yang dicentang lewat <b>Atur menu</b>, di halaman <b>moderator.html</b>. Management EA, API &amp; Keamanan, dan Manajemen Admin tidak pernah tersedia.</td><td>Penuh pada menu yang diberikan; blokir dan hapus wajib alasan</td></tr>
-        <tr><td>Admin pengawas</td><td>Sama seperti moderator: menu sesuai pilihan</td><td>Hanya lihat</td></tr>
+      <div class="panel-head"><h2>Manajemen Jabatan</h2><button class="btn teal" data-action="add-admin">+ Tambah akun staf</button></div>
+      <form id="addAdminForm" class="toolbar hidden" style="margin-bottom:14px"><input id="admEmail" type="email" placeholder="Email calon staf" aria-label="Email calon staf" required><select id="admRole" aria-label="Jabatan"><option value="moderator">3 · Moderator</option><option value="admin">2 · Admin</option><option value="owner">1 · Owner</option></select><button class="btn teal" type="submit">Tambahkan</button></form>
+      <div class="toolbar" style="margin-bottom:14px"><select id="admRoleFilter" aria-label="Filter jabatan"><option value="">Semua jabatan</option><option value="owner">1 · Owner</option><option value="admin">2 · Admin</option><option value="moderator">3 · Moderator</option></select><span id="admCount" class="row-note" style="min-width:0"></span></div>
+      <div class="table-wrap"><table><thead><tr><th>Email</th><th>Jabatan</th><th>Ditambahkan</th><th>Akses menu (Admin &amp; Moderator)</th><th>Aksi</th></tr></thead><tbody id="admBody"><tr><td colspan="5">Memuat daftar staf...</td></tr></tbody></table></div>
+      <h3 style="margin:20px 0 10px;font-size:14px">Hak akses per jabatan</h3>
+      <div class="table-wrap"><table><thead><tr><th>Jabatan</th><th>Menu yang tampil</th><th>Aksi</th></tr></thead><tbody>
+        <tr><td>1 · Owner</td><td>Semua menu di Admin Console (<b>useradmin.html</b>), termasuk Management EA, API &amp; Keamanan, dan Manajemen Jabatan.</td><td>Penuh. Melihat semua akun tanpa sensor.</td></tr>
+        <tr><td>2 · Admin</td><td>Menu yang dicentang lewat <b>Atur menu</b>, dibuka di <b>moderator.html</b>. Management EA, API &amp; Keamanan, dan Manajemen Jabatan tidak tersedia.</td><td>Aktifkan, tolak, blokir, dan hapus (wajib alasan). Data akun Owner tersensor.</td></tr>
+        <tr><td>3 · Moderator</td><td>Menu yang dicentang lewat <b>Atur menu</b>, dibuka di <b>moderator.html</b>.</td><td>Verifikasi, aktifkan, dan tolak; tidak bisa blokir atau hapus. Data akun Owner dan Admin tersensor.</td></tr>
       </tbody></table></div>
-      <div class="notice">Calon admin harus sudah memiliki akun (mendaftar di website) dengan email yang sama. Admin baru bawaannya <b>pengawas</b> (hak paling kecil). Moderator yang belum diatur menunya memakai menu bawaan: Dashboard, Akun MT5, Verifikasi IB, Riwayat Lisensi, dan Konfirmasi User Auth. Anda tidak bisa mengubah atau mencabut akun sendiri, dan minimal harus ada satu admin utama.</div>
+      <div class="notice">Jabatan yang lebih rendah tidak bisa melihat akun jabatan yang lebih tinggi: email, nomor akun, dan nama langsung tersensor di Akun MT5, Verifikasi IB, Konfirmasi User Auth, Riwayat Lisensi, dan Kotak Blokir/Hapus, serta tombol aksinya disembunyikan. Calon staf harus sudah memiliki akun (mendaftar di website) dengan email yang sama. Akun baru bawaannya <b>Moderator</b>. Anda tidak bisa mengubah atau mencabut akun sendiri, dan minimal harus ada satu Owner.</div>
     </section></section>
-
     <section class="page hidden" id="page-social">
       <section class="panel">
         <div class="panel-head"><h2>Tambah sosial media</h2></div>
@@ -555,6 +556,20 @@ table th{background:var(--th-bg)}
         <div class="notice">Bagian Sosial Media di bawah Ringkasan hanya tampil jika sudah ada minimal satu tautan. Portal member harus membaca tabel <b>social_links</b> untuk menampilkannya.</div>
       </section>
     </section>
+    <section class="page hidden" id="page-chat"><section class="panel">
+      <div class="panel-head"><h2>Chat ke member</h2><button class="btn" type="button" id="chatRefresh">Muat ulang</button></div>
+      <form id="chatForm">
+        <div class="form-grid">
+          <div class="field" style="margin-top:0"><label>Kirim ke<select name="to"><option value="all">Semua member aktif</option><option value="one">Satu member</option></select></label></div>
+          <div class="field hidden" id="chatRecipientField" style="margin-top:0"><label>Email member<input name="recipient" list="chatMemberList" autocomplete="off" placeholder="Ketik atau pilih email member"><datalist id="chatMemberList"></datalist></label></div>
+        </div>
+        <div class="field"><label>Pesan<textarea name="body" rows="3" required maxlength="1000"></textarea></label></div>
+        <button class="btn teal" type="submit">Kirim chat</button>
+      </form>
+      <h3 style="margin:22px 0 10px;font-size:14px">Riwayat chat</h3>
+      <div class="table-wrap"><table><thead><tr><th>Pesan</th><th>Penerima</th><th>Pengirim</th><th>Dikirim</th><th>Dibaca</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="chatBody"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div>
+      <div class="notice">Chat tampil sebagai popup di portal member yang sedang membuka portal (Supabase Realtime). Member yang sedang offline melihatnya saat login. Portal harus membaca tabel <b>chat_messages</b> (lihat <b>portal_chat_popup.js</b>). Moderator hanya bisa menarik atau menghapus chat miliknya; Admin dan Owner bisa mengelola semua chat.</div>
+    </section></section>
     <section class="page hidden" id="page-broadcast"><section class="panel">
       <div class="panel-head"><h2>Kirim pesan ke seluruh member portal</h2></div>
       <form id="bcForm">
@@ -576,12 +591,12 @@ table th{background:var(--th-bg)}
 <!-- Supabase JS client -->
 <script>
 /* Konfigurasi Supabase (sama dengan halaman lain). Ganti kedua nilai ini bila memakai project baru. */
-window.NT_CONFIG = { url: 'https://nzrjskgbcnbmilvzrqqr.supabase.co/', key: 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-' };
+window.NT_CONFIG = { url: 'https://cyxilywoxwixpnnkdyhk.supabase.co/', key: 'sb_publishable_y7tk2Uv9kJx_1TqFh97amg_Jof231iI' };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://cyxilywoxwixpnnkdyhk.supabase.co/';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_y7tk2Uv9kJx_1TqFh97amg_Jof231iI';
+const SUPABASE_URL = NT_CONFIG.url;
+const SUPABASE_PUBLISHABLE_KEY = NT_CONFIG.key;
 const supabaseClient = window.supabase?.createClient
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -636,8 +651,9 @@ const titles = {
  models:['Model AI & Pengumuman','Kelola informasi model dan pengumuman produk.'],
  faq:['FAQ & Panduan','Kelola bantuan, instalasi EA, dan konfigurasi WebRequest.'],
  settings:['API & Keamanan','Periksa RLS, akses publik, dan kunci yang dipakai.'],
- admins:['Manajemen Admin','Tambah atau cabut akses admin Admin Console.'],
- noaccess:['Belum ada menu','Admin utama belum memberi akses menu untuk akun ini.'],
+ admins:['Manajemen Jabatan','Atur Owner, Admin, dan Moderator beserta menu yang boleh dibuka.'],
+ chat:['Chat Member','Kirim chat ke member; tampil sebagai popup di portal.'],
+ noaccess:['Belum ada menu','Owner belum memberi akses menu untuk akun ini.'],
  broadcast:['Broadcast Pesan','Kirim pesan langsung ke seluruh member portal.'],
  social:['Sosial','Kelola sosial media dan hyperlink yang tampil di Ringkasan.']
 };
@@ -675,6 +691,8 @@ function showPage(name){
     loadSecurity();
   } else if (name === 'admins') {
     loadAdmins();
+  } else if (name === 'chat') {
+    loadChat();
   } else if (name === 'broadcast') {
     CRUDS.bc.load();
   } else if (name === 'social') {
@@ -723,14 +741,14 @@ function formAccCell(r){
 function render(){
   renderBoxMt5();
   const q = $('licSearch').value.trim().toLowerCase(), f =$('licFilter').value;
-  const list = rows.filter(r => r.status !== 'blocked' && (!f || r.status === f) && (!q || [r.account_number, r.client_name, r.client_email, r.username, r.display_name, r.user_id].join(' ').toLowerCase().includes(q)));
-  $('licBody').innerHTML = list.length ? list.map(r => { const acc = r.account_number || r.account_id || '-'; return `<tr><td>${esc(acc)}</td><td>${esc(r.client_email || '-')}</td><td>${esc(r.username || r.display_name || r.client_name || '-')}</td><td>${esc(r.broker || '-')} (${esc(r.platform || 'MT5')})</td><td>${badge(r.status)}</td><td>${esc(statProfit(accStat(acc)?.total_profit))}</td><td>${esc(eaLastSeenText(acc))}</td><td>${formAccCell(r)}</td>
-    <td><button class="btn teal" data-id="${esc(r.id)}" data-set="active">Aktifkan</button> <button class="btn" data-id="${esc(r.id)}" data-set="rejected">Tolak</button> <button class="btn danger" data-id="${esc(r.id)}" data-set="blocked">Blokir</button> <button class="btn danger" data-id="${esc(r.id)}" data-del="1">Hapus</button></td></tr>`; }).join('')
+  const list = rows.filter(r => r.status !== 'blocked' && (!f || r.status === f) && (!q || (!isHigher(r.user_id, r.client_email) && [r.account_number, r.client_name, r.client_email, r.username, r.display_name, r.user_id].join(' ').toLowerCase().includes(q))));
+  $('licBody').innerHTML = list.length ? list.map(r => { const acc = r.account_number || r.account_id || '-'; const hd = isHigher(r.user_id, r.client_email); return `<tr><td>${cz(acc, hd)}</td><td>${cz(r.client_email || '-', hd)}</td><td>${cz(r.username || r.display_name || r.client_name || '-', hd)}</td><td>${esc(r.broker || '-')} (${esc(r.platform || 'MT5')})</td><td>${badge(r.status)}</td><td>${hd ? '—' : esc(statProfit(accStat(acc)?.total_profit))}</td><td>${hd ? '—' : esc(eaLastSeenText(acc))}</td><td>${hd ? '—' : formAccCell(r)}</td>
+    <td>${hd ? '<span style="color:var(--muted)">Dilindungi</span>' : `<button class="btn teal" data-id="${esc(r.id)}" data-set="active">Aktifkan</button> <button class="btn" data-id="${esc(r.id)}" data-set="rejected">Tolak</button> <button class="btn danger" data-id="${esc(r.id)}" data-set="blocked">Blokir</button> <button class="btn danger" data-id="${esc(r.id)}" data-del="1">Hapus</button>`}</td></tr>`; }).join('')
     : '<tr><td colspan="9">Tidak ada akun yang cocok.</td></tr>';
 
   const pend = rows.filter(r => r.status === 'pending');
-  $('ibBody').innerHTML = pend.length ? pend.map(r => `<tr><td>${esc(r.account_number)}</td><td>${clientCell(r)}</td><td>${esc(r.broker)} (${esc(r.platform)})</td><td>${esc(fmtDate(r.created_at))}</td>
-    <td><button class="btn teal" data-id="${esc(r.id)}" data-set="active">Approve</button> <button class="btn danger" data-id="${esc(r.id)}" data-set="rejected">Reject</button></td></tr>`).join('')
+  $('ibBody').innerHTML = pend.length ? pend.map(r => { const hd = isHigher(r.user_id, r.client_email); return `<tr><td>${cz(r.account_number, hd)}</td><td>${hd ? cz('', true) : clientCell(r)}</td><td>${esc(r.broker)} (${esc(r.platform)})</td><td>${esc(fmtDate(r.created_at))}</td>
+    <td>${hd ? '<span style="color:var(--muted)">Dilindungi</span>' : `<button class="btn teal" data-id="${esc(r.id)}" data-set="active">Approve</button> <button class="btn danger" data-id="${esc(r.id)}" data-set="rejected">Reject</button>`}</td></tr>`; }).join('')
     : '<tr><td colspan="5">Tidak ada pengajuan yang menunggu.</td></tr>';
 
   $('stTotal').textContent = rows.length;
@@ -1218,7 +1236,7 @@ function renderAuthUsers() {
     const meta = u.raw_user_meta_data || u.user_metadata || {};
     const username = meta.username || meta.user_name || '';
     const displayName = meta.display_name || meta.full_name || meta.name || '';
-    return authStatusOf(u) !== 'blocked' && (!sf || authStatusOf(u) === sf) && (!q || [u.email, username, displayName, u.id].join(' ').toLowerCase().includes(q));
+    return authStatusOf(u) !== 'blocked' && (!sf || authStatusOf(u) === sf) && (!q || (!isHigher(u.id, u.email) && [u.email, username, displayName, u.id].join(' ').toLowerCase().includes(q)));
   });
   if (!data.length) { tbody.innerHTML = '<tr><td colspan="6">Tidak ada user yang cocok dengan filter.</td></tr>'; return; }
   tbody.innerHTML = data.map(u => {
@@ -1229,15 +1247,16 @@ function renderAuthUsers() {
     const st = authStatusOf(u);
     const [label, cls] = AU_STATUS[st];
     const id = esc(u.id);
+    const hd = isHigher(u.id, u.email);
     const actions = String(u.id) === String(myUserId)
       ? '<span style="color:var(--muted)">Akun Anda</span>'
-      : [
+      : hd ? '<span style="color:var(--muted)">Dilindungi</span>' : [
           st !== 'active' ? `<button class="btn teal" data-au="activate" data-uid="${id}">Aktifkan</button>` : '',
           st === 'pending' ? `<button class="btn" data-au="reject" data-uid="${id}">Tolak</button>` : '',
           st !== 'blocked' ? `<button class="btn danger" data-au="block" data-uid="${id}">Blokir</button>` : '',
           `<button class="btn danger" data-au="delete" data-uid="${id}">Hapus</button>`
         ].filter(Boolean).join(' ');
-    return `<tr><td>${esc(u.email || '-')}</td><td>${esc(nameText)}${displayName !== '-' && displayName !== nameText ? `<br><small style="color:#7991ab">${esc(displayName)}</small>` : ''}</td><td>${esc(u.raw_app_meta_data?.provider || 'email')}</td><td>${esc(fmtDate(u.created_at))}</td><td><span class="status ${cls}">${label}</span></td><td>${actions}</td></tr>`;
+    return `<tr><td>${cz(u.email || '-', hd)}</td><td>${hd ? cz('', true) : esc(nameText)}${!hd && displayName !== '-' && displayName !== nameText ? `<br><small style="color:#7991ab">${esc(displayName)}</small>` : ''}</td><td>${esc(u.raw_app_meta_data?.provider || 'email')}</td><td>${esc(fmtDate(u.created_at))}</td><td><span class="status ${cls}">${label}</span></td><td>${actions}</td></tr>`;
   }).join('');
 }
 document.getElementById('authUserSearch')?.addEventListener('input', renderAuthUsers);
@@ -1699,23 +1718,48 @@ async function loadSecurity() {
 }
 $('secRefresh')?.addEventListener('click', loadSecurity);
 
-// ---------- Manajemen Admin (tambah / role / cabut) ----------
-const ROLE_LABEL = { utama: 'Admin utama', verifikasi: 'Admin verifikasi', pengawas: 'Admin pengawas' };
-const ROLE_CLS = { utama: 'active', verifikasi: 'pending', pengawas: 'expired' };
+// ---------- Jabatan: 1 Owner, 2 Admin, 3 Moderator ----------
+// Jabatan yang lebih rendah tidak boleh melihat akun jabatan yang lebih tinggi (disensor). Ini hanya tampilan;
+// penjaga sebenarnya adalah RLS dan fungsi di database (lihat roles_chat_update.sql).
+var ROLE_RANK = { owner: 1, admin: 2, moderator: 3 };
+var ROLE_LABEL = { owner: '1 · Owner', admin: '2 · Admin', moderator: '3 · Moderator' };
+var ROLE_CLS = { owner: 'active', admin: 'pending', moderator: 'expired' };
+var LEGACY_ROLE = { utama: 'owner', verifikasi: 'admin', pengawas: 'moderator' };
+function normRole(r) { return ROLE_RANK[r] ? r : (LEGACY_ROLE[r] || 'moderator'); }
+var myRole = 'moderator';
+function myRank() { return ROLE_RANK[myRole] || 3; }
+var staffRoleById = new Map(), staffRoleByEmail = new Map(), staffEmailById = new Map();
+async function loadStaffRanks() {
+  const r = await supabaseClient.rpc('admin_staff_ranks');
+  staffRoleById = new Map(); staffRoleByEmail = new Map(); staffEmailById = new Map();
+  if (!r.error) (r.data || []).forEach(s => {
+    const role = normRole(s.role);
+    if (s.user_id) { staffRoleById.set(String(s.user_id), role); if (s.email) staffEmailById.set(String(s.user_id), s.email); }
+    if (s.email) staffRoleByEmail.set(String(s.email).toLowerCase(), role);
+  });
+  ['render', 'renderAuthUsers', 'renderLicenseHistory', 'renderBoxes'].forEach(n => { try { if (typeof window[n] === 'function') window[n](); } catch (_) {} });
+}
+function isHigher(userId, email) {
+  const role = (userId != null && staffRoleById.get(String(userId))) || (email && staffRoleByEmail.get(String(email).toLowerCase()));
+  return !!role && ROLE_RANK[role] < myRank();
+}
+function cz(v, hide) { return hide ? '<span class="censored" title="Akun jabatan lebih tinggi">██████</span>' : esc(v); }
+
+// ---------- Manajemen Jabatan (tambah / ubah / cabut) ----------
 let admData = [];
 async function loadAdmins() {
   const tb = $('admBody');
-  tb.innerHTML = '<tr><td colspan="5">Memuat daftar admin...</td></tr>';
+  tb.innerHTML = '<tr><td colspan="5">Memuat daftar staf...</td></tr>';
   const { data, error } = await supabaseClient.rpc('admin_list_admins');
-  if (error) { tb.innerHTML = `<tr><td colspan="5" style="color:var(--red)">Gagal memuat: ${esc(error.message)}. Jalankan useradmin_update_v4.sql.</td></tr>`; return; }
-  admData = data || [];
+  if (error) { tb.innerHTML = `<tr><td colspan="5" style="color:var(--red)">Gagal memuat: ${esc(error.message)}. Jalankan roles_chat_update.sql.</td></tr>`; return; }
+  admData = (data || []).map(a => ({ ...a, role: normRole(a.role) }));
   admPages = new Map();
-  const pr = await supabaseClient.rpc('admin_list_pages');   // belum dibuat = semua moderator memakai menu bawaan
+  const pr = await supabaseClient.rpc('admin_list_pages');   // belum dibuat = semua akun memakai menu bawaan
   if (!pr.error) (pr.data || []).forEach(p => admPages.set(String(p.user_id), p.pages || []));
   renderAdmins();
 }
 function menuCell(a) {
-  if (a.role === 'utama') return '<span style="color:var(--muted)">Semua menu</span>';
+  if (a.role === 'owner') return '<span style="color:var(--muted)">Semua menu</span>';
   const set = admPages.get(String(a.user_id));
   const n = set ? set.filter(p => MENU_ALL.includes(p)).length : null;
   const txt = n === null ? 'Bawaan (belum diatur)' : n + ' dari ' + MENU_ALL.length + ' menu';
@@ -1723,20 +1767,20 @@ function menuCell(a) {
 }
 function renderAdmins() {
   const rf = $('admRoleFilter').value;
-  const list = admData.filter(a => !rf || a.role === rf);
-  $('admCount').textContent = `${list.length} dari ${admData.length} admin`;
+  const list = admData.filter(a => !rf || a.role === rf).sort((a, b) => ROLE_RANK[a.role] - ROLE_RANK[b.role]);
+  $('admCount').textContent = `${list.length} dari ${admData.length} akun staf`;
   $('admBody').innerHTML = list.length ? list.map(a => {
     const self = String(a.user_id) === String(myUserId);
     const acts = self ? '<span style="color:var(--muted)">Akun Anda</span>'
-      : `<select data-adm-rolesel="${esc(a.user_id)}" aria-label="Ubah role">${Object.keys(ROLE_LABEL).map(k => `<option value="${k}"${k === a.role ? ' selected' : ''}>${ROLE_LABEL[k]}</option>`).join('')}</select> <button class="btn danger" type="button" data-adm-del="${esc(a.user_id)}">Cabut akses</button>`;
-    return `<tr><td>${esc(a.email || a.user_id)}</td><td><span class="status ${ROLE_CLS[a.role] || 'pending'}">${esc(ROLE_LABEL[a.role] || a.role)}</span></td><td>${esc(dt(a.created_at))}</td><td>${menuCell(a)}</td><td>${acts}</td></tr>`;
-  }).join('') : '<tr><td colspan="5">Tidak ada admin dengan role ini.</td></tr>';
+      : `<select data-adm-rolesel="${esc(a.user_id)}" aria-label="Ubah jabatan">${Object.keys(ROLE_LABEL).map(k => `<option value="${k}"${k === a.role ? ' selected' : ''}>${ROLE_LABEL[k]}</option>`).join('')}</select> <button class="btn danger" type="button" data-adm-del="${esc(a.user_id)}">Cabut akses</button>`;
+    return `<tr><td>${esc(a.email || a.user_id)}</td><td><span class="status ${ROLE_CLS[a.role]}">${esc(ROLE_LABEL[a.role])}</span></td><td>${esc(dt(a.created_at))}</td><td>${menuCell(a)}</td><td>${acts}</td></tr>`;
+  }).join('') : '<tr><td colspan="5">Tidak ada akun dengan jabatan ini.</td></tr>';
 }
 $('admRoleFilter')?.addEventListener('change', renderAdmins);
 $('addAdminForm')?.addEventListener('submit', async e => {
   e.preventDefault();
   const email = $('admEmail').value.trim(), role = $('admRole').value;
-  if (!confirm(`Jadikan ${email} sebagai ${ROLE_LABEL[role].toLowerCase()}?`)) return;
+  if (!confirm(`Jadikan ${email} sebagai ${ROLE_LABEL[role]}?`)) return;
   const { error } = await supabaseClient.rpc('admin_add_admin', { p_email: email, p_role: role });
   if (error) { alert('Gagal: ' + error.message); return; }
   e.target.reset(); e.target.classList.add('hidden'); loadAdmins();
@@ -1744,7 +1788,7 @@ $('addAdminForm')?.addEventListener('submit', async e => {
 document.addEventListener('click', async e => {
   const del = e.target.closest('[data-adm-del]');
   if (!del) return;
-  if (!confirm('Cabut akses admin dari akun ini?')) return;
+  if (!confirm('Cabut akses staf dari akun ini?')) return;
   const { error } = await supabaseClient.rpc('admin_remove_admin', { p_user_id: del.dataset.admDel });
   if (error) { alert('Gagal: ' + error.message); return; }
   loadAdmins();
@@ -1752,34 +1796,108 @@ document.addEventListener('click', async e => {
 document.addEventListener('change', async e => {
   const sel = e.target.closest('[data-adm-rolesel]');
   if (!sel) return;
-  if (!confirm(`Ubah role akun ini menjadi ${ROLE_LABEL[sel.value].toLowerCase()}?`)) { loadAdmins(); return; }
+  if (!confirm(`Ubah jabatan akun ini menjadi ${ROLE_LABEL[sel.value]}?`)) { loadAdmins(); return; }
   const { error } = await supabaseClient.rpc('admin_set_admin_role', { p_user_id: sel.dataset.admRolesel, p_role: sel.value });
   if (error) alert('Gagal: ' + error.message);
   loadAdmins();
 });
 
-// ---------- Pembatasan tampilan menurut role ----------
+// ---------- Pembatasan tampilan menurut jabatan ----------
 // Catatan: ini hanya merapikan tampilan. Penjaga sebenarnya adalah RLS dan fungsi di database.
-var myRole = 'verifikasi';
 var MOD_ALLOWED = null;
 async function applyRole() {
   const { data, error } = await supabaseClient.rpc('admin_my_role');
-  myRole = (!error && data) ? data : 'utama';   // fungsi belum ada = pemilik
+  myRole = (!error && data) ? normRole(data) : 'owner';   // fungsi belum ada = pemilik
+  await loadStaffRanks();
   let pages = MENU_ALL;
-  if (myRole !== 'utama') {
+  if (myRole !== 'owner') {
     const r = await supabaseClient.rpc('admin_my_pages');   // null / belum dibuat = menu bawaan
     pages = (!r.error && Array.isArray(r.data)) ? r.data : MENU_DEFAULT;
   }
   MOD_ALLOWED = MENU_ALL.filter(p => pages.includes(p));
-  document.body.classList.toggle('role-pengawas', myRole === 'pengawas');
+  document.body.classList.remove('role-admin', 'role-moderator');
+  if (myRole !== 'owner') document.body.classList.add('role-' + myRole);
   document.querySelectorAll('[data-page]').forEach(b => { b.style.display = MOD_ALLOWED.includes(b.dataset.page) ? '' : 'none'; });
   document.querySelectorAll('.sidebar .nav-label').forEach(l => {
     const grp = l.parentElement;
     grp.style.display = [...grp.querySelectorAll('[data-page]')].some(b => b.style.display !== 'none') ? '' : 'none';
   });
-  const pill = $('rolePill'); if (pill) pill.textContent = '● ' + (myRole === 'utama' ? 'Admin utama' : myRole === 'pengawas' ? 'Pengawas (hanya lihat)' : 'Moderator');
+  const pill = $('rolePill'); if (pill) pill.textContent = '● ' + ROLE_LABEL[myRole];
   showPage(MOD_ALLOWED[0] || 'noaccess');
 }
+
+// ---------- Chat ke member (popup di portal member) ----------
+let chatData = [], chatReads = new Map(), chatMembers = [], chatUsersById = new Map();
+async function loadChat() {
+  const tb = $('chatBody'); if (!tb) return;
+  tb.innerHTML = '<tr><td colspan="7">Memuat data...</td></tr>';
+  const us = await supabaseClient.rpc('admin_list_all_users');
+  if (!us.error) {
+    const all = us.data || [];
+    chatUsersById = new Map(all.map(u => [String(u.id), u]));
+    chatMembers = all.filter(u => authStatusOf(u) === 'active' && !staffRoleById.has(String(u.id)) && !staffRoleByEmail.has(String(u.email || '').toLowerCase()));
+    $('chatMemberList').innerHTML = chatMembers.map(u => `<option value="${esc(u.email)}"></option>`).join('');
+  }
+  const [msgs, rd] = await Promise.all([
+    supabaseClient.from('chat_messages').select('*').order('created_at', { ascending: false }).limit(200),
+    supabaseClient.from('chat_reads').select('message_id')
+  ]);
+  if (msgs.error) { tb.innerHTML = `<tr><td colspan="7" style="color:var(--red)">Gagal memuat chat_messages: ${esc(msgs.error.message)}. Jalankan roles_chat_update.sql.</td></tr>`; return; }
+  chatReads = new Map();
+  (rd.data || []).forEach(r => chatReads.set(r.message_id, (chatReads.get(r.message_id) || 0) + 1));
+  chatData = msgs.data || [];
+  renderChat();
+}
+function renderChat() {
+  const tb = $('chatBody'); if (!tb) return;
+  tb.innerHTML = chatData.length ? chatData.map(r => {
+    const hd = isHigher(r.sender_id, null);
+    const mine = String(r.sender_id) === String(myUserId);
+    const canAct = myRank() <= 2 || mine;
+    const rec = r.recipient_id ? esc(chatUsersById.get(String(r.recipient_id))?.email || 'Member tertentu') : '<b>Semua member</b>';
+    const who = hd ? cz('', true) : esc(staffEmailById.get(String(r.sender_id)) || '(akun staf dicabut)');
+    const acts = canAct
+      ? `<button class="btn ${r.active ? '' : 'teal'}" type="button" data-chat-act="toggle" data-id="${esc(r.id)}">${r.active ? 'Tarik' : 'Aktifkan lagi'}</button> <button class="btn danger" type="button" data-chat-act="del" data-id="${esc(r.id)}">Hapus</button>`
+      : '—';
+    return `<tr><td class="row-note" style="white-space:normal;min-width:220px">${esc(r.body)}</td><td>${rec}</td><td>${who}<br><small style="${SOFT}">${esc(ROLE_LABEL[normRole(r.sender_role)])}</small></td><td>${esc(dt(r.created_at))}</td><td>${chatReads.get(r.id) || 0}</td><td>${flagBadge(r.active, 'Aktif', 'Ditarik')}</td><td>${acts}</td></tr>`;
+  }).join('') : '<tr><td colspan="7">Belum ada chat yang dikirim.</td></tr>';
+}
+$('chatForm')?.addEventListener('change', e => {
+  if (e.target.name === 'to') $('chatRecipientField').classList.toggle('hidden', e.target.value !== 'one');
+});
+$('chatForm')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target.elements, body = f.body.value.trim();
+  if (!body) return;
+  let rid = null, remail = '';
+  if (f.to.value === 'one') {
+    remail = f.recipient.value.trim();
+    const u = chatMembers.find(x => String(x.email || '').toLowerCase() === remail.toLowerCase());
+    if (!u) { alert('Pilih email member aktif dari daftar.'); return; }
+    rid = u.id; remail = u.email;
+  }
+  if (!confirm(rid ? `Kirim chat ke ${remail}?` : `Kirim chat ke SEMUA member aktif (${chatMembers.length} member)?`)) return;
+  const { error } = await supabaseClient.from('chat_messages').insert({ sender_id: myUserId, sender_role: myRole, recipient_id: rid, body, active: true });
+  if (error) { alert('Gagal mengirim: ' + error.message); return; }
+  e.target.reset(); $('chatRecipientField').classList.add('hidden');
+  loadChat();
+});
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-chat-act]');
+  if (!b) return;
+  const r = chatData.find(x => String(x.id) === String(b.dataset.id));
+  if (!r) return;
+  let error;
+  if (b.dataset.chatAct === 'del') {
+    if (!confirm('Hapus chat ini beserta data pembacanya?')) return;
+    ({ error } = await supabaseClient.from('chat_messages').delete().eq('id', r.id));
+  } else {
+    ({ error } = await supabaseClient.from('chat_messages').update({ active: !r.active }).eq('id', r.id));
+  }
+  if (error) { alert('Gagal: ' + error.message); return; }
+  loadChat();
+});
+$('chatRefresh')?.addEventListener('click', loadChat);
 
 // ---------- Sosial media: nama + gambar + hyperlink ----------
 const SOCIAL_BUCKET = 'social-icons';
@@ -1862,10 +1980,10 @@ function lhFiltered() {
 function renderLicenseHistory() {
   const list = lhFiltered();
   $('lhBody').innerHTML = list.length ? list.map(r => `<tr>
-    <td>${esc(dt(r.created_at))}</td><td>${esc(r.account_id || '-')}</td><td>${esc(r.client_email || '-')}</td><td>${esc(r.broker || '-')}</td>
+    <td>${esc(dt(r.created_at))}</td><td>${cz(r.account_id || '-', isHigher(null, r.client_email))}</td><td>${cz(r.client_email || '-', isHigher(null, r.client_email))}</td><td>${esc(r.broker || '-')}</td>
     <td><span class="status ${LH_CLS[r.action] || 'pending'}">${esc(LH_LABEL[r.action] || r.action)}</span></td>
     <td>${r.old_status || r.new_status ? esc((r.old_status || '—') + ' → ' + (r.new_status || '—')) : '—'}</td>
-    <td>${esc(r.changed_by_email || (r.action === 'tercatat' ? 'sistem' : '-'))}</td></tr>`).join('')
+    <td>${isHigher(null, r.changed_by_email) ? cz('', true) : esc(r.changed_by_email || (r.action === 'tercatat' ? 'sistem' : '-'))}</td></tr>`).join('')
     : '<tr><td colspan="7">Belum ada riwayat yang cocok.</td></tr>';
 }
 function exportLicenseHistory() {
@@ -1946,7 +2064,7 @@ function askReason({ title, subject, danger = true, confirmText = 'Konfirmasi' }
 }
 
 const MOD_ACT = { block: ['Diblokir', 'blocked'], delete: ['Dihapus', 'blocked'], restore: ['Dipulihkan', 'active'] };
-const modWho = l => esc(l.actor_email || '—') + (l.actor_role ? `<br><small style="color:var(--muted,#7991ab)">${esc(l.actor_role)}</small>` : '');
+const modWho = l => (isHigher(l.actor_id, l.actor_email) ? cz('', true) : esc(l.actor_email || '—')) + (l.actor_role ? `<br><small style="color:var(--muted,#7991ab)">${esc(l.actor_role)}</small>` : '');
 
 // ---- Kotak: Akun MT5 ----
 function renderBoxMt5() {
@@ -1978,7 +2096,7 @@ function renderBoxMt5() {
       else if (i.cur) st = `<span class="status active">Sudah dipulihkan</span><br><small style="color:var(--muted,#7991ab)">status: ${esc(i.cur.status)}</small>`;
       else st = '<span style="color:var(--muted,#7991ab)">Data sudah tidak ada</span>';
     }
-    return `<tr><td>${esc(fmtDate(i.at))}</td><td>${esc(i.acc || '-')}</td><td>${esc(i.email || '-')}</td><td><span class="status ${cl}">${lb}</span></td>
+    return `<tr><td>${esc(fmtDate(i.at))}</td><td>${cz(i.acc || '-', isHigher(i.cur?.user_id, i.email))}</td><td>${cz(i.email || '-', isHigher(i.cur?.user_id, i.email))}</td><td><span class="status ${cl}">${lb}</span></td>
       <td style="white-space:normal;min-width:200px">${i.reason ? esc(i.reason) : '<span style="color:var(--muted,#7991ab)">Tidak ada catatan alasan</span>'}</td>
       <td>${i.log ? modWho(i.log) : '—'}</td><td>${st}</td><td>${act}</td></tr>`;
   }).join('');
@@ -2009,7 +2127,7 @@ function renderBoxUsers() {
       else if (i.cur) st = '<span class="status active">Sudah dipulihkan</span>';
       else st = '<span style="color:var(--muted,#7991ab)">Data sudah tidak ada</span>';
     }
-    return `<tr><td>${esc(fmtDate(i.at))}</td><td>${esc(i.email || '-')}</td><td>${esc(i.name || '-')}</td><td><span class="status ${cl}">${lb}</span></td>
+    return `<tr><td>${esc(fmtDate(i.at))}</td><td>${cz(i.email || '-', isHigher(i.cur?.id, i.email))}</td><td>${cz(i.name || '-', isHigher(i.cur?.id, i.email))}</td><td><span class="status ${cl}">${lb}</span></td>
       <td style="white-space:normal;min-width:200px">${i.reason ? esc(i.reason) : '<span style="color:var(--muted,#7991ab)">Tidak ada catatan alasan</span>'}</td>
       <td>${i.log ? modWho(i.log) : '—'}</td><td>${st}</td><td>${act}</td></tr>`;
   }).join('');
@@ -2058,10 +2176,10 @@ const MENU_GROUPS = [
   ['Overview', [['overview', 'Dashboard'], ['trade-entries', 'Statistik Entry Posisi'], ['analytics', 'Statistik Pengguna']]],
   ['Lisensi & Client', [['licenses', 'Akun MT5'], ['ib', 'Verifikasi IB'], ['history', 'Riwayat Lisensi'], ['auth-users', 'Konfirmasi User Auth'], ['visitor-history', 'Riwayat Pengunjung']]],
   ['Website Content', [['cms', 'Landing Page CMS'], ['models', 'Model AI & Pengumuman'], ['faq', 'FAQ & Panduan']]],
-  ['Komunikasi', [['broadcast', 'Broadcast Pesan'], ['social', 'Sosial']]]
+  ['Komunikasi', [['chat', 'Chat Member'], ['broadcast', 'Broadcast Pesan'], ['social', 'Sosial']]]
 ];
 const MENU_ALL = MENU_GROUPS.flatMap(g => g[1].map(m => m[0]));
-const MENU_DEFAULT = ['overview', 'licenses', 'ib', 'history', 'auth-users'];   // dipakai bila admin belum pernah mengatur
+const MENU_DEFAULT = ['overview', 'licenses', 'ib', 'history', 'auth-users', 'chat'];   // dipakai bila admin belum pernah mengatur
 let admPages = new Map();   // user_id -> array menu (tidak ada = belum diatur)
 
 function openMenuDialog(userId) {
