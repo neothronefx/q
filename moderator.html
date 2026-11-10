@@ -3,15 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Moderator | NEOTHRONE</title>
+<title>Moderator Console | NEOTHRONE</title>
 
 <meta name="theme-color" content="#0B1220">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiNGMUY1RjkiLz4KPC9zdmc+Cg==">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-<script>(function(){var t='dark';try{t=localStorage.getItem('nt-theme')||'dark'}catch(e){}document.documentElement.setAttribute('data-theme',t)})()</script>
-<link rel="stylesheet" href="assets/neothrone.css">
-<link rel="stylesheet" href="assets/admin.css">
+<script>(function(){var r=document.documentElement;try{var t=localStorage.getItem('neothrone-theme');r.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){r.setAttribute('data-theme','dark')}
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-theme-toggle]').forEach(function(b){b.addEventListener('click',function(){var n=r.getAttribute('data-theme')==='light'?'dark':'light';r.setAttribute('data-theme',n);try{localStorage.setItem('neothrone-theme',n)}catch(e){}})})})})();</script>
+<style>
+/* ==========================================================================
+   neothrone — token tema bersama (dimuat semua halaman)
+   Navy #0B1220 · Kartu #121A2B · Teal #2DD4BF · Emas #F5B942 (elemen premium)
+   Judul: Space Grotesk · Teks: Inter · Angka: JetBrains Mono
+   Mode gelap = default. Mode terang lewat data-theme="light" atau preferensi sistem.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* token merek */
+  --navy: #0B1220;
+  --card-navy: #121A2B;
+  --teal: #2DD4BF;
+  --gold: #F5B942;
+
+  /* mode gelap */
+  --bg: #0B1220;
+  --card: #121A2B;
+  --card-2: #18223A;
+  --input: #0E1626;
+  --th-bg: #18223A;
+  --head-bg: rgba(11, 18, 32, .88);
+  --overlay: rgba(5, 9, 18, .78);
+  --border: rgba(148, 163, 184, .16);
+  --border-strong: rgba(45, 212, 191, .38);
+  --text: #E8EDF5;
+  --muted: #8FA0B8;
+  --accent: #2DD4BF;
+  --accent-text: #2DD4BF;
+  --accent-ink: #062B27;
+  --premium: #F5B942;
+  --premium-text: #F5B942;
+  --premium-ink: #2A1B00;
+  --up: #2DD4BF;
+  --down: #F0605D;
+  --impact: #E5484D;
+  --glow: rgba(45, 212, 191, .10);
+  --grid: rgba(45, 212, 191, .06);
+  --shadow: 0 18px 40px rgba(0, 0, 0, .35);
+
+  /* logo: file "dark" = huruf N putih (untuk latar navy), "light" = huruf N navy */
+  --logo: url("../logo/neothrone-logo-dark.svg");
+
+  --font-head: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* alias lama agar kode inline yang masih memakai nama ini tetap aman */
+  --red: var(--down);
+  --cyan: var(--accent-text);
+  --panel: var(--card);
+  --line: var(--border-strong);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F3F6FB;
+  --card: #FFFFFF;
+  --card-2: #EEF2F8;
+  --input: #F7F9FC;
+  --th-bg: #EAF0F7;
+  --head-bg: rgba(255, 255, 255, .88);
+  --overlay: rgba(11, 18, 32, .45);
+  --border: rgba(11, 18, 32, .10);
+  --border-strong: rgba(12, 143, 128, .45);
+  --text: #0B1220;
+  --muted: #55657C;
+  --accent-text: #0C8F80;      /* teal lebih gelap agar teks terbaca di latar terang */
+  --premium-text: #8A5A0A;
+  --up: #0C8F80;
+  --down: #D8433F;
+  --glow: rgba(45, 212, 191, .16);
+  --grid: rgba(12, 143, 128, .07);
+  --shadow: 0 14px 34px rgba(11, 18, 32, .09);
+  --logo: url("../logo/neothrone-logo-light.svg");
+}
+
+/* neothrone — Admin Console. Token warna & font berasal dari theme.css. */
+:root{--teal:var(--accent-text);--amber:var(--premium-text);--line:var(--border);--panel2:var(--card-2)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inherit;text-decoration:none}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:22px}.login-card{width:min(100%,440px);padding:32px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:0 25px 80px rgba(0,0,0,.4)}.logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}.mark{width:44px;height:44px;color:var(--cyan)}.brand{font-weight:850;letter-spacing:.08em;font-size:20px}.sub{font-size:10px;letter-spacing:.2em;color:var(--teal);margin-top:4px}.eyebrow{color:var(--teal);font-size:12px;text-transform:uppercase;letter-spacing:.14em;font-weight:800}h1{font-size:27px;margin:10px 0}p{color:var(--muted);line-height:1.55}.field{display:grid;gap:8px;margin:18px 0}.field label{font-size:13px;color:var(--text)}.field input{width:100%;border:1px solid var(--border);background:var(--input);color:var(--text);padding:13px 14px;border-radius:10px;outline:none}.field input:focus{border-color:var(--cyan)}.primary{border:0;background:var(--accent);color:var(--accent-ink);font-weight:800;padding:13px 18px;border-radius:10px;width:100%}.note{font-size:12px;padding:12px;border:1px solid color-mix(in srgb,var(--premium) 40%,transparent);background:color-mix(in srgb,var(--premium) 12%,transparent);color:var(--premium-text);border-radius:10px;margin-top:18px}.error{font-size:13px;color:var(--down);margin-top:12px;min-height:18px}.back{display:inline-block;color:var(--muted);margin-top:20px;font-size:13px}
+.shell{display:none;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:250px;padding:22px 14px;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:20px;overflow:auto}.side-head{display:flex;align-items:center;gap:10px;padding:4px 8px 20px;border-bottom:1px solid var(--line)}.side-head .mark{width:36px;height:36px}.side-head .brand{font-size:16px}.side-head .sub{font-size:8px}.nav-label{font-size:10px;color:var(--muted);letter-spacing:.16em;padding:0 10px;margin:4px 0}.side-nav{display:grid;gap:5px}.side-nav button{width:100%;text-align:left;display:flex;align-items:center;gap:11px;border:1px solid transparent;background:transparent;color:var(--text);padding:12px 11px;border-radius:10px;font-size:13px}.side-nav button:hover,.side-nav button.active{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:var(--border-strong);color:var(--accent-text)}.side-nav .ico{width:20px;text-align:center;color:var(--cyan)}.side-bottom{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}.main{margin-left:250px;padding:26px clamp(18px,3vw,42px);max-width:1600px}.topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:25px}.topline h1{margin:0;font-size:25px}.topline p{margin:6px 0 0;font-size:13px}.pill{border:1px solid color-mix(in srgb,var(--accent) 38%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent-text);padding:8px 11px;border-radius:30px;font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat,.panel{border:1px solid var(--line);background:var(--card);border-radius:15px;padding:18px}.stat .label{font-size:12px;color:var(--muted)}.stat .num{font-size:28px;font-weight:850;margin:10px 0 4px}.stat small{color:var(--muted);font-size:11px}.panel{margin-top:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel h2{font-size:16px;margin:0}.btn{border:1px solid var(--border);background:var(--card-2);color:var(--text);padding:9px 12px;border-radius:9px;font-size:12px}.btn.teal{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:800}.btn.danger{color:var(--down);border-color:color-mix(in srgb,var(--down) 45%,transparent);background:color-mix(in srgb,var(--down) 12%,transparent)}.toolbar{display:flex;gap:9px;flex-wrap:wrap}.toolbar input,.toolbar select{border:1px solid var(--border);background:var(--input);color:var(--text);padding:10px;border-radius:9px;min-width:150px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:700px;font-size:12px}th,td{text-align:left;padding:13px 11px;border-bottom:1px solid var(--border);white-space:nowrap}th{color:var(--muted);font-weight:650}td{color:var(--text)}.status{display:inline-block;padding:5px 8px;border-radius:30px;font-size:10px;font-weight:800}.active{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent-text)}.pending{background:color-mix(in srgb,var(--premium) 12%,transparent);color:var(--premium-text)}.expired{background:var(--card-2);color:var(--muted)}.blocked{background:color-mix(in srgb,var(--down) 12%,transparent);color:var(--down)}.placeholder{padding:24px;border:1px dashed var(--border);border-radius:12px;color:var(--muted);font-size:13px;line-height:1.7}.hidden{display:none!important}.two{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.notice{font-size:12px;color:var(--premium-text);background:color-mix(in srgb,var(--premium) 12%,transparent);border:1px solid color-mix(in srgb,var(--premium) 40%,transparent);padding:12px;border-radius:10px;margin-top:16px}.mobile-top{display:none}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}}
+@media(max-width:760px){.sidebar{position:static;width:auto;height:auto;padding:12px}.side-head{padding-bottom:10px}.sidebar .nav-label,.side-bottom{display:none}.side-nav{display:flex;overflow:auto}.side-nav button{width:auto;white-space:nowrap}.shell{display:none}.main{margin:0;padding:18px 12px}.topline{align-items:flex-start}.topline h1{font-size:21px}.grid{gap:9px}.stat{padding:13px}.stat .num{font-size:23px}.stat .label{font-size:11px}.login-card{padding:24px}}
+
+.tabs{display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap}.tabs button{border:1px solid var(--border);background:var(--card);color:var(--text);padding:10px 16px;border-radius:10px;font-size:13px}.tabs button.on{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:var(--border-strong);color:var(--accent-text)}
+.field textarea,.field select{width:100%;border:1px solid var(--border);background:var(--input);color:var(--text);padding:13px 14px;border-radius:10px;outline:none;resize:vertical}.field textarea:focus,.field select:focus{border-color:var(--cyan)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-grid.three{grid-template-columns:.7fr .8fr 1.5fr}
+.pill.amber{border-color:color-mix(in srgb,var(--premium) 40%,transparent);background:color-mix(in srgb,var(--premium) 12%,transparent);color:var(--premium-text)}
+.row-note{white-space:normal;min-width:240px;color:var(--muted);line-height:1.5}
+.check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);margin:0 0 14px}
+@media(max-width:760px){.form-grid,.form-grid.three{grid-template-columns:1fr}}
+
+.ea-head,.ea-row{display:grid;grid-template-columns:minmax(170px,2.2fr) .8fr 1fr 1.1fr 1.2fr;gap:12px;align-items:center}
+.ea-head{padding:0 16px 8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.ea-item{border:1px solid var(--border);background:var(--card-2);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.ea-row{padding:14px 16px}
+.ea-name{display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--text);font-size:15px;font-weight:600;text-align:left;padding:0;cursor:pointer}
+.ea-name .chev{transition:transform .15s;color:var(--muted)}
+.ea-item.open .chev{transform:rotate(180deg)}
+.ea-detail{border-top:1px solid var(--border);padding:16px}
+.switch{position:relative;display:inline-block;width:44px;height:24px;vertical-align:middle}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch span{position:absolute;inset:0;background:color-mix(in srgb,var(--muted) 35%,transparent);border-radius:24px;transition:.15s;cursor:pointer}
+.switch span:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s}
+.switch input:checked+span{background:var(--accent)}
+.switch input:checked+span:before{transform:translateX(20px)}
+.switch input:focus-visible+span{outline:2px solid var(--cyan)}
+@media(max-width:760px){.ea-head{display:none}.ea-row{grid-template-columns:1fr 1fr}.ea-row>:first-child{grid-column:1/-1}.ea-row>[data-label]::before{content:attr(data-label);display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase}}
+.chip{display:inline-block;margin:2px 6px 2px 0;padding:3px 10px;border-radius:999px;border:1px solid var(--border);font-size:12px;color:var(--text)}
+.row-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border);font-size:13px}
+.soc-grid{display:flex;flex-wrap:wrap;gap:12px}
+.soc-card{display:flex;flex-direction:column;align-items:center;gap:8px;width:110px;padding:12px 8px;border:1px solid var(--border);border-radius:12px;background:var(--card-2);color:var(--text);text-decoration:none;font-size:13px;text-align:center}
+.soc-card img{width:44px;height:44px;object-fit:contain;border-radius:10px}.soc-card:hover{border-color:var(--cyan)}
+.soc-thumb{width:36px;height:36px;object-fit:contain;border-radius:8px;vertical-align:middle}
+body.role-pengawas [data-set],body.role-pengawas [data-del],body.role-pengawas [data-au],body.role-pengawas [data-formacc],body.role-pengawas [data-action="add-license"],body.role-pengawas #addLicForm,
+body.role-verifikasi [data-set="blocked"],body.role-verifikasi [data-del],body.role-verifikasi [data-au="block"],body.role-verifikasi [data-au="delete"],body.role-verifikasi [data-formacc],body.role-verifikasi [data-action="add-license"],body.role-verifikasi #addLicForm{display:none!important}
+
+/* ---- tema neothrone: font, logo, tombol tema ---- */
+body{font-family:var(--font-body)}
+h1,h2,h3,.brand,.eyebrow{font-family:var(--font-head)}
+.brand{letter-spacing:.01em;font-weight:700;text-transform:none}
+.sub{letter-spacing:.16em}
+.mark{display:block;flex:0 0 auto;background:var(--logo) center/contain no-repeat;color:inherit}
+.stat .num,.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+td,th{font-variant-numeric:tabular-nums}
+.row-note{font-size:13px}
+.stat .num{font-weight:600}
+.panel,.stat{box-shadow:var(--shadow)}
+table th{background:var(--th-bg)}
+.primary,.btn.teal{color:var(--accent-ink)}
+.status{font-family:var(--font-body)}
+.theme-btn{border:1px solid var(--border);background:var(--card);color:var(--text);width:38px;height:34px;border-radius:9px;font-size:16px;line-height:1;display:inline-grid;place-items:center}
+.theme-btn:hover{border-color:var(--border-strong)}
+.topline-r{display:flex;align-items:center;gap:10px}
+.login-card .theme-btn{position:absolute;top:14px;right:14px}.login-card{position:relative}
+.guide-cur{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--card-2)}
+.guide-cur a{color:var(--accent-text);text-decoration:underline;word-break:break-all}
+.guide-up input[type=file]{min-width:0;max-width:100%;color:var(--muted)}
+.visit-note{color:var(--muted)}
+.switch input:checked+span{background:var(--accent)}
+.switch input:focus-visible+span{outline:2px solid var(--accent)}
+.ea-head,.ea-row{grid-template-columns:minmax(170px,2.2fr) 1.3fr 1fr 1.2fr}
+@media(max-width:760px){.ea-row{grid-template-columns:1fr 1fr}.ea-row>:first-child{grid-column:1/-1}}
+
+/* ---- pelengkap halaman mandiri ---- */
+.brand-mark{display:block;flex:0 0 auto;width:44px;height:44px;color:var(--text)}
+.brand-mark svg{width:100%;height:100%;display:block}
+.side-head .brand-mark{width:38px;height:38px}
+.icon-btn{border:1px solid var(--border);background:var(--card);color:var(--text);width:38px;height:34px;border-radius:9px;display:inline-grid;place-items:center;cursor:pointer;padding:0}
+.icon-btn:hover{border-color:var(--border-strong)}
+.icon-btn svg{width:18px;height:18px}
+.theme-ico-moon{display:none}
+:root[data-theme="light"] .theme-ico-sun{display:none}
+:root[data-theme="light"] .theme-ico-moon{display:block}
+.login-wrap{position:relative}
+
+</style>
+<style>
+.mod-ov{position:fixed;inset:0;z-index:300;background:rgba(5,9,18,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px}
+.mod-dlg{width:100%;max-width:460px;background:var(--card,#121a2b);color:var(--text,#e8edf5);border:1px solid var(--border-strong,rgba(45,212,191,.38));border-radius:16px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.mod-dlg h3{margin:0 0 6px;font-size:18px}
+.mod-sub{margin:0 0 14px;color:var(--muted,#8fa0b8);font-size:13px;line-height:1.5;word-break:break-word}
+.mod-dlg label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.mod-dlg textarea{width:100%;box-sizing:border-box;resize:vertical;background:var(--input,#0e1626);color:var(--text,#e8edf5);border:1px solid var(--border,rgba(148,163,184,.25));border-radius:10px;padding:10px 12px;font:inherit}
+.mod-dlg textarea:focus{outline:2px solid var(--accent,#2dd4bf);outline-offset:1px}
+.mod-row{display:flex;justify-content:space-between;gap:10px;margin-top:6px;min-height:16px;color:var(--muted,#8fa0b8)}
+.mod-act{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+body.role-pengawas [data-mod-restore]{display:none}
+</style>
 </head>
 <body>
 <section class="login-wrap" id="loginView">
@@ -19,19 +190,19 @@
   <div class="login-card">
     <div class="logo">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="97 -26 482 752" role="img" aria-label="NEOTHRONE" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M137,170 L243,170 L434,373 L434,262 L539,340 L539,547 L434,547 L243,345 L243,427 L137,370 Z"/><g fill="#98E81F"><path d="M482,122 V22 a8,8 0 0 1 16,0 V122 Z"/><path d="M442,112 a16,16 0 0 1 16,-16 H522 a16,16 0 0 1 16,16 V325 L442,254 Z"/></g><g fill="#E63B38"><path d="M178,590 V678 a8,8 0 0 0 16,0 V590 Z"/><path d="M138,384.5 L234,436.2 V588 a16,16 0 0 1 -16,16 H154 a16,16 0 0 1 -16,-16 Z"/></g></svg></span>
-      <div><div class="brand">NEOTHRONE</div><div class="sub">MODERATOR</div></div>
+      <div><div class="brand">NEOTHRONE</div><div class="sub">MODERATOR CONSOLE</div></div>
     </div>
-    <div class="eyebrow">Khusus moderator</div>
+    <div class="eyebrow">Restricted access</div>
     <h1>Masuk Moderator</h1>
-    <p>Verifikasi akun member dan pantau aktivitas lisensi, statistik, serta pengunjung website.</p>
+    <p>Kelola akun MT5, konfirmasi user, dan broadcast pesan untuk member.</p>
     <form id="loginForm">
       <div class="field"><label for="username">Email moderator</label><input id="username" name="email" type="email" autocomplete="username" required placeholder="Masukkan email Supabase"></div>
       <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password"></div>
       <button class="primary" type="submit">Masuk ke Dashboard</button>
       <div class="error" id="loginError" role="status"></div>
     </form>
-    <div class="note">Halaman ini hanya untuk <b>admin verifikasi</b> dan <b>admin pengawas</b>. Hak akses diperiksa di database Supabase.</div>
-    <a class="back" href="index.html">← Kembali ke website</a> &nbsp;·&nbsp; <a class="back" href="useradmin.html">Admin utama? Buka Admin Console</a>
+    <div class="note">Hanya akun moderator (atau admin utama) yang bisa masuk. Hak akses diperiksa di database Supabase.</div>
+    <a class="back" href="index.html">← Kembali ke website</a>
   </div>
 </section>
 
@@ -39,128 +210,55 @@
   <aside class="sidebar">
     <div class="side-head">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="97 -26 482 752" role="img" aria-label="NEOTHRONE" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M137,170 L243,170 L434,373 L434,262 L539,340 L539,547 L434,547 L243,345 L243,427 L137,370 Z"/><g fill="#98E81F"><path d="M482,122 V22 a8,8 0 0 1 16,0 V122 Z"/><path d="M442,112 a16,16 0 0 1 16,-16 H522 a16,16 0 0 1 16,16 V325 L442,254 Z"/></g><g fill="#E63B38"><path d="M178,590 V678 a8,8 0 0 0 16,0 V590 Z"/><path d="M138,384.5 L234,436.2 V588 a16,16 0 0 1 -16,16 H154 a16,16 0 0 1 -16,-16 Z"/></g></svg></span>
-      <div><div class="brand">NEOTHRONE</div><div class="sub">MODERATOR</div></div>
+      <div><div class="brand">NEOTHRONE</div><div class="sub">MODERATOR CONSOLE</div></div>
     </div>
-    <div>
-      <div class="nav-label">OVERVIEW</div>
-      <nav class="side-nav">
-        <button class="active" data-page="overview"><span class="ico">▦</span> Dashboard</button>
-        <button data-page="trade-entries"><span class="ico">📊</span> Statistik Entry Posisi</button>
-        <button data-page="analytics"><span class="ico">▥</span> Statistik Pengguna</button>
-      </nav>
-    </div>
-    <div><div class="nav-label">LICENSE & CLIENT</div><nav class="side-nav">
-      <button data-page="licenses"><span class="ico">◇</span> Akun MT5</button>
-      <button data-page="ib"><span class="ico">✓</span> Verifikasi IB</button>
-      <button data-page="history"><span class="ico">◷</span> Riwayat Lisensi</button>
-      <!-- Menu Konfirmasi User Auth (Diletakkan di bawah Riwayat Lisensi) -->
+    <div><div class="nav-label">LICENSE &amp; CLIENT</div><nav class="side-nav">
+      <button class="active" data-page="licenses"><span class="ico">◇</span> Akun MT5</button>
       <button data-page="auth-users"><span class="ico">👤</span> Konfirmasi User Auth</button>
-      <button data-page="visitor-history"><span class="ico">👁</span> Riwayat Pengunjung</button>
     </nav></div>
-    <div class="side-bottom"><button class="btn" id="logoutBtn" style="width:100%">Keluar</button></div>
+    <div><div class="nav-label">KOMUNIKASI</div><nav class="side-nav">
+      <button data-page="broadcast"><span class="ico">✉</span> Broadcast Pesan</button>
+    </nav></div>
+    <div class="side-bottom"><a class="btn" id="ownerLink" href="useradmin.html" style="width:100%;display:none;text-align:center;margin-bottom:8px">Buka Admin Console</a><button class="btn" id="logoutBtn" style="width:100%">Keluar</button></div>
   </aside>
   <main class="main">
     <header class="topline">
-      <div><h1 id="pageTitle">Dashboard</h1><p id="roleHint" style="margin:4px 0 0;color:var(--gold);font-size:12px;font-weight:600"></p><p id="pageDesc">Ringkasan aktivitas lisensi dan akun member NEOTHRONE.</p></div>
+      <div><h1 id="pageTitle">Akun MT5</h1><p id="pageDesc">Verifikasi, blokir, atau hapus akun MT5 member.</p></div>
       <div class="topline-r"><button class="icon-btn" type="button" data-theme-toggle aria-label="Ganti mode terang / gelap"><svg class="theme-ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg><svg class="theme-ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg></button><span class="pill" id="rolePill">● Moderator</span></div>
     </header>
 
-    <section class="page" id="page-overview">
-      <div class="grid">
-        <article class="stat"><div class="label">Total Akun Terdaftar</div><div class="num" id="stTotal">—</div><small>Semua akun yang didaftarkan member</small></article>
-        <article class="stat"><div class="label">Lisensi Aktif</div><div class="num" id="stActive" style="color:#00e0b2">—</div><small>Sudah diverifikasi admin</small></article>
-        <article class="stat"><div class="label">Pengajuan Pending</div><div class="num" id="stPending" style="color:#ffc24b">—</div><small>Menunggu verifikasi IB</small></article>
-        <article class="stat"><div class="label">Ping WebRequest Hari Ini</div><div class="num" style="color:#08d8ed">—</div><small>Data belum dimuat</small></article>
+    <section class="page" id="page-licenses">
+      <div class="grid" style="margin-bottom:16px">
+        <article class="stat"><div class="label">Total Akun</div><div class="num" id="stTotal">—</div><small>Semua akun yang didaftarkan member</small></article>
+        <article class="stat"><div class="label">Lisensi Aktif</div><div class="num" id="stActive" style="color:var(--teal)">—</div><small>Sudah diverifikasi</small></article>
+        <article class="stat"><div class="label">Menunggu</div><div class="num" id="stPending" style="color:var(--amber)">—</div><small>Perlu diverifikasi</small></article>
+        <article class="stat"><div class="label">Diblokir</div><div class="num" id="stBlocked" style="color:var(--red)">—</div><small>Ada di Kotak Blokir/Hapus</small></article>
       </div>
-      <section class="panel">
-        <div class="panel-head"><h2>Statistik Pengguna</h2><button class="btn" data-action="refresh">Muat ulang</button></div>
-        <div class="grid">
-          <article class="stat"><div class="label">Pengguna aktif mingguan</div><div class="num" id="ovWeekly">—</div><small>Berbasis aktivitas EA yang tercatat</small></article>
-          <article class="stat"><div class="label">Pengguna aktif bulanan</div><div class="num" id="ovMonthly">—</div><small>30 hari terakhir</small></article>
-          <article class="stat"><div class="label">Pair terakhir</div><div class="num" id="ovPairs">—</div><small>Pair terakhir yang dilaporkan</small></article>
-          <article class="stat"><div class="label">Pengguna terpantau</div><div class="num" id="ovTrades">—</div><small>Pengguna dengan ringkasan trading</small></article>
-        </div>
-      </section>
-      <div class="two">
-        <section class="panel"><div class="panel-head"><h2>Aktivitas Terbaru</h2><button class="btn" data-goto="history">Lihat riwayat</button></div><div class="placeholder">Aktivitas lisensi dan admin akan tampil di sini setelah API backend terhubung.</div></section>
-        <section class="panel"><div class="panel-head"><h2>Status Sistem</h2></div><div class="placeholder">API lisensi: belum dikonfigurasi<br>Database: belum dikonfigurasi<br>Autentikasi: belum dikonfigurasi</div></section>
+      <div class="tabs"><button class="on" data-modtab="lic:accounts">Kelola Akun MT5</button><button data-modtab="lic:box">Kotak Blokir/Hapus</button></div>
+      <div id="licTabAccounts">
+        <section class="panel"><div class="panel-head"><h2>Daftar Akun MT5</h2><button class="btn" id="licRefresh" type="button">Muat ulang</button></div>
+          <div class="toolbar"><input id="licSearch" placeholder="Cari nomor akun / email / username" aria-label="Cari akun, email, username"><select id="licFilter" aria-label="Filter status"><option value="">Semua status</option><option value="active">Active</option><option value="pending">Pending</option><option value="rejected">Rejected</option><option value="expired">Expired</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>Nomor Akun</th><th>Email User</th><th>Username / Display Name</th><th>Broker / IP</th><th>Status</th><th>Didaftarkan</th><th>Aksi</th></tr></thead><tbody id="licBody"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div>
+          <div class="notice"><b>Blokir</b> dan <b>Hapus</b> wajib disertai alasan. Akun yang diblokir atau dihapus pindah ke tab <b>Kotak Blokir/Hapus</b>.</div>
+        </section>
       </div>
-      <div class="notice">Tampilan dashboard ini adalah kerangka UI. Data dan aksi sensitif harus berasal dari API server yang memeriksa sesi admin dan hak akses pada setiap permintaan.</div>
+      <div id="licTabBox" class="hidden"><section class="panel">
+          <div class="panel-head"><h2>Kotak Blokir / Hapus — Akun MT5</h2><span id="boxMt5Count" style="color:var(--muted,#7991ab);font-size:13px"></span></div>
+          <p class="placeholder" style="margin-bottom:14px">Akun yang diblokir atau dihapus dipindahkan ke sini beserta alasan dan pelaksananya, supaya daftar utama tetap bersih.</p>
+          <div class="toolbar" style="margin-bottom:14px"><input id="boxMt5Search" type="search" placeholder="Cari akun / email / alasan / pelaksana" aria-label="Cari di kotak"></div>
+          <div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Akun MT5</th><th>Email User</th><th>Tindakan</th><th>Alasan</th><th>Oleh</th><th>Status kini</th><th>Aksi</th></tr></thead><tbody id="boxMt5Body"><tr><td colspan="8">Memuat catatan...</td></tr></tbody></table></div>
+        </section></div>
     </section>
 
-    <section class="page hidden" id="page-trade-entries">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Statistik Entry Posisi & Riwayat Trading MT5</h2>
-          <button class="btn teal" data-action="refresh-trades">Muat Ulang Data</button>
-        </div>
-        
-        <!-- Opsi Filter di Setiap Menu / Kolom -->
-        <div class="toolbar" style="margin-bottom: 14px;">
-          <input id="filterAccount" placeholder="Filter ID / Nama Akun..." aria-label="Filter Akun">
-          <input id="filterSymbol" placeholder="Filter Symbol Pair (e.g. XAUUSD)..." aria-label="Filter Pair">
-          <select id="filterType" aria-label="Filter Tipe">
-            <option value="">Semua Tipe (Buy/Sell)</option>
-            <option value="BUY">BUY</option>
-            <option value="SELL">SELL</option>
-          </select>
-          <select id="filterStatus" aria-label="Filter Status Posisi">
-            <option value="">Semua Status (Floating/Closed)</option>
-            <option value="FLOATING">Floating</option>
-            <option value="CLOSED">Closed</option>
-          </select>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID Akun MT5</th>
-                <th>Nama Akun (Navigator)</th>
-                <th>Symbol Pair</th>
-                <th>Tiket</th>
-                <th>Tipe</th>
-                <th>Volume</th>
-                <th>Time (Waktu Open)</th>
-                <th>Profit ($)</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="tradeEntriesBody">
-              <tr><td colspan="9">Memuat data posisi...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </section>
-
-    <section class="page hidden" id="page-analytics">
-      <section class="panel">
-        <div class="panel-head"><h2>Ringkasan Performa Trading Pengguna</h2><button class="btn" data-action="refresh">Muat ulang</button></div>
-        <div class="toolbar" style="margin-bottom:14px">
-          <input id="tradeSearch" placeholder="Cari akun / nama pengguna / pair" aria-label="Cari ringkasan trading">
-          <select id="tradePeriod" aria-label="Periode ringkasan"><option value="all">Semua data</option><option value="7d">Diperbarui 7 hari terakhir</option><option value="30d" selected>Diperbarui 30 hari terakhir</option><option value="month">Bulan ini</option></select>
-        </div>
-        <div class="grid">
-          <article class="stat"><div class="label">Pengguna terpantau</div><div class="num" id="trOpen">—</div></article>
-          <article class="stat"><div class="label">Total profit tersimpan</div><div class="num" id="trClosed">—</div></article>
-          <article class="stat"><div class="label">Profit bulan ini (nilai sumber)</div><div class="num" id="trProfit">—</div></article>
-          <article class="stat"><div class="label">Rata-rata win rate</div><div class="num" id="trWinRate">—</div></article>
-        </div>
-        <div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Akun MT5</th><th>Nama Akun</th><th>Total Profit</th><th>Profit Bulanan</th><th>Win Rate</th><th>Posisi Entry Terakhir</th><th>Pair Terakhir</th><th>Profit Entry Terakhir</th><th>Terakhir Diperbarui</th></tr></thead><tbody id="tradeBody"><tr><td colspan="9">Memuat data performa...</td></tr></tbody></table></div>
-        <p id="tradeMessage" class="placeholder" style="margin-top:14px">Data ini berasal dari tabel trading_stats dan merupakan ringkasan performa, bukan riwayat setiap transaksi.</p>
-      </section>
-    </section>
-
-        <!-- Menu Baru: Konfirmasi User Auth -->
-    <section class="page hidden" id="page-auth-users">
-      <section class="panel">
+<section class="page hidden" id="page-auth-users">
+      <div class="tabs"><button class="on" data-modtab="au:list">Daftar User</button><button data-modtab="au:box">Kotak Blokir/Hapus</button></div>
+      <section class="panel" id="auTabList">
         <div class="panel-head">
           <h2>Konfirmasi & Manajemen User Auth</h2>
           <button class="btn teal" data-action="refresh-auth-users">Muat Ulang User</button>
         </div>
         <p class="placeholder" style="margin-bottom: 14px;">Kelola akun member yang mendaftar. <b>Aktifkan</b> mengonfirmasi email secara manual (berguna jika tautan kedaluwarsa), <b>Tolak</b> menolak pendaftaran, <b>Blokir</b> mencegah user login dan menonaktifkan lisensinya, <b>Hapus</b> menghapus akun permanen.</p>
-        <div class="toolbar" style="margin-bottom:14px;"><input id="authUserSearch" type="search" placeholder="Filter email / username / display name" aria-label="Filter user auth"><select id="authStatusFilter" aria-label="Filter status user"><option value="">Semua status</option><option value="pending">Menunggu</option><option value="active">Aktif</option><option value="rejected">Ditolak</option><option value="blocked">Diblokir</option></select></div>
+        <div class="toolbar" style="margin-bottom:14px;"><input id="authUserSearch" type="search" placeholder="Filter email / username / display name" aria-label="Filter user auth"><select id="authStatusFilter" aria-label="Filter status user"><option value="">Semua status</option><option value="pending">Menunggu</option><option value="active">Aktif</option><option value="rejected">Ditolak</option></select></div>
         <div class="table-wrap">
           <table>
             <thead>
@@ -179,157 +277,45 @@
           </table>
         </div>
       </section>
+    <div id="auTabBox" class="hidden"><section class="panel">
+          <div class="panel-head"><h2>Kotak Blokir / Hapus — User Auth</h2><span id="boxUserCount" style="color:var(--muted,#7991ab);font-size:13px"></span></div>
+          <p class="placeholder" style="margin-bottom:14px">Akun yang diblokir atau dihapus dipindahkan ke sini beserta alasan dan pelaksananya, supaya daftar utama tetap bersih.</p>
+          <div class="toolbar" style="margin-bottom:14px"><input id="boxUserSearch" type="search" placeholder="Cari email / nama / alasan / pelaksana" aria-label="Cari di kotak"></div>
+          <div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Email</th><th>Nama</th><th>Tindakan</th><th>Alasan</th><th>Oleh</th><th>Status kini</th><th>Aksi</th></tr></thead><tbody id="boxUserBody"><tr><td colspan="8">Memuat catatan...</td></tr></tbody></table></div>
+        </section></div>
     </section>
 
     <!-- Menu Riwayat Pengunjung -->
-    <section class="page hidden" id="page-visitor-history">
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Riwayat &amp; Identitas Pengunjung Web</h2>
-          <div class="toolbar"><button class="btn" type="button" id="visExport">Ekspor CSV</button><button class="btn teal" data-action="refresh-visitors">Muat Ulang Data</button></div>
+
+        <section class="page hidden" id="page-broadcast"><section class="panel">
+      <div class="panel-head"><h2>Kirim pesan ke seluruh member portal</h2></div>
+      <form id="bcForm">
+        <div class="form-grid">
+          <div class="field" style="margin-top:0"><label>Tipe pesan<select name="kind"><option value="info">Info</option><option value="penting">Penting</option><option value="maintenance">Maintenance</option></select></label></div>
+          <div class="field" style="margin-top:0"><label>Berlaku sampai (opsional)<input type="date" name="expires_at"></label></div>
         </div>
-        <div class="grid auto" style="margin-bottom:18px;">
-          <article class="stat"><div class="label">Pengunjung Unik</div><div class="num mono" id="visPageviews">0</div><small id="visPageviewsSub">Orang / perangkat berbeda</small></article>
-          <article class="stat"><div class="label">Member (sudah login)</div><div class="num mono" id="visMembers" style="color:var(--teal)">0</div><small>Nama &amp; email diketahui</small></article>
-          <article class="stat"><div class="label">Tamu (belum login)</div><div class="num mono" id="visGuests" style="color:var(--gold)">0</div><small>Dikenali dari ID perangkat</small></article>
-          <article class="stat"><div class="label">Durasi Kunjungan Rata-Rata</div><div class="num mono" id="visAvgDuration">0m 0s</div><small>Session Duration</small></article>
-          <article class="stat"><div class="label">Bounce Rate</div><div class="num mono" id="visBounceRate" style="color:var(--amber)">0%</div><small>Kunjungan tanpa interaksi</small></article>
-          <article class="stat"><div class="label">Total Interaksi / Klik</div><div class="num mono" id="visClicks">0</div><small>Clicks &amp; Events</small></article>
-        </div>
-
-        <div class="toolbar" style="margin-bottom:14px">
-          <input id="visSearch" type="search" placeholder="Cari nama, email, akun MT5, IP, perangkat, halaman" aria-label="Cari pengunjung" style="min-width:290px">
-          <select id="visWho" aria-label="Filter jenis pengunjung"><option value="">Semua pengunjung</option><option value="member">Member (sudah login)</option><option value="guest">Tamu (belum login)</option></select>
-          <select id="visType" aria-label="Filter tipe device"><option value="">Semua perangkat</option><option>Mobile</option><option>Tablet</option><option>Desktop</option><option>Bot</option><option>Tidak diketahui</option></select>
-          <select id="visRange" aria-label="Rentang waktu"><option value="today">Hari ini</option><option value="7d">7 hari terakhir</option><option value="30d">30 hari terakhir</option><option value="all" selected>Semua waktu</option></select>
-          <select id="visSort" aria-label="Urutkan"><option value="last">Terakhir dilihat</option><option value="visits">Kunjungan terbanyak</option><option value="dur">Durasi terlama</option></select>
-          <span id="visTypeSummary" style="align-self:center;color:var(--muted);font-size:12px"></span>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Pengunjung</th><th>Perangkat</th><th>OS / Browser</th><th>IP terakhir</th><th>Pertama dilihat</th><th>Terakhir dilihat</th><th>Kunjungan</th><th>Total durasi</th><th>Total klik</th><th>Halaman terbanyak</th><th>Detail</th></tr></thead>
-            <tbody id="visitorLogsBody"><tr><td colspan="11">Belum ada riwayat pengunjung yang tercatat.</td></tr></tbody>
-          </table>
-        </div>
-        <div class="notice">Member dikenali dari akun yang login (nama &amp; email dibaca server dari sesi login, bukan dari browser). Tamu dikenali dari <b>ID perangkat</b> yang tersimpan di browser; bila tamu itu kemudian login dari perangkat yang sama, kunjungan lamanya otomatis digabung ke member tersebut. Butuh <b>sql/neothrone_update.sql</b> agar nama, email, asal kunjungan, dan zona waktu terisi; data lama tetap tampil sebagai &ldquo;Tamu (data lama)&rdquo;.</div>
-      </section>
-    </section>
-
-    <section class="page hidden" id="page-licenses">
-      <div class="tabs"><button class="on" data-tab="accounts">Kelola Akun MT5</button><button data-tab="usage">Riwayat Penggunaan EA</button></div>
-
-      <div id="licTabAccounts">
-        <section class="panel"><div class="panel-head"><h2>Daftar Akun MT5</h2></div>
-          <div class="toolbar"><input id="licSearch" placeholder="Cari nomor akun / email / username" aria-label="Cari akun, email, username"><select id="licFilter" aria-label="Filter status"><option value="">Semua status</option><option value="active">Active</option><option value="pending">Pending</option><option value="rejected">Rejected</option><option value="blocked">Blocked</option></select><button class="btn" data-action="refresh">Muat ulang</button></div>
-          <div class="table-wrap"><table><thead><tr><th>Nomor Akun</th><th>Email User</th><th>Username / Display Name</th><th>Broker / IB</th><th>Status</th><th>Profit</th><th>Terakhir Aktif</th><th>EA Pair Setting</th><th>Aksi</th></tr></thead><tbody id="licBody"><tr><td colspan="9">Memuat data...</td></tr></tbody></table></div>
-        </section>
-      </div>
-
-      <div id="licTabUsage" class="hidden">
-        <section class="panel">
-          <div class="panel-head"><h2>Riwayat Penggunaan EA</h2><button class="btn teal" id="eaUsageRefresh" type="button">Muat Ulang Data</button></div>
-          <div class="grid" style="margin-bottom:16px">
-            <article class="stat"><div class="label">Event 24 jam terakhir</div><div class="num" id="eaStEvents">—</div><small>Start, heartbeat, stop, cek lisensi</small></article>
-            <article class="stat"><div class="label">Akun aktif 24 jam</div><div class="num" id="eaStAccounts" style="color:var(--teal)">—</div><small>Akun MT5 yang memakai EA</small></article>
-            <article class="stat"><div class="label">Ditolak / Error 24 jam</div><div class="num" id="eaStDenied" style="color:var(--red)">—</div><small>Lisensi ditolak atau EA error</small></article>
-            <article class="stat"><div class="label">Versi EA terakhir terlihat</div><div class="num" id="eaStVersion" style="color:var(--cyan)">—</div><small>Dari log terbaru</small></article>
-          </div>
-          <div class="toolbar" style="margin-bottom:14px">
-            <input id="eaUsageSearch" placeholder="Cari akun / nama / pair / versi..." aria-label="Cari riwayat EA">
-            <select id="eaUsageEvent" aria-label="Filter event"><option value="">Semua event</option><option value="start">Start</option><option value="heartbeat">Heartbeat</option><option value="stop">Stop</option><option value="license_check">Cek lisensi</option><option value="denied">Ditolak</option><option value="error">Error</option></select>
-          </div>
-          <div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Akun MT5</th><th>Nama Akun</th><th>Event</th><th>Versi EA</th><th>Pair / TF</th><th>Hasil</th><th>Keterangan</th></tr></thead><tbody id="eaUsageBody"><tr><td colspan="8">Memuat riwayat penggunaan EA...</td></tr></tbody></table></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="page hidden" id="page-ib"><section class="panel"><div class="panel-head"><h2>Verifikasi IB</h2><button class="btn" data-action="refresh">Muat pengajuan</button></div><div class="table-wrap"><table><thead><tr><th>Nomor Akun</th><th>Client</th><th>Broker</th><th>Dikirim</th><th>Aksi</th></tr></thead><tbody id="ibBody"><tr><td colspan="5">Memuat data...</td></tr></tbody></table></div></section></section>
-    <section class="page hidden" id="page-history"><section class="panel">
-      <div class="panel-head"><h2>Riwayat Aktivitas Lisensi</h2><button class="btn" data-action="export">Ekspor CSV</button></div>
-      <div class="toolbar"><input id="lhSearch" placeholder="Cari akun / email / broker / admin" aria-label="Cari riwayat lisensi"><select id="lhAction" aria-label="Filter aksi"><option value="">Semua aksi</option><option value="dibuat">Dibuat</option><option value="status_diubah">Status diubah</option><option value="diubah">Data diubah</option><option value="dihapus">Dihapus</option><option value="tercatat">Data awal</option></select><button class="btn" id="lhRefresh" type="button">Muat ulang</button></div>
-      <div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Akun MT5</th><th>Email klien</th><th>Broker</th><th>Aksi</th><th>Perubahan</th><th>Oleh</th></tr></thead><tbody id="lhBody"><tr><td colspan="7">Memuat riwayat...</td></tr></tbody></table></div>
-      <div class="notice">Riwayat dicatat otomatis oleh database setiap kali lisensi dibuat, diubah statusnya, diubah datanya, atau dihapus, lengkap dengan identitas admin yang melakukannya.</div>
+        <div class="field" style="margin-top:0"><label>Judul<input name="title" required maxlength="120"></label></div>
+        <div class="field"><label>Isi pesan<textarea name="body" rows="4" required maxlength="1500"></textarea></label></div>
+        <button class="btn teal" type="submit">Kirim ke semua member</button>
+      </form>
+      <h3 style="margin:22px 0 10px;font-size:14px">Pesan terkirim</h3>
+      <div class="table-wrap"><table><thead><tr><th>Pesan</th><th>Tipe</th><th>Dikirim</th><th>Berakhir</th><th>Dibaca</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="bcBody"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div>
+      <div class="notice">Pesan langsung diterima member yang sedang membuka portal (lewat Supabase Realtime). Member yang sedang offline melihat notifikasinya saat login ke portal. Portal harus membaca tabel <b>broadcast_messages</b>. Ini bukan email atau notifikasi push ke HP. Menarik pesan menyembunyikannya dari portal, sedangkan menghapus menghilangkannya beserta data pembacanya.</div>
     </section></section>
-
-      </main>
+  </main>
 </section>
 
-<!-- Supabase JS client -->
-<script src="assets/config.js"></script>
+<script>
+/* Konfigurasi Supabase (sama dengan halaman lain). Ganti kedua nilai ini bila memakai project baru. */
+window.NT_CONFIG = { url: 'https://nzrjskgbcnbmilvzrqqr.supabase.co/', key: 'sb_publishable_IzCPxJIzOLxVwqz4ZYWD6Q_Yd-aXqe-' };
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/neothrone.js"></script>
 <script>
 const SUPABASE_URL = NT_CONFIG.url;
 const SUPABASE_PUBLISHABLE_KEY = NT_CONFIG.key;
 const supabaseClient = window.supabase?.createClient
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-    })
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } })
   : null;
-
-const TRADING_STATS_TABLE = 'trading_stats';
-
-const loginForm = document.getElementById('loginForm');
-const loginError = document.getElementById('loginError');
-
-loginForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  loginError.textContent = 'Memeriksa akun...';
-  if (!supabaseClient) { loginError.textContent = 'Supabase JS gagal dimuat. Periksa koneksi internet atau CDN.'; return; }
-  const email = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value;
-
-  if (SUPABASE_URL.includes('PASTE_') || SUPABASE_PUBLISHABLE_KEY.includes('PASTE_')) {
-    loginError.textContent = 'Konfigurasi Supabase belum diisi.';
-    return;
-  }
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error || !data.user) {
-    loginError.textContent = error ? `Login gagal: ${error.message}` : 'Login gagal. Periksa email dan password.';
-    return;
-  }
-
-  if (!(await gateModerator())) return;
-  loginError.textContent = '';
-});
-
-const titles = {
- overview:['Dashboard','Ringkasan aktivitas lisensi dan akun member NEOTHRONE.'],
- 'trade-entries':['Statistik Entry Posisi','Pantau posisi trading real-time dan riwayat entry MT5.'],
- analytics:['Statistik Pengguna','Pantau ringkasan performa trading pengguna.'],
- 'visitor-history':['Riwayat Pengunjung','Pantau lalu lintas pengunjung, durasi sesi, dan interaksi halaman.'],
- 'auth-users':['Konfirmasi User Auth','Aktifkan, tolak, blokir, atau hapus akun member.'],
- licenses:['Akun MT5','Kelola akun MT5 member dan pantau riwayat penggunaan EA.'],
- ib:['Verifikasi IB','Periksa bukti dan setujui pendaftaran IB klien.'],
- history:['Riwayat Lisensi','Audit perubahan lisensi beserta admin yang melakukannya.'],
-};
-
-let currentPage = 'overview';
-function showPage(name){
-  if (typeof ROLE_PAGES !== 'undefined' && ROLE_PAGES[myRole] && !ROLE_PAGES[myRole].includes(name)) name = 'overview';
-  currentPage=name;
-  document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));
-  const page=document.getElementById('page-'+name);
-  if(page) page.classList.remove('hidden');
-  document.querySelectorAll('[data-page]').forEach(btn=>btn.classList.toggle('active',btn.dataset.page===name));
-  document.getElementById('pageTitle').textContent=titles[name]?.[0]||'Dashboard';
-  document.getElementById('pageDesc').textContent=titles[name]?.[1]||'';
-
-  if (name === 'trade-entries') {
-    loadTradeEntries();
-  } else if (name === 'visitor-history') {
-    loadVisitorLogs();
-  } else if (name === 'auth-users') {
-    loadAuthUsers();
-  } else if (name === 'licenses') {
-    loadEaUsage();
-  } else if (name === 'history') {
-    loadLicenseHistory();
-  }
-}
-document.querySelectorAll('[data-page]').forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.page)));
-document.querySelectorAll('[data-goto]').forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.goto)));
 
 function formatOpenTime(dateStr) {
   if (!dateStr) return '-';
@@ -359,467 +345,148 @@ let authUserCache = [];
 const clientCell = r => `${esc(r.client_name || r.client_email || r.user_id || '-')}<br><small style="color:#7991ab">${esc(r.client_email || '')}</small>`;
 const fmtDate = d => d ? new Date(d).toLocaleString('id-ID') : '-';
 
-// Izin fitur EA Pair Setting (sub menu di portal member) per akun lisensi: licenses.form_access
-function formAccCell(r){
-  if (r.form_access === undefined) return '<span style="color:#7991ab" title="Kolom licenses.form_access belum ada / tidak terbaca">-</span>';
-  const on = r.form_access === true;
-  return `<span class="status ${on ? 'active' : 'pending'}">${on ? 'Diizinkan' : 'Tidak'}</span><br>`
-       ;
+
+const maskAcc = a => { a = String(a ?? ''); return a.length > 4 ? a.slice(0, 4) + '••••' : a; };
+const dt = v => v ? formatOpenTime(v) : '—';
+const fmtDur = s => { s = Math.round(Number(s) || 0); return `${Math.floor(s / 60)}m ${s % 60}s`; };
+const flagBadge = (v, on, off) => `<span class="status ${v ? 'active' : 'pending'}">${on && v ? on : (off && !v ? off : '')}</span>`;
+const KIND_CLS = { info:'expired', penting:'pending', warning:'pending', maintenance:'blocked' };
+const SOFT = 'color:#7991ab;white-space:normal';
+let myUserId = null, myRole = 'verifikasi';
+const ROLE_LABEL = { utama: 'Admin utama', verifikasi: 'Moderator', pengawas: 'Pengawas (hanya lihat)' };
+const canAct = () => myRole !== 'pengawas';
+const PAGES_BY_ROLE = { utama: ['licenses', 'auth-users', 'broadcast'], verifikasi: ['licenses', 'auth-users', 'broadcast'], pengawas: ['licenses'] };
+
+// ---------- Login ----------
+const loginForm = document.getElementById('loginForm'), loginError = document.getElementById('loginError');
+loginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  loginError.textContent = 'Memeriksa akun...';
+  if (!supabaseClient) { loginError.textContent = 'Supabase JS gagal dimuat. Periksa koneksi internet atau CDN.'; return; }
+  const email = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error || !data.user) { loginError.textContent = error ? 'Login gagal: ' + error.message : 'Login gagal. Periksa email dan password.'; return; }
+  if (await enterModerator()) loginError.textContent = '';
+  else loginError.textContent = 'Akun ini tidak memiliki hak moderator.';
+});
+
+async function enterModerator() {
+  const { data: isAdmin, error } = await supabaseClient.rpc('is_kingtherious_admin');
+  if (error || isAdmin !== true) { await supabaseClient.auth.signOut(); return false; }
+  const rr = await supabaseClient.rpc('admin_my_role');
+  myRole = (!rr.error && rr.data) ? rr.data : 'utama';   // fungsi belum ada = pemilik
+  if (!PAGES_BY_ROLE[myRole]) { await supabaseClient.auth.signOut(); return false; }
+  const sess = await supabaseClient.auth.getSession();
+  myUserId = sess.data?.session?.user?.id || null;
+  $('loginView').style.display = 'none'; $('adminShell').style.display = 'block';
+  document.body.classList.toggle('role-pengawas', !canAct());
+  const allowed = PAGES_BY_ROLE[myRole];
+  document.querySelectorAll('[data-page]').forEach(b => { b.style.display = allowed.includes(b.dataset.page) ? '' : 'none'; });
+  document.querySelectorAll('.sidebar .nav-label').forEach(l => { const g = l.parentElement; g.style.display = [...g.querySelectorAll('[data-page]')].some(b => b.style.display !== 'none') ? '' : 'none'; });
+  const pill = $('rolePill'); if (pill) pill.textContent = '● ' + (ROLE_LABEL[myRole] || 'Moderator');
+  if (myRole === 'utama') $('ownerLink').style.display = 'block';
+  await loadModLog();
+  loadLicenses();
+  showPage('licenses');
+  return true;
 }
+(async () => {
+  if (!supabaseClient) return;
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session) await enterModerator();
+})();
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+  document.getElementById('adminShell').style.display = 'none';
+  document.getElementById('loginView').style.display = 'grid';
+});
 
-function render(){
-  const q = $('licSearch').value.trim().toLowerCase(), f =$('licFilter').value;
-  const list = rows.filter(r => (!f || r.status === f) && (!q || [r.account_number, r.client_name, r.client_email, r.username, r.display_name, r.user_id].join(' ').toLowerCase().includes(q)));
-  $('licBody').innerHTML = list.length ? list.map(r => { const acc = r.account_number || r.account_id || '-'; return `<tr><td>${esc(acc)}</td><td>${esc(r.client_email || '-')}</td><td>${esc(r.username || r.display_name || r.client_name || '-')}</td><td>${esc(r.broker || '-')} (${esc(r.platform || 'MT5')})</td><td>${badge(r.status)}</td><td>${esc(statProfit(accStat(acc)?.total_profit))}</td><td>${esc(eaLastSeenText(acc))}</td><td>${formAccCell(r)}</td>
-    <td><button class="btn teal" data-id="${esc(r.id)}" data-set="active">Aktifkan</button> <button class="btn" data-id="${esc(r.id)}" data-set="rejected">Tolak</button></td></tr>`; }).join('')
-    : '<tr><td colspan="9">Tidak ada akun yang cocok.</td></tr>';
+// ---------- Navigasi ----------
+const titles = {
+  licenses: ['Akun MT5', 'Verifikasi, blokir, atau hapus akun MT5 member.'],
+  'auth-users': ['Konfirmasi User Auth', 'Aktifkan, tolak, blokir, atau hapus akun member.'],
+  broadcast: ['Broadcast Pesan', 'Kirim pesan langsung ke seluruh member portal.']
+};
+let currentPage = 'licenses';
+function showPage(name) {
+  if (!PAGES_BY_ROLE[myRole].includes(name)) name = 'licenses';
+  currentPage = name;
+  document.querySelectorAll('.page').forEach(el => el.classList.add('hidden'));
+  $('page-' + name)?.classList.remove('hidden');
+  document.querySelectorAll('[data-page]').forEach(btn => btn.classList.toggle('active', btn.dataset.page === name));
+  $('pageTitle').textContent = titles[name][0]; $('pageDesc').textContent = titles[name][1];
+  if (name === 'licenses') loadLicenses();
+  else if (name === 'auth-users') loadAuthUsers();
+  else if (name === 'broadcast') CRUDS.bc.load();
+}
+document.querySelectorAll('[data-page]').forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
 
-  const pend = rows.filter(r => r.status === 'pending');
-  $('ibBody').innerHTML = pend.length ? pend.map(r => `<tr><td>${esc(r.account_number)}</td><td>${clientCell(r)}</td><td>${esc(r.broker)} (${esc(r.platform)})</td><td>${esc(fmtDate(r.created_at))}</td>
-    <td><button class="btn teal" data-id="${esc(r.id)}" data-set="active">Approve</button> <button class="btn danger" data-id="${esc(r.id)}" data-set="rejected">Reject</button></td></tr>`).join('')
-    : '<tr><td colspan="5">Tidak ada pengajuan yang menunggu.</td></tr>';
-
+// ---------- Akun MT5 ----------
+function render() {
+  renderBoxMt5();
+  const q = $('licSearch').value.trim().toLowerCase(), f = $('licFilter').value;
+  const list = rows.filter(r => r.status !== 'blocked' && (!f || r.status === f) && (!q || [r.account_number, r.client_name, r.client_email, r.username, r.display_name, r.user_id].join(' ').toLowerCase().includes(q)));
+  $('licBody').innerHTML = list.length ? list.map(r => {
+    const acc = r.account_number || r.account_id || '-';
+    const act = !canAct() ? '—' : [
+      r.status !== 'active' ? `<button class="btn teal" data-id="${esc(r.id)}" data-set="active">Aktifkan</button>` : '',
+      r.status === 'pending' ? `<button class="btn" data-id="${esc(r.id)}" data-set="rejected">Tolak</button>` : '',
+      `<button class="btn danger" data-id="${esc(r.id)}" data-set="blocked">Blokir</button>`,
+      `<button class="btn danger" data-id="${esc(r.id)}" data-del="1">Hapus</button>`
+    ].filter(Boolean).join(' ');
+    return `<tr><td>${esc(acc)}</td><td>${esc(r.client_email || '-')}</td><td>${esc(r.username || r.display_name || r.client_name || '-')}</td><td>${esc(r.broker || '-')} (${esc(r.platform || 'MT5')})</td><td>${badge(r.status)}</td><td>${esc(fmtDate(r.created_at))}</td><td>${act}</td></tr>`;
+  }).join('') : '<tr><td colspan="7">Tidak ada akun yang cocok.</td></tr>';
   $('stTotal').textContent = rows.length;
   $('stActive').textContent = rows.filter(r => r.status === 'active').length;
-  $('stPending').textContent = pend.length;
+  $('stPending').textContent = rows.filter(r => r.status === 'pending').length;
+  $('stBlocked').textContent = rows.filter(r => r.status === 'blocked').length;
 }
-
-async function loadLicenses(){
+async function loadLicenses() {
   const { data, error } = await supabaseClient.rpc('admin_list_licenses');
-
-  if (error) {
-    const msg = '<tr><td colspan="8">Gagal memuat data: '
-      + esc(error.message) + '</td></tr>';
-    $('licBody').innerHTML = msg;
-    $('ibBody').innerHTML = msg;
-    return;
-  }
-
+  if (error) { $('licBody').innerHTML = '<tr><td colspan="7">Gagal memuat data: ' + esc(error.message) + '</td></tr>'; return; }
   rows = data || [];
-  // form_access dibaca terpisah agar tidak bergantung pada kolom yang dikembalikan RPC admin_list_licenses
-  try {
-    const { data: fa, error: fe } = await supabaseClient.from('licenses').select('id,form_access');
-    if (!fe && fa) {
-      const fm = new Map(fa.map(x => [String(x.id), x.form_access === true]));
-      rows = rows.map(r => ({ ...r, form_access: fm.has(String(r.id)) ? fm.get(String(r.id)) : undefined }));
-    }
-  } catch (_) {}
   try {
     const { data: users } = await supabaseClient.rpc('admin_list_all_users');
     authUserCache = users || [];
     const byId = new Map(authUserCache.map(u => [String(u.id), u]));
-    rows = rows.map(r => { const u = byId.get(String(r.user_id || '')); const meta = u?.raw_user_meta_data || u?.user_metadata || {}; return { ...r, client_email: r.client_email || u?.email || '', username: r.username || meta.username || meta.user_name || '', display_name: r.display_name || meta.display_name || meta.full_name || meta.name || '' }; });
+    rows = rows.map(r => { const u = byId.get(String(r.user_id || '')); const meta = u?.raw_user_meta_data || u?.user_metadata || {};
+      return { ...r, client_email: r.client_email || u?.email || '', username: r.username || meta.username || meta.user_name || '', display_name: r.display_name || meta.display_name || meta.full_name || '' }; });
   } catch (_) {}
   render();
 }
+$('licSearch').addEventListener('input', render); $('licFilter').addEventListener('change', render);
+$('licRefresh').addEventListener('click', async () => { await loadModLog(); loadLicenses(); });
 
-let tradingStats = [];
-const statNumber = v => Number(v ?? 0).toLocaleString('id-ID',{maximumFractionDigits:2});
-const statProfit = v => v === null || v === undefined ? '—' : statNumber(v);
-
-function renderTradingStats(){
-  const q = ($('tradeSearch')?.value || '').trim().toLowerCase();
-  const period = $('tradePeriod')?.value || '30d';
-  const now = new Date();
-  const since = new Date(now);
-  if(period==='7d') since.setDate(since.getDate()-7);
-  else if(period==='30d') since.setDate(since.getDate()-30);
-  else if(period==='month') since.setDate(1);
-  const filtered = tradingStats.filter(r => {
-    const updated = r.updated_at ? new Date(r.updated_at) : null;
-    const text = [r.account_id,r.account_name,r.last_entry_pair,r.entry_position,r.user_id].join(' ').toLowerCase();
-    return (!q || text.includes(q)) && (period==='all' || (updated && !Number.isNaN(updated.getTime()) && updated >= since));
-  });
-  const sumTotal = filtered.reduce((a,r)=>a+Number(r.total_profit||0),0);
-  const sumMonthly = filtered.reduce((a,r)=>a+Number(r.monthly_profit||0),0);
-  const rates = filtered.map(r=>r.win_rate).filter(v=>v!==null && v!==undefined && Number.isFinite(Number(v)));
-  $('trOpen').textContent = filtered.length;
-  $('trClosed').textContent = statProfit(sumTotal);
-  $('trProfit').textContent = statProfit(sumMonthly);$('trWinRate').textContent = rates.length ? `${statNumber(rates.reduce((a,v)=>a+Number(v),0)/rates.length)}%` : '—';
-  $('tradeBody').innerHTML = filtered.length ? filtered.map(r => `<tr>
-    <td>${esc(r.account_id || '-')}</td><td>${esc(r.account_name || '-')}</td>
-    <td>${esc(statProfit(r.total_profit))}</td><td>${esc(statProfit(r.monthly_profit))}</td>
-    <td>${r.win_rate===null || r.win_rate===undefined ? '—' : esc(statNumber(r.win_rate)+'%')}</td>
-    <td>${esc(r.entry_position || '-')}</td><td>${esc(r.last_entry_pair || '-')}</td>
-    <td>${esc(statProfit(r.last_entry_profit))}</td><td>${esc(fmtDate(r.updated_at))}</td></tr>`).join('') : '<tr><td colspan="9">Tidak ada ringkasan trading pada filter ini.</td></tr>';
-  $('ovTrades').textContent = tradingStats.length;
-  const pairs = [...new Set(tradingStats.map(r=>r.last_entry_pair).filter(Boolean))];
-  $('ovPairs').textContent = pairs.length ? pairs.join(', ') : '—';
-  const week = Date.now()-7*86400000, month = Date.now()-30*86400000;
-  $('ovWeekly').textContent = new Set(tradingStats.filter(r=>r.updated_at && new Date(r.updated_at).getTime()>=week).map(r=>r.user_id)).size;
-  $('ovMonthly').textContent = new Set(tradingStats.filter(r=>r.updated_at && new Date(r.updated_at).getTime()>=month).map(r=>r.user_id)).size;
-  if (rows.length) render();
-}
-
-async function loadTradingStats(){
-  if(!supabaseClient) return;
-  $('tradeMessage').textContent = 'Menghubungkan ke tabel trading_stats di Supabase...';
-  const {data,error} = await supabaseClient.from(TRADING_STATS_TABLE)
-    .select('user_id,account_id,account_name,total_profit,monthly_profit,win_rate,entry_position,last_entry_pair,last_entry_profit,updated_at')
-    .order('updated_at',{ascending:false}).limit(2000);
-  if(error){
-    $('tradeBody').innerHTML = `<tr><td colspan="9">Gagal memuat trading_stats: ${esc(error.message)}</td></tr>`;
-    $('tradeMessage').textContent = 'Periksa RLS pada tabel trading_stats dan pastikan akun admin memiliki izin SELECT.';
-    ['ovWeekly','ovMonthly','ovPairs','ovTrades','trOpen','trClosed','trProfit','trWinRate'].forEach(id=>{ if($(id))$(id).textContent='—'; });
-    return;
-  }
-  tradingStats = data || [];
-  renderTradingStats();
-}
-$('tradeSearch')?.addEventListener('input',renderTradingStats);$('tradePeriod')?.addEventListener('change',renderTradingStats);
-
-// Aktifkan / Tolak akun MT5 (hanya admin verifikasi; blokir & hapus = admin utama)
 document.addEventListener('click', async e => {
-  const b = e.target.closest('[data-set]');
-  if (!b) return;
-  if (myRole !== 'verifikasi' || !['active', 'rejected'].includes(b.dataset.set)) return;
-  const row = rows.find(x => String(x.id) === String(b.dataset.id));
-  if (row && row.status === 'blocked') { alert('Akun ini diblokir admin utama. Hanya admin utama yang bisa membukanya.'); return; }
-  const res = await supabaseClient.from('licenses').update({ status: b.dataset.set }).eq('id', b.dataset.id).select();
-  if (res.error || !res.data || !res.data.length) {
-    alert('Gagal: ' + (res.error ? res.error.message : 'tidak ada baris yang berubah (cek izin admin verifikasi di database)'));
-    return;
+  const b = e.target.closest('[data-set],[data-del]');
+  if (!b || !canAct()) return;
+  const id = b.dataset.id;
+  const row = rows.find(x => String(x.id) === String(id));
+  const acc = row?.account_number || row?.account_id || '';
+  const isDel = !!b.dataset.del, isBlock = b.dataset.set === 'blocked';
+  let reason = null;
+  if (isDel || isBlock) {
+    reason = await askReason({
+      title: isDel ? 'Hapus akun MT5' : 'Blokir akun MT5',
+      subject: (isDel ? 'Akun ' + acc + ' akan dihapus permanen.' : 'Akun ' + acc + ' tidak bisa memakai EA setelah diblokir.') + (row?.client_email ? ' Pemilik: ' + row.client_email : ''),
+      confirmText: isDel ? 'Hapus permanen' : 'Blokir akun'
+    });
+    if (reason === null) return;
+  } else if (!confirm('Ubah status akun ' + acc + ' menjadi ' + b.dataset.set + '?')) return;
+  b.disabled = true;
+  let res;
+  if (isDel) res = await supabaseClient.from('licenses').delete().eq('id', id).select();
+  else res = await supabaseClient.from('licenses').update({ status: b.dataset.set }).eq('id', id).select();
+  if (res.error || !res.data?.length) { alert('Gagal: ' + (res.error ? res.error.message : 'tidak ada baris yang berubah (cek izin akses)')); b.disabled = false; return; }
+  if (reason !== null) {
+    const snap = row ? { account_number: row.account_number, broker: row.broker, platform: row.platform, status: row.status, user_id: row.user_id, client_name: row.client_name } : null;
+    await logModeration('mt5', id, acc, row?.client_email, isDel ? 'delete' : 'block', reason, snap);
   }
   loadLicenses();
-  loadTradingStats();
 });
 
-$('licSearch')?.addEventListener('input', render);$('licFilter')?.addEventListener('change', render);
-
-document.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', () => {
-  const action = btn.dataset.action;
-  if (action === 'refresh') { 
-    if (currentPage === 'licenses' || currentPage === 'ib') loadLicenses(); 
-    else if (currentPage === 'analytics') loadTradingStats(); 
-    else { loadLicenses(); loadTradingStats(); } 
-    return; 
-  }
-  if (action === 'refresh-trades') { loadTradeEntries(); return; }
-  if (action === 'refresh-visitors') { loadVisitorLogs(); return; }
-  if (action === 'refresh-auth-users') { loadAuthUsers(); return; }
-  if (action === 'export') { exportLicenseHistory(); return; }
-}));
-
-function enterAdmin(role){
-  myRole = role;
-  $('loginView').style.display = 'none';$('adminShell').style.display = 'block';
-  applyRole();
-  loadLicenses();
-  loadTradingStats();
-  loadEaUsage();
-  supabaseClient.auth.getSession().then(({ data }) => { myUserId = data?.session?.user?.id || null; });
-}
-
-// Gerbang akses: hanya admin verifikasi & pengawas. Admin utama dialihkan ke Admin Console.
-async function gateModerator() {
-  const err = document.getElementById('loginError');
-  const deny = async msg => { await supabaseClient.auth.signOut(); err.textContent = msg; return false; };
-  const adm = await supabaseClient.rpc('is_kingtherious_admin');
-  if (adm.error || adm.data !== true) return deny(adm.error ? 'Gagal memeriksa hak admin: ' + adm.error.message : 'Akun ini tidak memiliki hak admin.');
-  const rl = await supabaseClient.rpc('admin_my_role');
-  if (rl.error || !rl.data) return deny('Role admin tidak terbaca' + (rl.error ? ': ' + rl.error.message : '') + '. Pastikan fungsi admin_my_role sudah dibuat di database.');
-  if (rl.data === 'utama') { err.textContent = 'Anda admin utama. Mengalihkan ke Admin Console...'; location.replace('useradmin.html'); return false; }
-  if (!ROLE_PAGES[rl.data]) return deny('Role "' + rl.data + '" tidak dikenali untuk halaman moderator.');
-  err.textContent = '';
-  enterAdmin(rl.data);
-  return true;
-}
-
-(async () => {
-  if (!supabaseClient) return;
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (!session) return;
-  await gateModerator();
-})();
-
-document.getElementById('logoutBtn').addEventListener('click', async ()=>{
-  await supabaseClient.auth.signOut();
-  document.getElementById('adminShell').style.display='none';
-  document.getElementById('loginView').style.display='grid';
-});
-
-async function loadTradeEntries() {
-  const tbody = document.getElementById('tradeEntriesBody');
-  if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="9">Mengambil data dari Supabase...</td></tr>';
-  const { data, error } = await supabaseClient.from('trade_entries').select('*').order('time', { ascending: false });
-  if (error) { tbody.innerHTML = `<tr><td colspan="9" style="color:var(--red);">Gagal memuat data: ${error.message}</td></tr>`; return; }
-  if (!data || data.length === 0) { window._allTradeEntries = []; tbody.innerHTML = '<tr><td colspan="9">Belum ada data entry posisi.</td></tr>'; return; }
-  window._allTradeEntries = data;
-  renderTradeTable(data);
-}
-
-function renderTradeTable(rows) {
-  const tbody = document.getElementById('tradeEntriesBody');
-  tbody.innerHTML = '';
-  rows.forEach(row => {
-    const profitColor = row.profit >= 0 ? 'color: var(--teal);' : 'color: var(--red);';
-    const formattedTime = formatOpenTime(row.time);
-    const normalizedStatus = /^(close|closed|closed_position|complete|completed)$/i.test(String(row.status || '')) ? 'CLOSED' : (String(row.status || 'FLOATING').toUpperCase());
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${esc(row.account_id)}</td>
-      <td>${esc(row.account_name)}</td>
-      <td><strong>${esc(row.symbol)}</strong></td>
-      <td>${esc(row.ticket)}</td>
-      <td><span class="status ${String(row.type).toLowerCase() === 'buy' ? 'active' : 'blocked'}">${esc(row.type)}</span></td>
-      <td>${esc(row.volume)}</td>
-      <td>${esc(formattedTime)}</td>
-      <td style="${profitColor} font-weight: bold;">$${Number(row.profit).toFixed(2)}</td>
-      <td><span class="status ${normalizedStatus === 'CLOSED' ? 'expired' : 'active'}">${esc(normalizedStatus)}</span></td>
-    `;
-    tbody.appendChild(tr);
-  });
-  }
-
-  function applyTradeFilters() {
-  if (!window._allTradeEntries) return;
-  const accVal = document.getElementById('filterAccount').value.toLowerCase();
-  const symVal = document.getElementById('filterSymbol').value.toLowerCase();
-  const typeVal = document.getElementById('filterType').value;
-  const statusVal = document.getElementById('filterStatus').value;
-
-  const filtered = window._allTradeEntries.filter(item => {
-    const matchAcc = String(item.account_id).toLowerCase().includes(accVal) || String(item.account_name).toLowerCase().includes(accVal);
-    const matchSym = String(item.symbol).toLowerCase().includes(symVal);
-    const matchType = typeVal === "" || String(item.type).toUpperCase() === typeVal;
-    const itemStatus = /^(close|closed|closed_position|complete|completed)$/i.test(String(item.status || '')) ? 'CLOSED' : String(item.status || 'FLOATING').toUpperCase();
-    const matchStatus = statusVal === "" || itemStatus === statusVal;
-    return matchAcc && matchSym && matchType && matchStatus;
-  });
-  renderTradeTable(filtered);
-}
-
-document.getElementById('filterAccount')?.addEventListener('input', applyTradeFilters);
-document.getElementById('filterSymbol')?.addEventListener('input', applyTradeFilters);
-document.getElementById('filterType')?.addEventListener('change', applyTradeFilters);
-document.getElementById('filterStatus')?.addEventListener('change', applyTradeFilters);
-// Refresh daftar tiket secara berkala. Status CLOSED hanya akan muncul setelah callback EA/backend memperbarui kolom status di Supabase.
-setInterval(() => { if (document.getElementById('page-trade-entries') && !document.getElementById('page-trade-entries').classList.contains('hidden')) loadTradeEntries(); }, 15000);
-
-// ===== Deteksi device pengunjung =====
-function parseUA(ua){
-  ua = String(ua || '');
-  const r = { type: '', os: '', browser: '', model: '', label: '' };
-  if (!ua) return r;
-  let m, mm;
-  if (/bot|crawl|spider|slurp|facebookexternalhit|headlesschrome|python-requests|curl\/|wget\//i.test(ua)) r.type = 'Bot';
-
-  if (/Windows NT/.test(ua)) {
-    r.os = 'Windows'; m = ua.match(/Windows NT (\d+\.\d+)/);
-    const v = { '10.0': '10/11', '6.3': '8.1', '6.2': '8', '6.1': '7' }[m && m[1]]; if (v) r.os += ' ' + v;
-  } else if (/Android/.test(ua)) {
-    m = ua.match(/Android (\d+(?:\.\d+)?)/); r.os = 'Android' + (m ? ' ' + m[1] : '');
-    mm = ua.match(/Android[^;)]*;\s*([^;)]+?)(?:\s+Build|\)|;)/);
-    if (mm && mm[1].trim().length > 2) r.model = mm[1].trim();      // UA ter-reduksi Chrome hanya "K"
-  } else if (/iPhone|iPad|iPod/.test(ua)) {
-    m = ua.match(/OS (\d+)[_.](\d+)/); r.os = 'iOS' + (m ? ' ' + m[1] + '.' + m[2] : '');
-    r.model = /iPad/.test(ua) ? 'iPad' : /iPod/.test(ua) ? 'iPod' : 'iPhone';
-  } else if (/CrOS/.test(ua)) r.os = 'ChromeOS';
-  else if (/Mac OS X|Macintosh/.test(ua)) r.os = 'macOS';
-  else if (/Linux|X11/.test(ua)) r.os = 'Linux';
-
-  const b = [
-    [/Instagram/, 'Instagram (in-app)'], [/FBAN|FBAV/, 'Facebook (in-app)'], [/TikTok|musical_ly/i, 'TikTok (in-app)'],
-    [/Line\//, 'LINE (in-app)'], [/Edg(?:e|A|iOS)?\/(\d+)/, 'Edge'], [/OPR\/(\d+)|Opera/, 'Opera'],
-    [/SamsungBrowser\/(\d+)/, 'Samsung Internet'], [/(?:Firefox|FxiOS)\/(\d+)/, 'Firefox'],
-    [/(?:Chrome|CriOS)\/(\d+)/, 'Chrome'], [/Version\/(\d+).*Safari/, 'Safari']
-  ];
-  for (const [re, name] of b) { m = ua.match(re); if (m) { r.browser = name + (m[1] ? ' ' + m[1] : ''); break; } }
-
-  if (!r.type) {
-    if (/iPad|Tablet/.test(ua) || (/Android/.test(ua) && !/Mobile/.test(ua))) r.type = 'Tablet';
-    else if (/Mobi|iPhone|iPod|Android/.test(ua)) r.type = 'Mobile';
-    else if (r.os || r.browser) r.type = 'Desktop';
-  }
-  r.label = r.model || (r.type === 'Desktop' ? (r.os ? r.os + ' PC' : 'Desktop') : (r.os || r.type));
-  return r;
-}
-
-const looksLikeUA = t => /Mozilla\/|AppleWebKit|Gecko\/|Windows NT|Android|iPhone|CriOS|Macintosh/.test(String(t || ''));
-// Info device satu baris log: kolom hasil deteksi di website diprioritaskan, selebihnya diurai dari user agent
-function visitorInfo(r) {
-  const raw = String(r.device_name || '').trim();
-  const ua = r.user_agent || (looksLikeUA(raw) ? raw : '');
-  const p = parseUA(ua || raw);
-  const label = (!raw || looksLikeUA(raw)) ? (p.label || '') : raw;
-  return {
-    label: label || 'Tidak diketahui',
-    type: r.device_type || p.type || 'Tidak diketahui',
-    os: r.os || p.os || '',
-    browser: r.browser || p.browser || '',
-    screen: r.screen || '', lang: r.language || '', ua: r.user_agent || ''
-  };
-}
-
-// ===== Riwayat pengunjung: dikelompokkan per ORANG (member login) atau per perangkat (tamu) =====
-let visitorPeople = [], visitorRaw = [];
-const VIS_DAYS = { '7d': 7, '30d': 30 };
-function visCutoff() {
-  const v = $('visRange')?.value || 'all';
-  if (v === 'all') return 0;
-  if (v === 'today') { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }
-  return Date.now() - VIS_DAYS[v] * 86400000;
-}
-async function loadVisitorLogs() {
-  const tbody = $('visitorLogsBody');
-  if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="11">Mengambil data riwayat pengunjung...</td></tr>';
-  const { data, error } = await supabaseClient.from('visitor_logs').select('*').order('created_at', { ascending: false }).limit(5000);
-  if (error) { tbody.innerHTML = `<tr><td colspan="11" style="color:var(--red);">Gagal memuat data: ${esc(error.message)}</td></tr>`; return; }
-  visitorRaw = data || [];
-  buildVisitorPeople();
-  renderVisitorPeople();
-}
-
-function buildVisitorPeople() {
-  const uMap = new Map((authUserCache || []).map(u => [String(u.id), u]));
-  const identity = r => {
-    if (!r.user_id) return null;
-    const id = String(r.user_id), u = uMap.get(id), m = u?.raw_user_meta_data || u?.user_metadata || {};
-    return { id, email: r.user_email || u?.email || '', name: r.user_name || m.full_name || m.display_name || m.username || m.name || '' };
-  };
-  // perangkat -> member (data terbaru dulu), supaya kunjungan tamu sebelum login ikut tergabung
-  const dev2user = new Map();
-  visitorRaw.forEach(r => { if (r.device_id && r.user_id && !dev2user.has(r.device_id)) dev2user.set(r.device_id, identity(r)); });
-
-  const cutoff = visCutoff(), map = new Map();
-  visitorRaw.forEach(r => {
-    if (cutoff && new Date(r.created_at).getTime() < cutoff) return;
-    const own = r.user_id ? identity(r) : (r.device_id ? dev2user.get(r.device_id) : null);
-    const info = visitorInfo(r);
-    const key = own ? 'u:' + own.id : r.device_id ? 'd:' + r.device_id : 'n:' + info.label + '|' + (r.ip_address || '');
-    let g = map.get(key);
-    if (!g) { g = { key, member: own || null, did: r.device_id || '', legacy: !r.device_id && !r.user_id, visits: [], devices: new Map(), ips: new Set(), pages: new Map(), tz: new Set(), langs: new Set(), screens: new Set(), refs: new Set() }; map.set(key, g); }
-    g.visits.push(r);
-    g.devices.set(info.label, info);
-    if (r.ip_address) g.ips.add(r.ip_address);
-    if (r.timezone) g.tz.add(r.timezone);
-    if (info.lang) g.langs.add(info.lang);
-    if (info.screen) g.screens.add(info.screen);
-    if (r.referrer) g.refs.add(r.referrer);
-    const p = r.page_visited || '/'; g.pages.set(p, (g.pages.get(p) || 0) + 1);
-  });
-
-  const lic = (typeof rows !== 'undefined' ? rows : []);
-  visitorPeople = [...map.values()].map(g => {
-    g.last = g.visits[0]; g.first = g.visits[g.visits.length - 1];
-    g.dur = g.visits.reduce((a, r) => a + (Number(r.duration_seconds) || 0), 0);
-    g.clicks = g.visits.reduce((a, r) => a + (Number(r.click_count) || 0), 0);
-    g.topPage = [...g.pages.entries()].sort((a, b) => b[1] - a[1])[0][0];
-    g.info = visitorInfo(g.last);
-    g.accounts = g.member ? lic.filter(l => String(l.user_id) === g.member.id || (g.member.email && String(l.client_email || '').toLowerCase() === g.member.email.toLowerCase())).map(l => l.account_number || l.account_id).filter(Boolean) : [];
-    return g;
-  });
-}
-
-function visWho(g) {
-  if (g.member) {
-    const nm = g.member.name || (g.member.email || '').split('@')[0] || 'Member';
-    return { title: nm, sub: g.member.email || ('ID ' + g.member.id.slice(0, 8)), cls: 'active', tag: 'Member' };
-  }
-  return g.legacy
-    ? { title: 'Tamu (data lama)', sub: 'Dikenali dari perangkat + IP', cls: 'pending', tag: 'Tamu' }
-    : { title: 'Tamu #' + String(g.did).replace(/-/g, '').slice(0, 4).toUpperCase(), sub: 'Belum login', cls: 'pending', tag: 'Tamu' };
-}
-
-function visFiltered() {
-  const q = ($('visSearch')?.value || '').trim().toLowerCase();
-  const who = $('visWho')?.value || '', tf = $('visType')?.value || '', sort = $('visSort')?.value || 'last';
-  const list = visitorPeople.filter(g => {
-    if (who === 'member' && !g.member) return false;
-    if (who === 'guest' && g.member) return false;
-    if (tf && !(g.devices.size && [...g.devices.values()].some(d => d.type === tf))) return false;
-    if (!q) return true;
-    const w = visWho(g);
-    return [w.title, w.sub, ...g.accounts, ...g.ips, ...g.pages.keys(), ...[...g.devices.values()].flatMap(d => [d.label, d.type, d.os, d.browser])].join(' ').toLowerCase().includes(q);
-  });
-  const cmp = { last: (a, b) => new Date(b.last.created_at) - new Date(a.last.created_at), visits: (a, b) => b.visits.length - a.visits.length, dur: (a, b) => b.dur - a.dur }[sort];
-  return list.sort(cmp);
-}
-
-function updateVisStats(list) {
-  const visits = list.flatMap(g => g.visits), total = visits.length;
-  const bounces = visits.filter(r => (Number(r.duration_seconds) || 0) < 10 && (Number(r.click_count) || 0) === 0).length;
-  const avg = total ? Math.round(visits.reduce((a, r) => a + (Number(r.duration_seconds) || 0), 0) / total) : 0;
-  const members = list.filter(g => g.member).length;
-  $('visPageviews').textContent = list.length;
-  $('visPageviewsSub').textContent = `dari ${total} kunjungan`;
-  $('visMembers').textContent = members;
-  $('visGuests').textContent = list.length - members;
-  $('visClicks').textContent = visits.reduce((a, r) => a + (Number(r.click_count) || 0), 0);
-  $('visBounceRate').textContent = total ? `${Math.round((bounces / total) * 100)}%` : '0%';
-  $('visAvgDuration').textContent = fmtDur(avg);
-}
-
-function renderVisitorPeople() {
-  const tbody = $('visitorLogsBody');
-  if (!tbody) return;
-  const list = visFiltered();
-  updateVisStats(list);
-  const cnt = {};
-  list.forEach(g => { cnt[g.info.type] = (cnt[g.info.type] || 0) + 1; });
-  const sm = $('visTypeSummary');
-  if (sm) sm.textContent = ['Mobile', 'Tablet', 'Desktop', 'Bot', 'Tidak diketahui'].filter(t => cnt[t]).map(t => `${t}: ${cnt[t]}`).join(' · ');
-  if (!visitorRaw.length) { tbody.innerHTML = '<tr><td colspan="11">Belum ada riwayat pengunjung yang dicatat.</td></tr>'; return; }
-  if (!list.length) { tbody.innerHTML = '<tr><td colspan="11">Tidak ada pengunjung yang cocok dengan filter.</td></tr>'; return; }
-  const tcls = { Mobile: 'active', Tablet: 'expired', Desktop: 'pending', Bot: 'blocked' };
-  tbody.innerHTML = list.map((g, i) => {
-    const w = visWho(g), devs = [...g.devices.values()];
-    const extraIp = g.ips.size > 1 ? ` <small style="color:var(--muted)">(+${g.ips.size - 1} IP lain)</small>` : '';
-    const extraDev = devs.length > 1 ? ` <small style="color:var(--muted)">(+${devs.length - 1} perangkat)</small>` : '';
-    const meta = [
-      g.member && ['Email', g.member.email || '-'], g.member && ['ID user', g.member.id],
-      g.accounts.length && ['Akun MT5', g.accounts.join(', ')],
-      ['Perangkat', devs.map(d => d.label).join(' · ')],
-      ['IP', [...g.ips].join(', ') || '-'], g.tz.size && ['Zona waktu', [...g.tz].join(', ')],
-      g.langs.size && ['Bahasa', [...g.langs].join(', ')], g.screens.size && ['Layar', [...g.screens].join(', ')],
-      g.refs.size && ['Datang dari', [...g.refs].join(', ')], g.info.ua && ['User agent', g.info.ua]
-    ].filter(Boolean).map(([k, v]) => `<span>${esc(k)}: <b>${esc(v)}</b></span>`).join('');
-    const detail = g.visits.slice(0, 25).map(r => `<tr><td>${esc(dt(r.created_at))}</td><td>${esc(r.page_visited || '/')}</td><td>${esc(r.duration_seconds ? r.duration_seconds + 's' : '-')}</td><td>${esc(r.referrer || '-')}</td><td class="vd-cell">${esc(r.user_flow || '-')}</td><td class="vd-cell">${esc(r.clicks_events || '-')}</td></tr>`).join('');
-    return `<tr>
-      <td><div class="who"><b>${esc(w.title)} <span class="status ${w.cls}" style="margin-left:4px">${w.tag}</span></b><small>${esc(w.sub)}</small>${g.accounts.length ? `<span class="acc">MT5 ${esc(g.accounts.slice(0, 2).join(', '))}${g.accounts.length > 2 ? ' +' + (g.accounts.length - 2) : ''}</span>` : ''}</div></td>
-      <td>${esc(g.info.label)}${extraDev}<br><span class="status ${tcls[g.info.type] || 'pending'}">${esc(g.info.type)}</span></td>
-      <td>${esc([g.info.os, g.info.browser].filter(Boolean).join(' / ') || '-')}</td>
-      <td class="mono">${esc(g.last.ip_address || '-')}${extraIp}</td>
-      <td>${esc(dt(g.first.created_at))}</td><td>${esc(dt(g.last.created_at))}</td>
-      <td class="mono">${g.visits.length}</td><td class="mono">${esc(fmtDur(g.dur))}</td><td class="mono">${g.clicks}</td><td>${esc(g.topPage)}</td>
-      <td><button class="btn" type="button" data-vd="${i}">Detail</button></td></tr>
-    <tr class="hidden" data-vd-row="${i}"><td colspan="11"><div class="vd-meta">${meta}</div><div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Halaman</th><th>Durasi</th><th>Datang dari</th><th>Alur pengguna</th><th>Klik &amp; interaksi</th></tr></thead><tbody>${detail}</tbody></table></div><small style="color:var(--muted)">Menampilkan ${Math.min(25, g.visits.length)} kunjungan terakhir dari ${g.visits.length}.</small></td></tr>`;
-  }).join('');
-}
-function exportVisitors() {
-  const list = visFiltered();
-  downloadCsv('pengunjung-neothrone.csv',
-    ['Pengunjung', 'Jenis', 'Email', 'Akun MT5', 'Perangkat', 'OS / Browser', 'IP terakhir', 'Pertama dilihat', 'Terakhir dilihat', 'Kunjungan', 'Total durasi (detik)', 'Total klik', 'Halaman terbanyak'],
-    list.map(g => { const w = visWho(g); return [w.title, w.tag, g.member?.email || '', g.accounts.join(' '), [...g.devices.values()].map(d => d.label).join(' | '), [g.info.os, g.info.browser].filter(Boolean).join(' / '), g.last.ip_address || '', g.first.created_at, g.last.created_at, g.visits.length, g.dur, g.clicks, g.topPage]; }));
-}
-['visSearch'].forEach(id => $(id)?.addEventListener('input', renderVisitorPeople));
-['visWho', 'visType', 'visSort'].forEach(id => $(id)?.addEventListener('change', renderVisitorPeople));
-$('visRange')?.addEventListener('change', () => { buildVisitorPeople(); renderVisitorPeople(); });
-$('visExport')?.addEventListener('click', exportVisitors);
-document.addEventListener('click', e => {
-  const b = e.target.closest('[data-vd]');
-  if (!b) return;
-  document.querySelector(`[data-vd-row="${b.dataset.vd}"]`)?.classList.toggle('hidden');
-});
-
-// Fungsi Memuat Data User Auth untuk Konfirmasi Manual
-async function loadAuthUsers() {
-  const tbody = document.getElementById('authUsersBody');
-  if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="6">Mengambil data user dari autentikasi...</td></tr>';
-  const { data, error } = await supabaseClient.rpc('admin_list_all_users');
-  if (error) {
-    tbody.innerHTML = `<tr><td colspan="6" style="color:var(--red);">Gagal memuat user: ${esc(error.message)}. Pastikan fungsi RPC admin_list_all_users mengembalikan email, id, created_at, email_confirmed_at, raw_app_meta_data, dan raw_user_meta_data.</td></tr>`;
-    return;
-  }
-  authUserCache = data || [];
-  renderAuthUsers();
-}
-
-// ===== Konfirmasi User Auth: aktifkan / tolak / blokir / hapus =====
-let myUserId = null;
+// ---------- Konfirmasi User Auth ----------
 const AU_STATUS = { active:['Aktif','active'], pending:['Menunggu','pending'], rejected:['Ditolak','expired'], blocked:['Diblokir','blocked'] };
 function authStatusOf(u) {
   const s = u.raw_app_meta_data?.admin_status;
@@ -827,37 +494,40 @@ function authStatusOf(u) {
   if (u.banned_until && new Date(u.banned_until) > new Date()) return 'blocked';
   return (u.email_confirmed_at !== null && u.email_confirmed_at !== undefined) ? 'active' : 'pending';
 }
+async function loadAuthUsers() {
+  const tbody = $('authUsersBody'); if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="6">Mengambil data user dari autentikasi...</td></tr>';
+  const { data, error } = await supabaseClient.rpc('admin_list_all_users');
+  if (error) { tbody.innerHTML = `<tr><td colspan="6" style="color:var(--red);">Gagal memuat user: ${esc(error.message)}</td></tr>`; return; }
+  authUserCache = data || [];
+  renderAuthUsers();
+}
 function renderAuthUsers() {
-  const tbody = document.getElementById('authUsersBody');
-  if (!tbody) return;
-  const q = (document.getElementById('authUserSearch')?.value || '').trim().toLowerCase();
-  const sf = document.getElementById('authStatusFilter')?.value || '';
+  const tbody = $('authUsersBody'); if (!tbody) return;
+  renderBoxUsers();
+  const q = ($('authUserSearch')?.value || '').trim().toLowerCase(), sf = $('authStatusFilter')?.value || '';
   const data = authUserCache.filter(u => {
     const meta = u.raw_user_meta_data || u.user_metadata || {};
-    const username = meta.username || meta.user_name || '';
-    const displayName = meta.display_name || meta.full_name || meta.name || '';
-    return (!sf || authStatusOf(u) === sf) && (!q || [u.email, username, displayName, u.id].join(' ').toLowerCase().includes(q));
+    return authStatusOf(u) !== 'blocked' && (!sf || authStatusOf(u) === sf) && (!q || [u.email, meta.username, meta.user_name, meta.display_name, meta.full_name, meta.name, u.id].join(' ').toLowerCase().includes(q));
   });
   if (!data.length) { tbody.innerHTML = '<tr><td colspan="6">Tidak ada user yang cocok dengan filter.</td></tr>'; return; }
   tbody.innerHTML = data.map(u => {
     const meta = u.raw_user_meta_data || u.user_metadata || {};
-    const username = meta.username || meta.user_name || '-';
-    const displayName = meta.display_name || meta.full_name || meta.name || '-';
+    const username = meta.username || meta.user_name || '-', displayName = meta.display_name || meta.full_name || meta.name || '-';
     const nameText = username !== '-' ? username : displayName;
-    const st = authStatusOf(u);
-    const [label, cls] = AU_STATUS[st];
-    const id = esc(u.id);
-    const actions = String(u.id) === String(myUserId)
-      ? '<span style="color:var(--muted)">Akun Anda</span>'
-      : [
-          (st === 'pending' || st === 'rejected') ? `<button class="btn teal" data-au="activate" data-uid="${id}">Aktifkan</button>` : '',
-          st === 'pending' ? `<button class="btn" data-au="reject" data-uid="${id}">Tolak</button>` : '',
-        ].filter(Boolean).join(' ');
-    return `<tr><td>${esc(u.email || '-')}</td><td>${esc(nameText)}${displayName !== '-' && displayName !== nameText ? `<br><small style="color:#7991ab">${esc(displayName)}</small>` : ''}</td><td>${esc(u.raw_app_meta_data?.provider || 'email')}</td><td>${esc(fmtDate(u.created_at))}</td><td><span class="status ${cls}">${label}</span></td><td>${actions}</td></tr>`;
+    const st = authStatusOf(u), [label, cls] = AU_STATUS[st], id = esc(u.id);
+    const actions = !canAct() ? '—' : String(u.id) === String(myUserId) ? '<span style="color:var(--muted)">Akun Anda</span>' : [
+      st !== 'active' ? `<button class="btn teal" data-au="activate" data-uid="${id}">Aktifkan</button>` : '',
+      st === 'pending' ? `<button class="btn" data-au="reject" data-uid="${id}">Tolak</button>` : '',
+      `<button class="btn danger" data-au="block" data-uid="${id}">Blokir</button>`,
+      `<button class="btn danger" data-au="delete" data-uid="${id}">Hapus</button>`
+    ].filter(Boolean).join(' ');
+    return `<tr><td>${esc(u.email || '-')}</td><td>${esc(nameText)}${displayName !== '-' && displayName !== nameText ? `<br><small style="color:var(--muted)">${esc(displayName)}</small>` : ''}</td><td>${esc(u.raw_app_meta_data?.provider || 'email')}</td><td>${esc(fmtDate(u.created_at))}</td><td><span class="status ${cls}">${label}</span></td><td>${actions}</td></tr>`;
   }).join('');
 }
-document.getElementById('authUserSearch')?.addEventListener('input', renderAuthUsers);
-document.getElementById('authStatusFilter')?.addEventListener('change', renderAuthUsers);
+$('authUserSearch')?.addEventListener('input', renderAuthUsers);
+$('authStatusFilter')?.addEventListener('change', renderAuthUsers);
+document.querySelector('[data-action="refresh-auth-users"]')?.addEventListener('click', async () => { await loadModLog(); loadAuthUsers(); });
 
 const AU_CONFIRM = {
   activate: 'Aktifkan akun member ini? Email akan dikonfirmasi dan user bisa login.',
@@ -867,158 +537,256 @@ const AU_CONFIRM = {
 };
 document.addEventListener('click', async e => {
   const b = e.target.closest('[data-au]');
-  if (!b) return;
+  if (!b || !canAct()) return;
   const action = b.dataset.au, uid = b.dataset.uid;
-  if (myRole !== 'verifikasi' || !['activate', 'reject'].includes(action)) return;   // blokir & hapus = admin utama
-  if (!confirm(AU_CONFIRM[action] || 'Lanjutkan?')) return;
+  const au = authUserCache.find(x => String(x.id) === String(uid));
+  let reason = null;
+  if (action === 'block' || action === 'delete') {
+    reason = await askReason({
+      title: action === 'delete' ? 'Hapus akun user' : 'Blokir akun user',
+      subject: (au?.email || uid) + ' — ' + AU_CONFIRM[action],
+      confirmText: action === 'delete' ? 'Hapus permanen' : 'Blokir user'
+    });
+    if (reason === null) return;
+  } else if (!confirm(AU_CONFIRM[action] || 'Lanjutkan?')) return;
   b.disabled = true;
   let { error } = await supabaseClient.rpc('admin_set_user_status', { p_user_id: uid, p_action: action });
-  // Cadangan: jika fungsi baru belum dibuat, aktifkan memakai fungsi lama
   if (error && action === 'activate' && /admin_set_user_status|schema cache|PGRST202/i.test(String(error.message) + String(error.code || ''))) {
     ({ error } = await supabaseClient.rpc('admin_verify_user', { p_user_id: uid }));
   }
   if (error) { alert('Gagal: ' + error.message); b.disabled = false; return; }
+  if (reason !== null) await logModeration('user', uid, userNameOf(au) || userLabel(au), au?.email, action, reason, au ? { email: au.email, created_at: au.created_at, provider: au.raw_app_meta_data?.provider } : null);
   await loadAuthUsers();
   loadLicenses();
 });
 
-// ===== Akun MT5: tab & riwayat penggunaan EA =====
-let eaLogs = [];
-let eaLastSeen = new Map();
-const accStat = acc => tradingStats.find(x => String(x.account_id) === String(acc));
-const eaLastSeenText = acc => {
-  const k = String(acc);
-  const times = [eaLastSeen.get(k), accStat(acc)?.updated_at].filter(Boolean).map(x => new Date(x).getTime()).filter(Number.isFinite);
-  return times.length ? fmtDate(new Date(Math.max(...times)).toISOString()) : '—';
-};
-const EA_EVENT_CLS = { start:'active', heartbeat:'expired', stop:'pending', license_check:'expired', denied:'blocked', error:'blocked' };
-
-document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', () => {
-  const t = btn.dataset.tab;
-  document.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('on', x === btn));
-  $('licTabAccounts').classList.toggle('hidden', t !== 'accounts');
-  $('licTabUsage').classList.toggle('hidden', t !== 'usage');
-  if (t === 'usage') loadEaUsage();
-}));
-
-async function loadEaUsage() {
-  if (!supabaseClient) return;
-  const tbody = $('eaUsageBody');
-  const { data, error } = await supabaseClient.from('ea_usage_logs').select('*').order('created_at', { ascending: false }).limit(1000);
-  if (error) {
-    if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red)">Gagal memuat ea_usage_logs: ${esc(error.message)}. Pastikan file useradmin_update.sql sudah dijalankan di Supabase.</td></tr>`;
-    return;
-  }
-  eaLogs = data || [];
-  eaLastSeen = new Map();
-  eaLogs.forEach(r => { const k = String(r.account_id); if (!eaLastSeen.has(k)) eaLastSeen.set(k, r.created_at); });
-  renderEaUsage();
-  if (rows.length) render();
+// ---------- Pembantu CRUD sederhana (tambah / tampil-sembunyi / hapus) ----------
+const CRUDS = {};
+function crudButtons(key, r) {
+  const c = CRUDS[key];
+  const del = `<button class="btn danger" type="button" data-crud="${key}" data-act="del" data-id="${esc(r.id)}">Hapus</button>`;
+  if (!c.flag) return del;
+  return `<button class="btn ${r[c.flag] ? '' : 'teal'}" type="button" data-crud="${key}" data-act="toggle" data-id="${esc(r.id)}">${r[c.flag] ? c.offLabel : c.onLabel}</button> ` + del;
 }
-
-function renderEaUsage() {
-  const tbody = $('eaUsageBody');
-  if (!tbody) return;
-  const q = ($('eaUsageSearch').value || '').trim().toLowerCase();
-  const ev = $('eaUsageEvent').value;
-  const list = eaLogs.filter(r => (!ev || r.event === ev) && (!q || [r.account_id, r.account_name, r.symbol, r.ea_version, r.broker].join(' ').toLowerCase().includes(q)));
-  const since = Date.now() - 86400000;
-  const last24 = eaLogs.filter(r => new Date(r.created_at).getTime() >= since);
-  $('eaStEvents').textContent = last24.length;
-  $('eaStAccounts').textContent = new Set(last24.map(r => r.account_id)).size;
-  $('eaStDenied').textContent = last24.filter(r => r.event === 'denied' || r.event === 'error').length;
-  $('eaStVersion').textContent = eaLogs.find(r => r.ea_version)?.ea_version || '—';
-  tbody.innerHTML = list.length ? list.map(r => `<tr>
-    <td>${esc(formatOpenTime(r.created_at))}</td><td>${esc(r.account_id || '-')}</td><td>${esc(r.account_name || '-')}</td>
-    <td><span class="status ${EA_EVENT_CLS[r.event] || 'pending'}">${esc(r.event)}</span></td>
-    <td>${esc(r.ea_version || '-')}</td><td>${esc([r.symbol, r.timeframe].filter(Boolean).join(' / ') || '-')}</td>
-    <td>${esc(r.result || '-')}</td><td class="row-note">${esc(r.message || '-')}</td></tr>`).join('')
-    : '<tr><td colspan="8">Belum ada riwayat penggunaan EA yang cocok.</td></tr>';
-}
-$('eaUsageSearch')?.addEventListener('input', renderEaUsage);
-$('eaUsageEvent')?.addEventListener('change', renderEaUsage);
-$('eaUsageRefresh')?.addEventListener('click', loadEaUsage);
-
-
-// =====================================================================
-// v4: Website Content, Log WebRequest, API & Security, Manajemen Admin,
-//     Riwayat Lisensi, Broadcast Pesan
-// =====================================================================
-const maskAcc = a => { a = String(a ?? ''); return a.length > 4 ? a.slice(0, 4) + '••••' : a; };
-const dt = v => v ? formatOpenTime(v) : '—';
-const fmtDur = s => { s = Math.round(Number(s) || 0); return `${Math.floor(s / 60)}m ${s % 60}s`; };
-const flagBadge = (v, on, off) => `<span class="status ${v ? 'active' : 'pending'}">${on && v ? on : (off && !v ? off : '')}</span>`;
-const KIND_CLS = { info:'expired', penting:'pending', warning:'pending', maintenance:'blocked' };
-const SOFT = 'color:#7991ab;white-space:normal';
-
-function downloadCsv(name, header, lines) {
-  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-  const csv = '\ufeff' + [header, ...lines].map(r => r.map(q).join(',')).join('\r\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-  a.download = name;
-  document.body.appendChild(a); a.click(); a.remove();
-}
-
-// ---------- Label role ----------
-const ROLE_LABEL = { verifikasi: 'Admin verifikasi', pengawas: 'Admin pengawas' };
-
-// ---------- Pembatasan tampilan menurut role ----------
-// Catatan: ini hanya merapikan tampilan. Penjaga sebenarnya adalah RLS dan fungsi di database.
-var myRole = null;
-var VIEW_PAGES = ['overview', 'trade-entries', 'analytics', 'licenses', 'ib', 'history', 'visitor-history'];
-// pengawas = hanya melihat; verifikasi = melihat + Aktifkan/Tolak akun MT5 & user auth
-var ROLE_PAGES = { pengawas: VIEW_PAGES, verifikasi: VIEW_PAGES.concat(['auth-users']) };
-function applyRole() {
-  const allowed = ROLE_PAGES[myRole] || [];
-  document.body.classList.remove('role-pengawas', 'role-verifikasi');
-  document.body.classList.add('role-' + myRole);
-  document.querySelectorAll('[data-page]').forEach(b => { b.style.display = allowed.includes(b.dataset.page) ? '' : 'none'; });
-  document.querySelectorAll('.sidebar .nav-label').forEach(l => {
-    const grp = l.parentElement;
-    grp.style.display = [...grp.querySelectorAll('[data-page]')].some(b => b.style.display !== 'none') ? '' : 'none';
+function mkCrud(key, cfg) {
+  CRUDS[key] = cfg;
+  cfg.data = [];
+  cfg.load = async function () {
+    const tb = $(cfg.tbody);
+    if (!tb) return;
+    tb.innerHTML = `<tr><td colspan="${cfg.cols}">Memuat data...</td></tr>`;
+    if (cfg.before) { try { await cfg.before(); } catch (_) {} }
+    const { data, error } = await supabaseClient.from(cfg.table).select('*').order(cfg.order[0], { ascending: cfg.order[1] });
+    if (error) { tb.innerHTML = `<tr><td colspan="${cfg.cols}" style="color:var(--red)">Gagal memuat ${esc(cfg.table)}: ${esc(error.message)}. Pastikan useradmin_update_v3.sql sudah dijalankan.</td></tr>`; return; }
+    cfg.data = data || [];
+    tb.innerHTML = cfg.data.length
+      ? cfg.data.map(r => `<tr>${cfg.row(r)}<td>${crudButtons(key, r)}</td></tr>`).join('')
+      : `<tr><td colspan="${cfg.cols}">${cfg.empty}</td></tr>`;
+  };
+  $(cfg.form)?.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (cfg.confirmMsg && !confirm(cfg.confirmMsg())) return;
+    const { error } = await supabaseClient.from(cfg.table).insert({ ...cfg.payload(e.target.elements), created_by: myUserId });
+    if (error) { alert('Gagal menyimpan: ' + error.message); return; }
+    e.target.reset();
+    cfg.load();
+    if (cfg.afterInsert) cfg.afterInsert();
   });
-  const pill = $('rolePill');
-  if (pill) pill.textContent = '● ' + (ROLE_LABEL[myRole] || 'Moderator');
-  const desc = $('roleHint');
-  if (desc) desc.textContent = myRole === 'pengawas' ? 'Mode pengawas: hanya melihat data.' : 'Mode verifikasi: dapat mengaktifkan atau menolak akun.';
-  showPage('overview');
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-crud]');
+  if (!b) return;
+  const c = CRUDS[b.dataset.crud], id = b.dataset.id;
+  let error;
+  if (b.dataset.act === 'del') {
+    if (!confirm('Hapus data ini?')) return;
+    ({ error } = await supabaseClient.from(c.table).delete().eq('id', id));
+  } else {
+    const r = c.data.find(x => String(x.id) === String(id));
+    ({ error } = await supabaseClient.from(c.table).update({ [c.flag]: !r[c.flag] }).eq('id', id));
+  }
+  if (error) { alert('Gagal: ' + error.message); return; }
+  c.load();
+});
+
+const periodText = r => `${r.starts_at ? dt(r.starts_at).slice(0, 10) : 'sekarang'} – ${r.ends_at ? dt(r.ends_at).slice(0, 10) : 'tanpa batas'}`;
+const endOfDay = v => v ? v + 'T23:59:59' : null;
+
+// ---------- Broadcast Pesan ----------
+let bcReads = new Map(), bcMembers = null;
+mkCrud('bc', {
+  table: 'broadcast_messages', tbody: 'bcBody', form: 'bcForm', cols: 7, order: ['created_at', false], flag: 'active',
+  onLabel: 'Aktifkan lagi', offLabel: 'Tarik pesan', empty: 'Belum ada pesan yang dikirim.',
+  before: async () => {
+    const rd = await supabaseClient.from('broadcast_reads').select('message_id');
+    bcReads = new Map();
+    (rd.data || []).forEach(r => bcReads.set(r.message_id, (bcReads.get(r.message_id) || 0) + 1));
+    const us = await supabaseClient.rpc('admin_list_all_users');
+    bcMembers = us.error ? null : (us.data || []).filter(u => authStatusOf(u) === 'active').length;
+  },
+  confirmMsg: () => `Kirim pesan ini ke SEMUA member portal${bcMembers !== null ? ` (${bcMembers} member aktif)` : ''}?`,
+  row: r => `<td class="row-note"><b style="color:var(--text)">${esc(r.title)}</b><br><small style="${SOFT}">${esc(r.body)}</small></td><td><span class="status ${KIND_CLS[r.kind] || 'pending'}">${esc(r.kind)}</span></td><td>${esc(dt(r.created_at))}</td><td>${r.expires_at ? esc(dt(r.expires_at)) : '—'}</td><td>${bcReads.get(r.id) || 0}${bcMembers !== null ? ' / ' + bcMembers : ''}</td><td>${flagBadge(r.active, 'Aktif', 'Ditarik')}</td>`,
+  payload: f => ({ title: f.title.value.trim(), body: f.body.value.trim(), kind: f.kind.value, expires_at: endOfDay(f.expires_at.value), active: true })
+});
+
+// Konfirmasi setelah broadcast terkirim
+CRUDS.bc.afterInsert = () => alert('Pesan terkirim. Member yang sedang membuka portal menerimanya langsung, member lain melihatnya saat login ke portal.');
+
+// ===== Form alasan + Kotak Blokir/Hapus (dipakai useradmin & moderator) =====
+// Setiap blokir / hapus wajib disertai alasan. Alasan dicatat di tabel moderation_log (lihat sql/moderation_update.sql)
+// dan tampil di "Kotak Blokir/Hapus" agar tidak bercampur dengan daftar utama.
+let modLog = [], modLogError = null;
+async function loadModLog() {
+  const { data, error } = await supabaseClient.from('moderation_log').select('*').order('created_at', { ascending: false }).limit(1000);
+  modLogError = error || null;
+  modLog = data || [];
+}
+async function logModeration(type, targetId, label, email, action, reason, snapshot) {
+  const { error } = await supabaseClient.rpc('log_moderation', {
+    p_type: type, p_target_id: String(targetId ?? ''), p_label: label || '', p_email: email || '',
+    p_action: action, p_reason: reason, p_snapshot: snapshot || null
+  });
+  if (error) alert('Tindakan berhasil, tetapi alasan gagal dicatat: ' + error.message + '\nJalankan sql/moderation_update.sql di Supabase.');
+  await loadModLog();
 }
 
-// ---------- Riwayat Lisensi ----------
-let lhData = [];
-const LH_CLS = { dibuat:'active', status_diubah:'expired', diubah:'pending', dihapus:'blocked', tercatat:'pending' };
-const LH_LABEL = { dibuat:'Dibuat', status_diubah:'Status diubah', diubah:'Data diubah', dihapus:'Dihapus', tercatat:'Data awal' };
-async function loadLicenseHistory() {
-  const tb = $('lhBody');
-  tb.innerHTML = '<tr><td colspan="7">Memuat riwayat...</td></tr>';
-  const { data, error } = await supabaseClient.from('license_history').select('*').order('created_at', { ascending: false }).limit(2000);
-  if (error) { tb.innerHTML = `<tr><td colspan="7" style="color:var(--red)">Gagal memuat license_history: ${esc(error.message)}. Jalankan useradmin_update_v3.sql.</td></tr>`; return; }
-  lhData = data || [];
-  renderLicenseHistory();
+// Dialog alasan: mengembalikan teks alasan, atau null jika dibatalkan
+function askReason({ title, subject, danger = true, confirmText = 'Konfirmasi' }) {
+  return new Promise(resolve => {
+    const ov = document.createElement('div');
+    ov.className = 'mod-ov';
+    ov.innerHTML = `<div class="mod-dlg" role="dialog" aria-modal="true" aria-labelledby="modT">
+      <h3 id="modT">${esc(title)}</h3>
+      <p class="mod-sub">${esc(subject)}</p>
+      <label for="modReason">Alasan tindakan <span style="color:var(--red,#ff657a)">*</span></label>
+      <textarea id="modReason" rows="4" maxlength="500" placeholder="Tulis alasan yang jelas (minimal 5 karakter)"></textarea>
+      <div class="mod-row"><small id="modCnt">0/500</small><small id="modErr" style="color:var(--red,#ff657a)"></small></div>
+      <div class="mod-act"><button type="button" class="btn" id="modNo">Batal</button><button type="button" class="btn ${danger ? 'danger' : 'teal'}" id="modYes">${esc(confirmText)}</button></div>
+    </div>`;
+    document.body.appendChild(ov);
+    const ta = ov.querySelector('#modReason'), err = ov.querySelector('#modErr');
+    const done = v => { document.removeEventListener('keydown', onKey); ov.remove(); resolve(v); };
+    const onKey = e => { if (e.key === 'Escape') done(null); };
+    document.addEventListener('keydown', onKey);
+    ta.addEventListener('input', () => { ov.querySelector('#modCnt').textContent = ta.value.length + '/500'; err.textContent = ''; });
+    ov.querySelector('#modNo').onclick = () => done(null);
+    ov.addEventListener('mousedown', e => { if (e.target === ov) done(null); });
+    ov.querySelector('#modYes').onclick = () => {
+      const v = ta.value.trim();
+      if (v.length < 5) { err.textContent = 'Alasan wajib diisi, minimal 5 karakter.'; ta.focus(); return; }
+      done(v);
+    };
+    ta.focus();
+  });
 }
-function lhFiltered() {
-  const q = ($('lhSearch').value || '').trim().toLowerCase(), a = $('lhAction').value;
-  return lhData.filter(r => (!a || r.action === a) && (!q || [r.account_id, r.client_email, r.broker, r.changed_by_email].join(' ').toLowerCase().includes(q)));
+
+const MOD_ACT = { block: ['Diblokir', 'blocked'], delete: ['Dihapus', 'blocked'], restore: ['Dipulihkan', 'active'] };
+const modWho = l => esc(l.actor_email || '—') + (l.actor_role ? `<br><small style="color:var(--muted,#7991ab)">${esc(l.actor_role)}</small>` : '');
+
+// ---- Kotak: Akun MT5 ----
+function renderBoxMt5() {
+  const tb = $('boxMt5Body'); if (!tb) return;
+  const q = ($('boxMt5Search')?.value || '').trim().toLowerCase();
+  const byId = new Map(rows.map(r => [String(r.id), r]));
+  const items = [];
+  const seen = new Set();
+  modLog.filter(l => l.target_type === 'mt5' && (l.action === 'block' || l.action === 'delete')).forEach(l => {
+    const k = l.target_id + ':' + l.action;
+    if (seen.has(k)) return; seen.add(k);   // hanya tindakan terbaru per akun
+    const cur = byId.get(String(l.target_id));
+    items.push({ at: l.created_at, acc: l.target_label, email: l.target_email, action: l.action, reason: l.reason, log: l, cur });
+  });
+  rows.filter(r => r.status === 'blocked' && !seen.has(String(r.id) + ':block')).forEach(r => {
+    const ul = modLog.find(l => l.target_type === 'user' && l.action === 'block' && String(l.target_id) === String(r.user_id));
+    items.push({ at: r.updated_at || r.created_at, acc: r.account_number || r.account_id, email: r.client_email, action: 'block',
+      reason: ul ? '(akun user diblokir) ' + ul.reason : '', log: ul || null, cur: r, noLog: !ul });
+  });
+  items.sort((a, b) => new Date(b.at) - new Date(a.at));
+  const list = items.filter(i => !q || [i.acc, i.email, i.reason, i.log?.actor_email].join(' ').toLowerCase().includes(q));
+  const c = $('boxMt5Count'); if (c) c.textContent = items.length ? `${items.length} akun` : '';
+  if (!list.length) { tb.innerHTML = `<tr><td colspan="8">${modLogError ? 'Catatan belum bisa dimuat: ' + esc(modLogError.message) : 'Belum ada akun MT5 yang diblokir atau dihapus.'}</td></tr>`; return; }
+  tb.innerHTML = list.map(i => {
+    const [lb, cl] = MOD_ACT[i.action];
+    let st = '<span style="color:var(--muted,#7991ab)">Dihapus permanen</span>', act = '—';
+    if (i.action === 'block') {
+      if (i.cur && i.cur.status === 'blocked') { st = '<span class="status blocked">Masih diblokir</span>'; act = `<button class="btn teal" data-mod-restore="mt5" data-id="${esc(i.cur.id)}">Pulihkan</button>`; }
+      else if (i.cur) st = `<span class="status active">Sudah dipulihkan</span><br><small style="color:var(--muted,#7991ab)">status: ${esc(i.cur.status)}</small>`;
+      else st = '<span style="color:var(--muted,#7991ab)">Data sudah tidak ada</span>';
+    }
+    return `<tr><td>${esc(fmtDate(i.at))}</td><td>${esc(i.acc || '-')}</td><td>${esc(i.email || '-')}</td><td><span class="status ${cl}">${lb}</span></td>
+      <td style="white-space:normal;min-width:200px">${i.reason ? esc(i.reason) : '<span style="color:var(--muted,#7991ab)">Tidak ada catatan alasan</span>'}</td>
+      <td>${i.log ? modWho(i.log) : '—'}</td><td>${st}</td><td>${act}</td></tr>`;
+  }).join('');
 }
-function renderLicenseHistory() {
-  const list = lhFiltered();
-  $('lhBody').innerHTML = list.length ? list.map(r => `<tr>
-    <td>${esc(dt(r.created_at))}</td><td>${esc(r.account_id || '-')}</td><td>${esc(r.client_email || '-')}</td><td>${esc(r.broker || '-')}</td>
-    <td><span class="status ${LH_CLS[r.action] || 'pending'}">${esc(LH_LABEL[r.action] || r.action)}</span></td>
-    <td>${r.old_status || r.new_status ? esc((r.old_status || '—') + ' → ' + (r.new_status || '—')) : '—'}</td>
-    <td>${esc(r.changed_by_email || (r.action === 'tercatat' ? 'sistem' : '-'))}</td></tr>`).join('')
-    : '<tr><td colspan="7">Belum ada riwayat yang cocok.</td></tr>';
+
+// ---- Kotak: User Auth ----
+function renderBoxUsers() {
+  const tb = $('boxUserBody'); if (!tb) return;
+  const q = ($('boxUserSearch')?.value || '').trim().toLowerCase();
+  const byId = new Map(authUserCache.map(u => [String(u.id), u]));
+  const items = [], seen = new Set();
+  modLog.filter(l => l.target_type === 'user' && (l.action === 'block' || l.action === 'delete')).forEach(l => {
+    const k = l.target_id + ':' + l.action;
+    if (seen.has(k)) return; seen.add(k);
+    items.push({ at: l.created_at, email: l.target_email, name: l.target_label, action: l.action, reason: l.reason, log: l, cur: byId.get(String(l.target_id)) });
+  });
+  authUserCache.filter(u => authStatusOf(u) === 'blocked' && !seen.has(String(u.id) + ':block')).forEach(u =>
+    items.push({ at: u.banned_until || u.updated_at || u.created_at, email: u.email, name: userNameOf(u) || userLabel(u), action: 'block', reason: '', log: null, cur: u }));
+  items.sort((a, b) => new Date(b.at) - new Date(a.at));
+  const list = items.filter(i => !q || [i.email, i.name, i.reason, i.log?.actor_email].join(' ').toLowerCase().includes(q));
+  const c = $('boxUserCount'); if (c) c.textContent = items.length ? `${items.length} user` : '';
+  if (!list.length) { tb.innerHTML = `<tr><td colspan="8">${modLogError ? 'Catatan belum bisa dimuat: ' + esc(modLogError.message) : 'Belum ada user yang diblokir atau dihapus.'}</td></tr>`; return; }
+  tb.innerHTML = list.map(i => {
+    const [lb, cl] = MOD_ACT[i.action];
+    let st = '<span style="color:var(--muted,#7991ab)">Dihapus permanen</span>', act = '—';
+    if (i.action === 'block') {
+      if (i.cur && authStatusOf(i.cur) === 'blocked') { st = '<span class="status blocked">Masih diblokir</span>'; act = `<button class="btn teal" data-mod-restore="user" data-id="${esc(i.cur.id)}">Pulihkan</button>`; }
+      else if (i.cur) st = '<span class="status active">Sudah dipulihkan</span>';
+      else st = '<span style="color:var(--muted,#7991ab)">Data sudah tidak ada</span>';
+    }
+    return `<tr><td>${esc(fmtDate(i.at))}</td><td>${esc(i.email || '-')}</td><td>${esc(i.name || '-')}</td><td><span class="status ${cl}">${lb}</span></td>
+      <td style="white-space:normal;min-width:200px">${i.reason ? esc(i.reason) : '<span style="color:var(--muted,#7991ab)">Tidak ada catatan alasan</span>'}</td>
+      <td>${i.log ? modWho(i.log) : '—'}</td><td>${st}</td><td>${act}</td></tr>`;
+  }).join('');
 }
-function exportLicenseHistory() {
-  const list = lhFiltered();
-  if (!list.length) { alert('Tidak ada data untuk diekspor.'); return; }
-  downloadCsv('riwayat-lisensi.csv', ['Waktu', 'Akun MT5', 'Email klien', 'Broker', 'Aksi', 'Status lama', 'Status baru', 'Oleh', 'Keterangan'],
-    list.map(r => [dt(r.created_at), r.account_id, r.client_email, r.broker, LH_LABEL[r.action] || r.action, r.old_status, r.new_status, r.changed_by_email, r.detail]));
-}
-$('lhSearch')?.addEventListener('input', renderLicenseHistory);
-$('lhAction')?.addEventListener('change', renderLicenseHistory);
-$('lhRefresh')?.addEventListener('click', loadLicenseHistory);
+function renderBoxes() { renderBoxMt5(); renderBoxUsers(); }
+$('boxMt5Search')?.addEventListener('input', renderBoxMt5);
+$('boxUserSearch')?.addEventListener('input', renderBoxUsers);
+
+// Pulihkan dari kotak
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-mod-restore]');
+  if (!b) return;
+  const type = b.dataset.modRestore, id = b.dataset.id;
+  if (type === 'mt5') {
+    const r = rows.find(x => String(x.id) === String(id));
+    if (!confirm(`Pulihkan akun ${r?.account_number || ''}? Statusnya menjadi Pending dan perlu diverifikasi ulang.`)) return;
+    b.disabled = true;
+    const res = await supabaseClient.from('licenses').update({ status: 'pending' }).eq('id', id).select();
+    if (res.error || !res.data?.length) { alert('Gagal: ' + (res.error ? res.error.message : 'tidak ada baris yang berubah (cek izin)')); b.disabled = false; return; }
+    await logModeration('mt5', id, r?.account_number, r?.client_email, 'restore', 'Dipulihkan dari Kotak Blokir/Hapus', null);
+    loadLicenses();
+  } else {
+    const u = authUserCache.find(x => String(x.id) === String(id));
+    if (!confirm(`Pulihkan akun ${u?.email || ''}? User bisa login lagi.`)) return;
+    b.disabled = true;
+    const { error } = await supabaseClient.rpc('admin_set_user_status', { p_user_id: id, p_action: 'activate' });
+    if (error) { alert('Gagal: ' + error.message); b.disabled = false; return; }
+    await logModeration('user', id, userNameOf(u) || userLabel(u), u?.email, 'restore', 'Dipulihkan dari Kotak Blokir/Hapus', null);
+    await loadAuthUsers(); loadLicenses();
+  }
+});
+
+// Tab Kotak (Akun MT5) & (User Auth) — milik fitur ini, tidak mengubah tab lama
+document.querySelectorAll('[data-modtab]').forEach(btn => btn.addEventListener('click', () => {
+  const [grp, t] = btn.dataset.modtab.split(':');
+  document.querySelectorAll(`[data-modtab^="${grp}:"]`).forEach(x => x.classList.toggle('on', x === btn));
+  if (grp === 'lic') document.querySelectorAll('[data-tab]').forEach(x => x.classList.remove('on'));
+  const lists = { lic: ['licTabAccounts', 'licTabUsage', 'licTabBox'], au: ['auTabList', 'auTabBox'] }[grp];
+  const show = { lic: { accounts: 'licTabAccounts', box: 'licTabBox' }, au: { list: 'auTabList', box: 'auTabBox' } }[grp][t];
+  lists.forEach(id => $(id)?.classList.toggle('hidden', id !== show));
+  if (t === 'box') loadModLog().then(renderBoxes);
+}));
 
 </script>
 </body>
