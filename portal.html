@@ -610,6 +610,13 @@ table.ff td.cd { white-space: nowrap; text-align: center; }
  </div>
 </div>
 
+<div class="bc-overlay" id="chatOverlay" role="dialog" aria-modal="true" aria-labelledby="chatTitle">
+ <div class="bc-box">
+  <div class="bc-head"><h2 id="chatTitle">💬 Chat dari Tim NEOTHRONE</h2><span class="bc-count" id="chatCount"></span></div>
+  <div class="bc-body" id="chatBody"></div>
+  <div class="bc-foot"><button class="btn" id="chatClose" type="button">Tutup</button></div>
+ </div>
+</div>
 <div class="bc-overlay" id="bcOverlay" role="dialog" aria-modal="true" aria-labelledby="bcTitle">
  <div class="bc-box">
   <div class="bc-head"><h2 id="bcTitle">Pesan dari Admin</h2><span class="bc-count" id="bcCount"></span></div>
@@ -835,6 +842,7 @@ async function init() {
   await loadLicenses();
   await loadStats();
   await loadBroadcasts();
+  await loadChats();
   await loadSocial();
   startRealtime();
 }
@@ -894,6 +902,53 @@ function bcRemove(id) {
   if ($('bcOverlay').classList.contains('show')) bcRefreshCount();
 }
 
+// ===== Chat dari staf (Owner / Admin / Moderator) =====
+// Popup muncul saat login (chat yang belum dibaca) dan langsung saat portal terbuka (Realtime).
+const CHAT_ROLE = { owner: 'Owner', admin: 'Admin', moderator: 'Moderator' };
+const chatShown = new Set();
+function chatItemHtml(m) {
+  const who = CHAT_ROLE[m.sender_role] || 'Tim NEOTHRONE';
+  return `<div class="bc-item" data-id="${esc(m.id)}"><b>${esc(who)}</b><p>${esc(m.body)}</p><small>${esc(bcFmt(m.created_at))}</small></div>`;
+}
+function chatRefreshCount() {
+  const n = $('chatBody').querySelectorAll('.bc-item').length;
+  $('chatCount').textContent = n + ' chat baru';
+  if (!n) $('chatOverlay').classList.remove('show');
+}
+function chatRender(list) {
+  const fresh = list.filter(m => m && m.active !== false && m.sender_id !== user.id && (!m.recipient_id || m.recipient_id === user.id) && !chatShown.has(m.id));
+  if (!fresh.length) return [];
+  fresh.forEach(m => chatShown.add(m.id));
+  if (!$('chatOverlay').classList.contains('show')) $('chatBody').innerHTML = '';
+  $('chatBody').insertAdjacentHTML('afterbegin', fresh.map(chatItemHtml).join(''));
+  chatRefreshCount();
+  $('chatOverlay').classList.add('show');
+  return fresh;
+}
+async function chatMarkRead(list) {
+  if (!list.length) return;
+  const rows = list.map(m => ({ message_id: m.id, user_id: user.id }));
+  const { error } = await db.from('chat_reads').upsert(rows, { onConflict: 'message_id,user_id', ignoreDuplicates: true });
+  if (error) console.error('Gagal menandai chat dibaca:', error);
+}
+async function loadChats() {
+  if (!db || !user) return;
+  try {
+    const { data: msgs, error: e1 } = await db.from('chat_messages').select('id,body,created_at,sender_id,sender_role,recipient_id,active').eq('active', true).order('created_at', { ascending: false }).limit(50);
+    const { data: reads, error: e2 } = await db.from('chat_reads').select('message_id').eq('user_id', user.id);
+    if (e1 || e2) { console.error('Gagal memuat chat:', e1 || e2); return; }
+    const seen = new Set((reads || []).map(r => r.message_id));
+    await chatMarkRead(chatRender((msgs || []).filter(m => !seen.has(m.id))));
+  } catch (err) {
+    console.error('Chat error:', err);
+  }
+}
+function chatRemove(id) {
+  chatShown.delete(id);
+  $('chatBody').querySelector(`.bc-item[data-id="${CSS.escape(String(id))}"]`)?.remove();
+  if ($('chatOverlay').classList.contains('show')) chatRefreshCount();
+}
+
 // ===== Sosial media (bagian bawah Ringkasan) =====
 const SOCIAL_BUCKET = 'social-icons';
 async function loadSocial() {
@@ -920,10 +975,16 @@ function startRealtime() {
       if (p.new.active === false) bcRemove(p.new.id); else bcLive(p.new);   // pesan ditarik / diaktifkan lagi
     })
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'broadcast_messages' }, p => bcRemove(p.old.id))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, async p => { await chatMarkRead(chatRender([p.new])); })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'chat_messages' }, async p => {
+      if (p.new.active === false) chatRemove(p.new.id); else await chatMarkRead(chatRender([p.new]));   // chat ditarik / diaktifkan lagi
+    })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, p => chatRemove(p.old.id))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'social_links' }, () => loadSocial())
     .subscribe();
 }
 $('bcClose').addEventListener('click', () => $('bcOverlay').classList.remove('show'));
+$('chatClose').addEventListener('click', () => $('chatOverlay').classList.remove('show'));
 
 $('logoutBtn').addEventListener('click', logout);
 
