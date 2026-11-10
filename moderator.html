@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin Console | NEOTHRONE</title>
+<title>Moderator Console | NEOTHRONE</title>
 
 <meta name="theme-color" content="#0B1220">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyOCA4MCA0MjYgNjk1IiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Im5lb3Rocm9uZSI+CiAgPHRpdGxlPm5lb3Rocm9uZTwvdGl0bGU+CiAgPCEtLSBjYW5kbGUgaGlqYXUgLS0+CiAgPGxpbmUgeDE9IjQ5MyIgeTE9Ijk5IiB4Mj0iNDkzIiB5Mj0iMTc2IiBzdHJva2U9IiM5NkU4MUUiIHN0cm9rZS13aWR0aD0iMTQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik00NDUgMTkyUTQ0NSAxNzQgNDYzIDE3NEg1MjNRNTQxIDE3NCA1NDEgMTkyVjQwMkw0NDUgMzMwWiIgZmlsbD0iIzk2RTgxRSIvPgogIDwhLS0gY2FuZGxlIG1lcmFoIC0tPgogIDxwYXRoIGQ9Ik0xNDEgNDYzTDIzNyA1MTRWNjY0UTIzNyA2ODIgMjE5IDY4MkgxNTlRMTQxIDY4MiAxNDEgNjY0WiIgZmlsbD0iI0U4M0MzQSIvPgogIDxsaW5lIHgxPSIxODkiIHkxPSI2ODAiIHgyPSIxODkiIHkyPSI3NTUiIHN0cm9rZT0iI0U4M0MzQSIgc3Ryb2tlLXdpZHRoPSIxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBodXJ1ZiBOIC0tPgogIDxwYXRoIGQ9Ik0xNDAgMjQ4SDI0N0w0MzcgNDUxVjM0MUw1NDIgNDE4VjYyNUg0MzdMMjQ3IDQyM1Y1MDVMMTQwIDQ0OFoiIGZpbGw9IiNGMUY1RjkiLz4KPC9zdmc+Cg==">
@@ -182,6 +182,7 @@ table th{background:var(--th-bg)}
 .mod-row{display:flex;justify-content:space-between;gap:10px;margin-top:6px;min-height:16px;color:var(--muted,#8fa0b8)}
 .mod-act{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
 </style>
+<style>body.role-pengawas [data-set],body.role-pengawas [data-del],body.role-pengawas [data-au],body.role-pengawas [data-formacc],body.role-pengawas [data-crud],body.role-pengawas [data-mod-restore],body.role-pengawas [data-action="add-license"],body.role-pengawas #bcForm,body.role-pengawas #annForm,body.role-pengawas #mdlForm,body.role-pengawas #faqForm,body.role-pengawas #cmsSaveDraft,body.role-pengawas #cmsPublish,body.role-pengawas #socForm,body.role-pengawas [data-soc-del]{display:none !important}</style>
 </head>
 <body>
 <section class="login-wrap" id="loginView">
@@ -189,18 +190,18 @@ table th{background:var(--th-bg)}
   <div class="login-card">
     <div class="logo">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="97 -26 482 752" role="img" aria-label="NEOTHRONE" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M137,170 L243,170 L434,373 L434,262 L539,340 L539,547 L434,547 L243,345 L243,427 L137,370 Z"/><g fill="#98E81F"><path d="M482,122 V22 a8,8 0 0 1 16,0 V122 Z"/><path d="M442,112 a16,16 0 0 1 16,-16 H522 a16,16 0 0 1 16,16 V325 L442,254 Z"/></g><g fill="#E63B38"><path d="M178,590 V678 a8,8 0 0 0 16,0 V590 Z"/><path d="M138,384.5 L234,436.2 V588 a16,16 0 0 1 -16,16 H154 a16,16 0 0 1 -16,-16 Z"/></g></svg></span>
-      <div><div class="brand">NEOTHRONE</div><div class="sub">ADMIN CONSOLE</div></div>
+      <div><div class="brand">NEOTHRONE</div><div class="sub">MODERATOR CONSOLE</div></div>
     </div>
     <div class="eyebrow">Restricted access</div>
-    <h1>Masuk ke Admin</h1>
-    <p>Kelola lisensi, akun client, konten website, monitoring API, dan keamanan sistem.</p>
+    <h1>Masuk Moderator</h1>
+    <p>Kelola lisensi, client, dan konten sesuai menu yang diberikan admin.</p>
     <form id="loginForm">
-      <div class="field"><label for="username">Email admin</label><input id="username" name="email" type="email" autocomplete="username" required placeholder="Masukkan email Supabase"></div>
+      <div class="field"><label for="username">Email moderator</label><input id="username" name="email" type="email" autocomplete="username" required placeholder="Masukkan email Supabase"></div>
       <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password"></div>
       <button class="primary" type="submit">Masuk ke Dashboard</button>
       <div class="error" id="loginError" role="status"></div>
     </form>
-    <div class="note">Hanya akun dengan hak admin yang bisa masuk. Hak admin diperiksa di database Supabase.</div>
+    <div class="note">Hanya akun moderator atau admin yang bisa masuk. Menu yang tampil mengikuti hak akses dari admin utama.</div>
     <a class="back" href="index.html">← Kembali ke website</a>
   </div>
 </section>
@@ -209,7 +210,7 @@ table th{background:var(--th-bg)}
   <aside class="sidebar">
     <div class="side-head">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="97 -26 482 752" role="img" aria-label="NEOTHRONE" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M137,170 L243,170 L434,373 L434,262 L539,340 L539,547 L434,547 L243,345 L243,427 L137,370 Z"/><g fill="#98E81F"><path d="M482,122 V22 a8,8 0 0 1 16,0 V122 Z"/><path d="M442,112 a16,16 0 0 1 16,-16 H522 a16,16 0 0 1 16,16 V325 L442,254 Z"/></g><g fill="#E63B38"><path d="M178,590 V678 a8,8 0 0 0 16,0 V590 Z"/><path d="M138,384.5 L234,436.2 V588 a16,16 0 0 1 -16,16 H154 a16,16 0 0 1 -16,-16 Z"/></g></svg></span>
-      <div><div class="brand">NEOTHRONE</div><div class="sub">ADMIN CONSOLE</div></div>
+      <div><div class="brand">NEOTHRONE</div><div class="sub">MODERATOR CONSOLE</div></div>
     </div>
     <div>
       <div class="nav-label">OVERVIEW</div>
@@ -227,9 +228,7 @@ table th{background:var(--th-bg)}
       <button data-page="auth-users"><span class="ico">👤</span> Konfirmasi User Auth</button>
       <button data-page="visitor-history"><span class="ico">👁</span> Riwayat Pengunjung</button>
     </nav></div>
-    <div><div class="nav-label">EA MANAGEMENT</div><nav class="side-nav">
-      <button data-page="ea-manage"><span class="ico">◈</span> Management EA</button>
-    </nav></div>
+    
     <div><div class="nav-label">WEBSITE CONTENT</div><nav class="side-nav">
       <button data-page="cms"><span class="ico">▤</span> Landing Page CMS</button>
       <button data-page="models"><span class="ico">✳</span> Model AI & Pengumuman</button>
@@ -239,11 +238,8 @@ table th{background:var(--th-bg)}
       <button data-page="broadcast"><span class="ico">✉</span> Broadcast Pesan</button>
       <button data-page="social"><span class="ico">☍</span> Sosial</button>
     </nav></div>
-    <div><div class="nav-label">SYSTEM</div><nav class="side-nav">
-      <button data-page="settings"><span class="ico">⚙</span> API & Keamanan</button>
-      <button data-page="admins"><span class="ico">♙</span> Manajemen Admin</button>
-    </nav></div>
-    <div class="side-bottom"><button class="btn" id="logoutBtn" style="width:100%">Keluar</button></div>
+    
+    <div class="side-bottom"><a class="btn" id="ownerLink" href="useradmin.html" style="width:100%;display:none;text-align:center;margin-bottom:8px">Buka Admin Console</a><button class="btn" id="logoutBtn" style="width:100%">Keluar</button></div>
   </aside>
   <main class="main">
     <header class="topline">
@@ -523,6 +519,7 @@ table th{background:var(--th-bg)}
       </section>
     </section>
 
+    <section class="page hidden" id="page-noaccess"><section class="panel"><div class="panel-head"><h2>Belum ada menu yang diberikan</h2></div><p class="placeholder">Akun Anda sudah login, tetapi admin utama belum memberi akses ke menu apa pun. Hubungi admin utama untuk meminta akses.</p></section></section>
     <section class="page hidden" id="page-admins"><section class="panel">
       <div class="panel-head"><h2>Manajemen Admin User</h2><button class="btn teal" data-action="add-admin">+ Tambah admin</button></div>
       <form id="addAdminForm" class="toolbar hidden" style="margin-bottom:14px"><input id="admEmail" type="email" placeholder="Email calon admin" aria-label="Email calon admin" required><select id="admRole" aria-label="Role admin"><option value="pengawas">Admin pengawas</option><option value="verifikasi">Admin verifikasi</option><option value="utama">Admin utama</option></select><button class="btn teal" type="submit">Jadikan admin</button></form>
@@ -639,13 +636,14 @@ const titles = {
  faq:['FAQ & Panduan','Kelola bantuan, instalasi EA, dan konfigurasi WebRequest.'],
  settings:['API & Keamanan','Periksa RLS, akses publik, dan kunci yang dipakai.'],
  admins:['Manajemen Admin','Tambah atau cabut akses admin Admin Console.'],
+ noaccess:['Belum ada menu','Admin utama belum memberi akses menu untuk akun ini.'],
  broadcast:['Broadcast Pesan','Kirim pesan langsung ke seluruh member portal.'],
  social:['Sosial','Kelola sosial media dan hyperlink yang tampil di Ringkasan.']
 };
 
 let currentPage = 'overview';
 function showPage(name){
-  if (typeof ROLE_PAGES !== 'undefined' && ROLE_PAGES[myRole] && !ROLE_PAGES[myRole].includes(name)) name = 'overview';
+  if (typeof MOD_ALLOWED !== 'undefined' && MOD_ALLOWED && !MOD_ALLOWED.includes(name)) name = MOD_ALLOWED[0] || 'noaccess';
   currentPage=name;
   document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));
   const page=document.getElementById('page-'+name);
@@ -1761,26 +1759,26 @@ document.addEventListener('change', async e => {
 
 // ---------- Pembatasan tampilan menurut role ----------
 // Catatan: ini hanya merapikan tampilan. Penjaga sebenarnya adalah RLS dan fungsi di database.
-var myRole = 'utama';
-var VIEW_PAGES = ['overview', 'trade-entries', 'analytics', 'licenses', 'ib', 'history', 'visitor-history'];
-var ROLE_PAGES = { pengawas: VIEW_PAGES, verifikasi: VIEW_PAGES.concat(['auth-users']) };
+var myRole = 'verifikasi';
+var MOD_ALLOWED = null;
 async function applyRole() {
   const { data, error } = await supabaseClient.rpc('admin_my_role');
-  myRole = (!error && data) ? data : 'utama';   // jika fungsi belum dibuat, jangan mengunci pemilik
-  if (myRole === 'verifikasi' || myRole === 'pengawas') { location.replace('moderator.html'); return; }   // moderator punya halaman sendiri
-  const allowed = ROLE_PAGES[myRole];            // undefined = admin utama (semua menu)
-  document.body.classList.remove('role-pengawas', 'role-verifikasi');
-  if (allowed) document.body.classList.add('role-' + myRole);
-  document.querySelectorAll('[data-page]').forEach(b => {
-    b.style.display = (allowed && !allowed.includes(b.dataset.page)) ? 'none' : '';
-  });
+  myRole = (!error && data) ? data : 'utama';   // fungsi belum ada = pemilik
+  let pages = MENU_ALL;
+  if (myRole !== 'utama') {
+    const r = await supabaseClient.rpc('admin_my_pages');   // null / belum dibuat = menu bawaan
+    pages = (!r.error && Array.isArray(r.data)) ? r.data : MENU_DEFAULT;
+  }
+  MOD_ALLOWED = MENU_ALL.filter(p => pages.includes(p));
+  document.body.classList.toggle('role-pengawas', myRole === 'pengawas');
+  document.querySelectorAll('[data-page]').forEach(b => { b.style.display = MOD_ALLOWED.includes(b.dataset.page) ? '' : 'none'; });
   document.querySelectorAll('.sidebar .nav-label').forEach(l => {
     const grp = l.parentElement;
     grp.style.display = [...grp.querySelectorAll('[data-page]')].some(b => b.style.display !== 'none') ? '' : 'none';
   });
-  const pill = $('rolePill');
-  if (pill) pill.textContent = '● ' + (ROLE_LABEL[myRole] || 'Admin area');
-  if (allowed && !allowed.includes(currentPage)) showPage('overview');
+  const pill = $('rolePill'); if (pill) pill.textContent = '● ' + (myRole === 'utama' ? 'Admin utama' : myRole === 'pengawas' ? 'Pengawas (hanya lihat)' : 'Moderator');
+  if (myRole === 'utama') $('ownerLink').style.display = 'block';
+  showPage(MOD_ALLOWED[0] || 'noaccess');
 }
 
 // ---------- Sosial media: nama + gambar + hyperlink ----------
