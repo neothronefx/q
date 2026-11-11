@@ -543,14 +543,15 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
     </div>
   </div>
 
-  <!-- Pilihan tujuan masuk untuk moderator -->
+  <!-- Pilihan tujuan masuk untuk akun berjabatan (Owner, Admin, Moderator) -->
   <div class="modal-overlay" id="roleModal" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="roleTitle">
       <h2 id="roleTitle" style="margin:0 0 8px;font-size:22px">Masuk sebagai apa?</h2>
-      <p id="roleDesc" style="margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.55">Akun ini terdaftar sebagai moderator. Pilih tujuan masuk.</p>
+      <p id="roleDesc" style="margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.55">Akun ini memiliki jabatan. Pilih tujuan masuk.</p>
       <div style="display:grid;gap:12px">
         <button type="button" class="btn btn-primary" id="goPortal" style="min-height:54px">Login Portal Member</button>
         <button type="button" class="btn btn-secondary" id="goModerator" style="min-height:54px">Login Moderator</button>
+        <button type="button" class="btn btn-secondary" id="goAdmin" style="min-height:54px;display:none">Login Admin</button>
       </div>
     </div>
   </div>
@@ -734,37 +735,47 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
 
           closeModal();
 
-          // Admin utama -> Admin Console. Moderator -> pilih Portal Member atau Moderator. Member biasa -> portal.
+          // Jabatan: Owner dan Admin -> pilih Portal, Moderator, atau Admin. Moderator -> pilih Portal atau Moderator.
+          // Member biasa (tanpa jabatan) -> langsung ke portal.
           let isAdmin = false, role = null;
           try {
             const { data: adminFlag } = await supabaseClient.rpc('is_kingtherious_admin');
             isAdmin = adminFlag === true;
             if (isAdmin) {
               const { data: r, error: re } = await supabaseClient.rpc('admin_my_role');
-              if (!re && r) role = r;
+              role = (!re && r) ? normRole(r) : 'owner';   // peran tak terbaca: tampilkan semua pilihan, halaman tujuan tetap diperiksa database
             }
           } catch (_) { /* jika gagal, anggap member biasa */ }
 
           const portalUrl = `portal.html?user=${encodeURIComponent(username)}`;
-          if (isAdmin && role && role !== 'utama') {
-            showRoleChoice(portalUrl, user);
+          if (isAdmin) {
+            showRoleChoice(portalUrl, user, role);
             return;
           }
           alert('Login berhasil! Mengalihkan...');
-          window.location.href = isAdmin ? 'useradmin.html' : portalUrl;
+          window.location.href = portalUrl;
         } catch (err) {
           alert('Gagal Masuk: ' + err.message);
         }
       });
     }
 
-    // Dialog pilihan tujuan untuk moderator yang baru login
-    function showRoleChoice(portalUrl, user) {
+    // Nama jabatan lama dipetakan ke 3 kasta baru: owner, admin, moderator
+    function normRole(r) {
+      return ({ owner: 'owner', admin: 'admin', moderator: 'moderator', utama: 'owner', verifikasi: 'admin', pengawas: 'moderator' })[r] || 'moderator';
+    }
+
+    // Dialog pilihan tujuan untuk akun berjabatan yang baru login
+    function showRoleChoice(portalUrl, user, role) {
       const ov = document.getElementById('roleModal');
-      if (!ov) { window.location.href = 'moderator.html'; return; }
+      const label = { owner: 'Owner', admin: 'Admin', moderator: 'Moderator' }[role] || 'staf';
+      if (!ov) { window.location.href = role === 'moderator' ? 'moderator.html' : 'useradmin.html'; return; }
+      document.getElementById('roleDesc').textContent = 'Akun ini terdaftar sebagai ' + label + '. Pilih tujuan masuk.';
+      document.getElementById('goAdmin').style.display = (role === 'owner' || role === 'admin') ? '' : 'none';   // Moderator tidak punya Admin Console
       ov.classList.add('active'); ov.setAttribute('aria-hidden', 'false');
       document.getElementById('goPortal').onclick = () => { window.location.href = portalUrl; };
       document.getElementById('goModerator').onclick = () => { window.location.href = 'moderator.html'; };
+      document.getElementById('goAdmin').onclick = () => { window.location.href = 'useradmin.html'; };
       const dismiss = () => { ov.classList.remove('active'); ov.setAttribute('aria-hidden', 'true'); updateUIAfterLogin(user); };
       ov.onclick = (e) => { if (e.target === ov) dismiss(); };
       document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { dismiss(); document.removeEventListener('keydown', esc); } });

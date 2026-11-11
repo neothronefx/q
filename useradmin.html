@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded',function(){document.querySelectorAl
 .soc-card{display:flex;flex-direction:column;align-items:center;gap:8px;width:110px;padding:12px 8px;border:1px solid var(--border);border-radius:12px;background:var(--card-2);color:var(--text);text-decoration:none;font-size:13px;text-align:center}
 .soc-card img{width:44px;height:44px;object-fit:contain;border-radius:10px}.soc-card:hover{border-color:var(--cyan)}
 .soc-thumb{width:36px;height:36px;object-fit:contain;border-radius:8px;vertical-align:middle}
+.pager{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}.pager-info{color:var(--muted);font-size:13px}.pager-btns{display:flex;flex-wrap:wrap;gap:6px}.pager-btns .btn{min-width:36px;padding:6px 10px}.pager-btns .btn.on{background:var(--accent);color:var(--accent-ink);border-color:transparent}.pager-btns .btn[disabled]{opacity:.4;cursor:default}.pager-gap{align-self:center;color:var(--muted)}
 .censored{display:inline-block;padding:1px 8px;border-radius:6px;background:var(--card-2);color:var(--muted);letter-spacing:2px;user-select:none}
 body.role-admin [data-formacc],body.role-admin [data-action="add-license"],body.role-admin #addLicForm,
 body.role-moderator [data-set="blocked"],body.role-moderator [data-del],body.role-moderator [data-au="block"],body.role-moderator [data-au="delete"],body.role-moderator [data-formacc],body.role-moderator [data-action="add-license"],body.role-moderator #addLicForm{display:none!important}
@@ -210,15 +211,15 @@ table th{background:var(--th-bg)}
       <div><div class="brand">NEOTHRONE</div><div class="sub">ADMIN CONSOLE</div></div>
     </div>
     <div class="eyebrow">Restricted access</div>
-    <h1>Masuk ke Admin</h1>
+    <h1>Masuk ke Admin Console</h1>
     <p>Kelola lisensi, akun client, konten website, monitoring API, dan keamanan sistem.</p>
     <form id="loginForm">
-      <div class="field"><label for="username">Email admin</label><input id="username" name="email" type="email" autocomplete="username" required placeholder="Masukkan email Supabase"></div>
+      <div class="field"><label for="username">Email staf</label><input id="username" name="email" type="email" autocomplete="username" required placeholder="Masukkan email Supabase"></div>
       <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password"></div>
       <button class="primary" type="submit">Masuk ke Dashboard</button>
       <div class="error" id="loginError" role="status"></div>
     </form>
-    <div class="note">Hanya akun dengan hak admin yang bisa masuk. Hak admin diperiksa di database Supabase.</div>
+    <div class="note">Akun Owner dan Admin bisa masuk. Akun Moderator otomatis dialihkan ke Moderator Console. Jabatan diperiksa di database Supabase.</div>
     <a class="back" href="index.html">← Kembali ke website</a>
   </div>
 </section>
@@ -255,7 +256,6 @@ table th{background:var(--th-bg)}
     </nav></div>
     <div><div class="nav-label">KOMUNIKASI</div><nav class="side-nav">
       <button data-page="livechat"><span class="ico">🗨</span> Live Chat</button>
-      <button data-page="chat"><span class="ico">💬</span> Chat Popup</button>
       <button data-page="broadcast"><span class="ico">✉</span> Broadcast Pesan</button>
       <button data-page="social"><span class="ico">☍</span> Sosial</button>
     </nav></div>
@@ -337,6 +337,7 @@ table th{background:var(--th-bg)}
             </tbody>
           </table>
         </div>
+        <div class="pager" id="tradePager"></div>
       </section>
     </section>
 
@@ -543,6 +544,7 @@ table th{background:var(--th-bg)}
       </section>
     </section>
 
+    <section class="page hidden" id="page-noaccess"><section class="panel"><div class="panel-head"><h2>Belum ada menu yang diberikan</h2></div><p class="placeholder">Owner belum memberi akses menu untuk akun ini. Hubungi Owner untuk mengatur menu Anda.</p></section></section>
     <section class="page hidden" id="page-admins"><section class="panel">
       <div class="panel-head"><h2>Manajemen Jabatan</h2><button class="btn teal" data-action="add-admin">+ Tambah akun staf</button></div>
       <form id="addAdminForm" class="toolbar hidden" style="margin-bottom:14px"><input id="admEmail" type="email" placeholder="Email calon staf" aria-label="Email calon staf" required><select id="admRole" aria-label="Jabatan"><option value="moderator">3 · Moderator</option><option value="admin">2 · Admin</option><option value="owner">1 · Owner</option></select><button class="btn teal" type="submit">Tambahkan</button></form>
@@ -550,11 +552,11 @@ table th{background:var(--th-bg)}
       <div class="table-wrap"><table><thead><tr><th>Email</th><th>Jabatan</th><th>Ditambahkan</th><th>Akses menu (Admin &amp; Moderator)</th><th>Aksi</th></tr></thead><tbody id="admBody"><tr><td colspan="5">Memuat daftar staf...</td></tr></tbody></table></div>
       <h3 style="margin:20px 0 10px;font-size:14px">Hak akses per jabatan</h3>
       <div class="table-wrap"><table><thead><tr><th>Jabatan</th><th>Menu yang tampil</th><th>Aksi</th></tr></thead><tbody>
-        <tr><td>1 · Owner</td><td>Semua menu di Admin Console (<b>useradmin.html</b>), termasuk Management EA, API &amp; Keamanan, dan Manajemen Jabatan.</td><td>Penuh. Melihat semua akun tanpa sensor.</td></tr>
-        <tr><td>2 · Admin</td><td>Menu yang dicentang lewat <b>Atur menu</b>, dibuka di <b>moderator.html</b>. Management EA, API &amp; Keamanan, dan Manajemen Jabatan tidak tersedia.</td><td>Aktifkan, tolak, blokir, dan hapus (wajib alasan). Data akun Owner tersensor.</td></tr>
-        <tr><td>3 · Moderator</td><td>Menu yang dicentang lewat <b>Atur menu</b>, dibuka di <b>moderator.html</b>.</td><td>Verifikasi, aktifkan, dan tolak; tidak bisa blokir atau hapus. Data akun Owner dan Admin tersensor.</td></tr>
+        <tr><td>1 · Owner</td><td>Semua menu di Admin Console (<b>useradmin.html</b>) dan Moderator Console, termasuk Management EA, API &amp; Keamanan, dan Manajemen Jabatan.</td><td>Penuh. Melihat semua akun tanpa sensor.</td></tr>
+        <tr><td>2 · Admin</td><td>Menu yang dicentang lewat <b>Atur menu</b>, bisa dibuka di Admin Console (<b>useradmin.html</b>) maupun Moderator Console (<b>moderator.html</b>). Management EA, API &amp; Keamanan, dan Manajemen Jabatan tidak tersedia.</td><td>Aktifkan, tolak, blokir, dan hapus (wajib alasan). Data akun Owner tersensor.</td></tr>
+        <tr><td>3 · Moderator</td><td>Menu yang dicentang lewat <b>Atur menu</b>, hanya di Moderator Console (<b>moderator.html</b>).</td><td>Verifikasi, aktifkan, dan tolak; tidak bisa blokir atau hapus. Data akun Owner dan Admin tersensor.</td></tr>
       </tbody></table></div>
-      <div class="notice">Jabatan yang lebih rendah tidak bisa melihat akun jabatan yang lebih tinggi: email, nomor akun, dan nama langsung tersensor di Akun MT5, Verifikasi IB, Konfirmasi User Auth, Riwayat Lisensi, dan Kotak Blokir/Hapus, serta tombol aksinya disembunyikan. Calon staf harus sudah memiliki akun (mendaftar di website) dengan email yang sama. Akun baru bawaannya <b>Moderator</b>. Anda tidak bisa mengubah atau mencabut akun sendiri, dan minimal harus ada satu Owner.</div>
+      <div class="notice">Jabatan yang lebih rendah tidak bisa melihat akun jabatan yang lebih tinggi: email, nomor akun, dan nama langsung tersensor di Akun MT5, Verifikasi IB, Konfirmasi User Auth, Riwayat Lisensi, dan Kotak Blokir/Hapus, Statistik Entry Posisi, Statistik Pengguna, Riwayat Penggunaan EA, dan Riwayat Pengunjung, serta tombol aksinya disembunyikan. Calon staf harus sudah memiliki akun (mendaftar di website) dengan email yang sama. Akun baru bawaannya <b>Moderator</b>. Anda tidak bisa mengubah atau mencabut akun sendiri, dan minimal harus ada satu Owner.</div>
     </section></section>
     <section class="page hidden" id="page-social">
       <section class="panel">
@@ -583,23 +585,9 @@ table th{background:var(--th-bg)}
         <input name="first" placeholder="Pesan pertama" required maxlength="1000" style="flex:1;min-width:240px">
         <button class="btn teal" type="submit">Mulai chat</button>
       </form>
-      <div class="toolbar" style="margin-top:14px"><select id="lcFilter" aria-label="Filter chat"><option value="open">Chat terbuka</option><option value="closed">Chat ditutup</option><option value="all">Semua chat</option></select><span id="lcCount" class="row-note" style="min-width:0"></span></div>
+      <div class="toolbar" style="margin-top:14px"><input id="lcUserFilter" list="lcFilterList" placeholder="Filter chat per user (ketik email member)..." autocomplete="off" aria-label="Filter chat per user" style="min-width:280px"><datalist id="lcFilterList"></datalist><button class="btn" type="button" id="lcUserClear">Reset filter</button><span id="lcCount" class="row-note" style="min-width:0"></span></div>
       <div class="lc-wrap"><div class="lc-list" id="lcList"></div><div class="lc-conv" id="lcConv"></div></div>
-      <div class="notice">Chat hanya dimulai dan ditutup oleh staf (Owner, Admin, Moderator). Selama chat terbuka, widget chat mengambang muncul di portal member dan member bisa membalas. Setelah ditutup, widget hilang dan member tidak bisa membalas lagi. Semua staf yang punya menu ini bisa membalas dan menutup percakapan. Jalankan <b>livechat_update.sql</b> sekali di Supabase.</div>
-    </section></section>
-    <section class="page hidden" id="page-chat"><section class="panel">
-      <div class="panel-head"><h2>Chat ke member</h2><button class="btn" type="button" id="chatRefresh">Muat ulang</button></div>
-      <form id="chatForm">
-        <div class="form-grid">
-          <div class="field" style="margin-top:0"><label>Kirim ke<select name="to"><option value="all">Semua member aktif</option><option value="one">Satu member</option></select></label></div>
-          <div class="field hidden" id="chatRecipientField" style="margin-top:0"><label>Email member<input name="recipient" list="chatMemberList" autocomplete="off" placeholder="Ketik atau pilih email member"><datalist id="chatMemberList"></datalist></label></div>
-        </div>
-        <div class="field"><label>Pesan<textarea name="body" rows="3" required maxlength="1000"></textarea></label></div>
-        <button class="btn teal" type="submit">Kirim chat</button>
-      </form>
-      <h3 style="margin:22px 0 10px;font-size:14px">Riwayat chat</h3>
-      <div class="table-wrap"><table><thead><tr><th>Pesan</th><th>Penerima</th><th>Pengirim</th><th>Dikirim</th><th>Dibaca</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="chatBody"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div>
-      <div class="notice">Chat tampil sebagai popup di portal member yang sedang membuka portal (Supabase Realtime). Member yang sedang offline melihatnya saat login. Portal harus membaca tabel <b>chat_messages</b> (lihat <b>portal_chat_popup.js</b>). Moderator hanya bisa menarik atau menghapus chat miliknya; Admin dan Owner bisa mengelola semua chat.</div>
+      <div class="notice">Live chat dua arah: chat dimulai dan ditutup oleh staf (Owner, Admin, Moderator). Selama chat terbuka, widget chat mengambang muncul di portal member dan member bisa membalas. <b>Begitu chat ditutup, seluruh percakapan dihapus otomatis</b> dan widget di portal member hilang. Jalankan <b>livechat_autodelete.sql</b> sekali di Supabase agar penghapusan berjalan di sisi database.</div>
     </section></section>
     <section class="page hidden" id="page-broadcast"><section class="panel">
       <div class="panel-head"><h2>Kirim pesan ke seluruh member portal</h2></div>
@@ -682,16 +670,16 @@ const titles = {
  models:['Model AI & Pengumuman','Kelola informasi model dan pengumuman produk.'],
  faq:['FAQ & Panduan','Kelola bantuan, instalasi EA, dan konfigurasi WebRequest.'],
  settings:['API & Keamanan','Periksa RLS, akses publik, dan kunci yang dipakai.'],
+ noaccess:['Belum ada menu','Owner belum memberi akses menu untuk akun ini.'],
  admins:['Manajemen Jabatan','Atur Owner, Admin, dan Moderator beserta menu yang boleh dibuka.'],
  livechat:['Live Chat','Chat dua arah dengan member; dibuka dan ditutup oleh staf.'],
- chat:['Chat Popup','Kirim pesan satu arah ke member; tampil sebagai popup di portal.'],
  broadcast:['Broadcast Pesan','Kirim pesan langsung ke seluruh member portal.'],
  social:['Sosial','Kelola sosial media dan hyperlink yang tampil di Ringkasan.']
 };
 
 let currentPage = 'overview';
 function showPage(name){
-  if (typeof ROLE_PAGES !== 'undefined' && ROLE_PAGES[myRole] && !ROLE_PAGES[myRole].includes(name)) name = 'overview';
+  if (typeof MOD_ALLOWED !== 'undefined' && MOD_ALLOWED && !MOD_ALLOWED.includes(name)) name = MOD_ALLOWED[0] || 'noaccess';
   currentPage=name;
   document.querySelectorAll('.page').forEach(el=>el.classList.add('hidden'));
   const page=document.getElementById('page-'+name);
@@ -724,8 +712,6 @@ function showPage(name){
     loadAdmins();
   } else if (name === 'livechat') {
     loadLiveChat();
-  } else if (name === 'chat') {
-    loadChat();
   } else if (name === 'broadcast') {
     CRUDS.bc.load();
   } else if (name === 'social') {
@@ -830,10 +816,12 @@ function renderTradingStats(){
   if(period==='7d') since.setDate(since.getDate()-7);
   else if(period==='30d') since.setDate(since.getDate()-30);
   else if(period==='month') since.setDate(1);
+  const hsT = higherAcctSet();
+  const hdT = r => isHigher(r.user_id, null) || hsT.has(String(r.account_id));
   const filtered = tradingStats.filter(r => {
     const updated = r.updated_at ? new Date(r.updated_at) : null;
     const text = [r.account_id,r.account_name,r.last_entry_pair,r.entry_position,r.user_id].join(' ').toLowerCase();
-    return (!q || text.includes(q)) && (period==='all' || (updated && !Number.isNaN(updated.getTime()) && updated >= since));
+    return (!q || (!hdT(r) && text.includes(q))) && (period==='all' || (updated && !Number.isNaN(updated.getTime()) && updated >= since));
   });
   const sumTotal = filtered.reduce((a,r)=>a+Number(r.total_profit||0),0);
   const sumMonthly = filtered.reduce((a,r)=>a+Number(r.monthly_profit||0),0);
@@ -842,7 +830,7 @@ function renderTradingStats(){
   $('trClosed').textContent = statProfit(sumTotal);
   $('trProfit').textContent = statProfit(sumMonthly);$('trWinRate').textContent = rates.length ? `${statNumber(rates.reduce((a,v)=>a+Number(v),0)/rates.length)}%` : '—';
   $('tradeBody').innerHTML = filtered.length ? filtered.map(r => `<tr>
-    <td>${esc(r.account_id || '-')}</td><td>${esc(r.account_name || '-')}</td>
+    <td>${cz(r.account_id || '-', hdT(r))}</td><td>${cz(r.account_name || '-', hdT(r))}</td>
     <td>${esc(statProfit(r.total_profit))}</td><td>${esc(statProfit(r.monthly_profit))}</td>
     <td>${r.win_rate===null || r.win_rate===undefined ? '—' : esc(statNumber(r.win_rate)+'%')}</td>
     <td>${esc(r.entry_position || '-')}</td><td>${esc(r.last_entry_pair || '-')}</td>
@@ -970,62 +958,101 @@ document.getElementById('logoutBtn').addEventListener('click', async ()=>{
   document.getElementById('loginView').style.display='grid';
 });
 
+const TRADE_PAGE_SIZE = 50;   // maksimal baris yang tampil per halaman
+let tradePage = 1, tradeFiltered = [];
 async function loadTradeEntries() {
   const tbody = document.getElementById('tradeEntriesBody');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="9">Mengambil data dari Supabase...</td></tr>';
-  const { data, error } = await supabaseClient.from('trade_entries').select('*').order('time', { ascending: false });
-  if (error) { tbody.innerHTML = `<tr><td colspan="9" style="color:var(--red);">Gagal memuat data: ${error.message}</td></tr>`; return; }
-  if (!data || data.length === 0) { window._allTradeEntries = []; tbody.innerHTML = '<tr><td colspan="9">Belum ada data entry posisi.</td></tr>'; return; }
-  window._allTradeEntries = data;
-  renderTradeTable(data);
+  if (!window._allTradeEntries) tbody.innerHTML = '<tr><td colspan="9">Mengambil data dari Supabase...</td></tr>';
+  // Ambil bertahap (1000 baris per permintaan, maksimal 10.000) agar tidak terpotong batas Supabase.
+  let all = [], from = 0, failed = null;
+  while (from < 10000) {
+    const { data, error } = await supabaseClient.from('trade_entries').select('*').order('time', { ascending: false }).range(from, from + 999);
+    if (error) { failed = error; break; }
+    all = all.concat(data || []);
+    if (!data || data.length < 1000) break;
+    from += 1000;
+  }
+  if (failed && !all.length) { tbody.innerHTML = `<tr><td colspan="9" style="color:var(--red);">Gagal memuat data: ${esc(failed.message)}</td></tr>`; renderTradePager(0); return; }
+  window._allTradeEntries = all;
+  applyTradeFilters(true);   // pertahankan halaman dan filter saat data disegarkan
 }
 
-function renderTradeTable(rows) {
+function renderTradePager(total) {
+  const el = document.getElementById('tradePager'); if (!el) return;
+  const pages = Math.max(1, Math.ceil(total / TRADE_PAGE_SIZE));
+  if (tradePage > pages) tradePage = pages;
+  const start = total ? (tradePage - 1) * TRADE_PAGE_SIZE + 1 : 0, end = Math.min(total, tradePage * TRADE_PAGE_SIZE);
+  const info = `<span class="pager-info">Menampilkan ${start}–${end} dari ${total} posisi (maks. ${TRADE_PAGE_SIZE} per halaman)</span>`;
+  if (pages <= 1) { el.innerHTML = info; return; }
+  const nums = []; let prev = 0;
+  for (let p = 1; p <= pages; p++) {
+    if (p === 1 || p === pages || Math.abs(p - tradePage) <= 2) {
+      if (prev && p - prev > 1) nums.push('<span class="pager-gap">…</span>');
+      nums.push(`<button class="btn${p === tradePage ? ' on' : ''}" type="button" data-tp="${p}">${p}</button>`);
+      prev = p;
+    }
+  }
+  el.innerHTML = info + `<div class="pager-btns"><button class="btn" type="button" data-tp="prev"${tradePage <= 1 ? ' disabled' : ''}>‹ Sebelumnya</button>${nums.join('')}<button class="btn" type="button" data-tp="next"${tradePage >= pages ? ' disabled' : ''}>Berikutnya ›</button></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-tp]');
+  if (!b || b.disabled) return;
+  const v = b.dataset.tp;
+  tradePage = v === 'prev' ? tradePage - 1 : v === 'next' ? tradePage + 1 : Number(v);
+  renderTradeTable();
+  document.getElementById('page-trade-entries')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+function renderTradeTable() {
   const tbody = document.getElementById('tradeEntriesBody');
-  tbody.innerHTML = '';
-  rows.forEach(row => {
+  if (!tbody) return;
+  const total = tradeFiltered.length;
+  renderTradePager(total);
+  if (!total) { tbody.innerHTML = `<tr><td colspan="9">${window._allTradeEntries && window._allTradeEntries.length ? 'Tidak ada posisi yang cocok dengan filter.' : 'Belum ada data entry posisi.'}</td></tr>`; return; }
+  const hs = higherAcctSet();
+  const slice = tradeFiltered.slice((tradePage - 1) * TRADE_PAGE_SIZE, tradePage * TRADE_PAGE_SIZE);
+  tbody.innerHTML = slice.map(row => {
+    const hd = hs.has(String(row.account_id));
     const profitColor = row.profit >= 0 ? 'color: var(--teal);' : 'color: var(--red);';
-    const formattedTime = formatOpenTime(row.time);
     const normalizedStatus = /^(close|closed|closed_position|complete|completed)$/i.test(String(row.status || '')) ? 'CLOSED' : (String(row.status || 'FLOATING').toUpperCase());
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${esc(row.account_id)}</td>
-      <td>${esc(row.account_name)}</td>
+    return `<tr>
+      <td>${cz(row.account_id, hd)}</td>
+      <td>${cz(row.account_name, hd)}</td>
       <td><strong>${esc(row.symbol)}</strong></td>
       <td>${esc(row.ticket)}</td>
       <td><span class="status ${String(row.type).toLowerCase() === 'buy' ? 'active' : 'blocked'}">${esc(row.type)}</span></td>
       <td>${esc(row.volume)}</td>
-      <td>${esc(formattedTime)}</td>
+      <td>${esc(formatOpenTime(row.time))}</td>
       <td style="${profitColor} font-weight: bold;">$${Number(row.profit).toFixed(2)}</td>
       <td><span class="status ${normalizedStatus === 'CLOSED' ? 'expired' : 'active'}">${esc(normalizedStatus)}</span></td>
-    `;
-    tbody.appendChild(tr);
-  });
-  }
+    </tr>`;
+  }).join('');
+}
 
-  function applyTradeFilters() {
+function applyTradeFilters(keepPage) {
   if (!window._allTradeEntries) return;
+  if (keepPage !== true) tradePage = 1;   // filter berubah: kembali ke halaman 1
   const accVal = document.getElementById('filterAccount').value.toLowerCase();
   const symVal = document.getElementById('filterSymbol').value.toLowerCase();
   const typeVal = document.getElementById('filterType').value;
   const statusVal = document.getElementById('filterStatus').value;
-
-  const filtered = window._allTradeEntries.filter(item => {
-    const matchAcc = String(item.account_id).toLowerCase().includes(accVal) || String(item.account_name).toLowerCase().includes(accVal);
+  const hs = higherAcctSet();
+  tradeFiltered = window._allTradeEntries.filter(item => {
+    const matchAcc = !accVal || (!hs.has(String(item.account_id)) && (String(item.account_id).toLowerCase().includes(accVal) || String(item.account_name).toLowerCase().includes(accVal)));
     const matchSym = String(item.symbol).toLowerCase().includes(symVal);
     const matchType = typeVal === "" || String(item.type).toUpperCase() === typeVal;
     const itemStatus = /^(close|closed|closed_position|complete|completed)$/i.test(String(item.status || '')) ? 'CLOSED' : String(item.status || 'FLOATING').toUpperCase();
     const matchStatus = statusVal === "" || itemStatus === statusVal;
     return matchAcc && matchSym && matchType && matchStatus;
   });
-  renderTradeTable(filtered);
+  renderTradeTable();
 }
 
-document.getElementById('filterAccount')?.addEventListener('input', applyTradeFilters);
-document.getElementById('filterSymbol')?.addEventListener('input', applyTradeFilters);
-document.getElementById('filterType')?.addEventListener('change', applyTradeFilters);
-document.getElementById('filterStatus')?.addEventListener('change', applyTradeFilters);
+document.getElementById('filterAccount')?.addEventListener('input', () => applyTradeFilters());
+document.getElementById('filterSymbol')?.addEventListener('input', () => applyTradeFilters());
+document.getElementById('filterType')?.addEventListener('change', () => applyTradeFilters());
+document.getElementById('filterStatus')?.addEventListener('change', () => applyTradeFilters());
 // Refresh daftar tiket secara berkala. Status CLOSED hanya akan muncul setelah callback EA/backend memperbarui kolom status di Supabase.
 setInterval(() => { if (document.getElementById('page-trade-entries') && !document.getElementById('page-trade-entries').classList.contains('hidden')) loadTradeEntries(); }, 15000);
 
@@ -1159,6 +1186,7 @@ function visFiltered() {
   const q = ($('visSearch')?.value || '').trim().toLowerCase();
   const who = $('visWho')?.value || '', tf = $('visType')?.value || '', sort = $('visSort')?.value || 'last';
   const list = visitorPeople.filter(g => {
+    if (g.member && isHigher(g.member.id, g.member.email)) return false;   // jabatan di atas tidak terlihat
     if (who === 'member' && !g.member) return false;
     if (who === 'guest' && g.member) return false;
     if (tf && !(g.devices.size && [...g.devices.values()].some(d => d.type === tf))) return false;
@@ -1368,7 +1396,8 @@ function renderEaUsage() {
   if (!tbody) return;
   const q = ($('eaUsageSearch').value || '').trim().toLowerCase();
   const ev = $('eaUsageEvent').value;
-  const list = eaLogs.filter(r => (!ev || r.event === ev) && (!q || [r.account_id, r.account_name, r.symbol, r.ea_version, r.broker].join(' ').toLowerCase().includes(q)));
+  const hsE = higherAcctSet();
+  const list = eaLogs.filter(r => (!ev || r.event === ev) && (!q || (!hsE.has(String(r.account_id)) && [r.account_id, r.account_name, r.symbol, r.ea_version, r.broker].join(' ').toLowerCase().includes(q))));
   const since = Date.now() - 86400000;
   const last24 = eaLogs.filter(r => new Date(r.created_at).getTime() >= since);
   $('eaStEvents').textContent = last24.length;
@@ -1376,7 +1405,7 @@ function renderEaUsage() {
   $('eaStDenied').textContent = last24.filter(r => r.event === 'denied' || r.event === 'error').length;
   $('eaStVersion').textContent = eaLogs.find(r => r.ea_version)?.ea_version || '—';
   tbody.innerHTML = list.length ? list.map(r => `<tr>
-    <td>${esc(formatOpenTime(r.created_at))}</td><td>${esc(r.account_id || '-')}</td><td>${esc(r.account_name || '-')}</td>
+    <td>${esc(formatOpenTime(r.created_at))}</td><td>${cz(r.account_id || '-', hsE.has(String(r.account_id)))}</td><td>${cz(r.account_name || '-', hsE.has(String(r.account_id)))}</td>
     <td><span class="status ${EA_EVENT_CLS[r.event] || 'pending'}">${esc(r.event)}</span></td>
     <td>${esc(r.ea_version || '-')}</td><td>${esc([r.symbol, r.timeframe].filter(Boolean).join(' / ') || '-')}</td>
     <td>${esc(r.result || '-')}</td><td class="row-note">${esc(r.message || '-')}</td></tr>`).join('')
@@ -1752,6 +1781,14 @@ async function loadSecurity() {
 $('secRefresh')?.addEventListener('click', loadSecurity);
 
 // ---------- Jabatan: 1 Owner, 2 Admin, 3 Moderator ----------
+// Himpunan nomor akun MT5 milik akun berjabatan lebih tinggi (dipakai untuk menyensor statistik, riwayat EA, dsb.)
+function higherAcctSet() {
+  const set = new Set();
+  (typeof rows !== 'undefined' ? rows : []).forEach(l => {
+    if (isHigher(l.user_id, l.client_email)) [l.account_number, l.account_id].filter(Boolean).forEach(x => set.add(String(x)));
+  });
+  return set;
+}
 // Jabatan yang lebih rendah tidak boleh melihat akun jabatan yang lebih tinggi (disensor). Ini hanya tampilan;
 // penjaga sebenarnya adalah RLS dan fungsi di database (lihat roles_chat_update.sql).
 var ROLE_RANK = { owner: 1, admin: 2, moderator: 3 };
@@ -1770,7 +1807,7 @@ async function loadStaffRanks() {
     if (s.user_id) { staffRoleById.set(String(s.user_id), role); if (s.email) staffEmailById.set(String(s.user_id), s.email); }
     if (s.email) staffRoleByEmail.set(String(s.email).toLowerCase(), role);
   });
-  ['render', 'renderAuthUsers', 'renderLicenseHistory', 'renderBoxes'].forEach(n => { try { if (typeof window[n] === 'function') window[n](); } catch (_) {} });
+  ['render', 'renderAuthUsers', 'renderLicenseHistory', 'renderBoxes', 'renderVisitorPeople', 'renderEaUsage', 'applyTradeFilters', 'renderTradingStats'].forEach(n => { try { if (typeof window[n] === 'function') window[n](); } catch (_) {} });
 }
 function isHigher(userId, email) {
   const role = (userId != null && staffRoleById.get(String(userId))) || (email && staffRoleByEmail.get(String(email).toLowerCase()));
@@ -1836,90 +1873,35 @@ document.addEventListener('change', async e => {
 });
 
 // ---------- Pembatasan tampilan menurut jabatan ----------
-// Catatan: ini hanya merapikan tampilan. Penjaga sebenarnya adalah RLS dan fungsi di database.
-var ROLE_PAGES = {};   // Owner = semua menu. Admin dan Moderator dialihkan ke moderator.html.
+// Ini hanya merapikan tampilan; penjaga sebenarnya adalah RLS dan fungsi di database.
+// CONSOLE: 'admin' = useradmin.html (Owner & Admin), 'moderator' = moderator.html (Owner, Admin, Moderator).
+var CONSOLE = 'admin';
+var OWNER_ONLY = ['ea-manage', 'settings', 'admins'];   // menu yang hanya milik Owner
+var MOD_ALLOWED = null;
 async function applyRole() {
   const { data, error } = await supabaseClient.rpc('admin_my_role');
   myRole = (!error && data) ? normRole(data) : 'owner';   // jika fungsi belum dibuat, jangan mengunci pemilik
-  if (myRole !== 'owner') { location.replace('moderator.html'); return; }
+  if (CONSOLE === 'admin' && myRole === 'moderator') { location.replace('moderator.html'); return; }
   await loadStaffRanks();
+  let pages;
+  if (myRole === 'owner') pages = CONSOLE === 'admin' ? MENU_ALL.concat(OWNER_ONLY) : MENU_ALL;
+  else {
+    const r = await supabaseClient.rpc('admin_my_pages');   // null / belum dibuat = menu bawaan
+    pages = ((!r.error && Array.isArray(r.data)) ? r.data : MENU_DEFAULT).filter(p => !OWNER_ONLY.includes(p));
+  }
+  MOD_ALLOWED = MENU_ALL.concat(OWNER_ONLY).filter(p => pages.includes(p));
+  document.body.classList.toggle('role-admin', myRole === 'admin');
+  document.body.classList.toggle('role-moderator', myRole === 'moderator');
+  document.querySelectorAll('[data-page]').forEach(b => { b.style.display = MOD_ALLOWED.includes(b.dataset.page) ? '' : 'none'; });
+  document.querySelectorAll('.sidebar .nav-label').forEach(l => {
+    const grp = l.parentElement;
+    grp.style.display = [...grp.querySelectorAll('[data-page]')].some(b => b.style.display !== 'none') ? '' : 'none';
+  });
   const pill = $('rolePill');
   if (pill) pill.textContent = '● ' + ROLE_LABEL[myRole];
   startLiveChatRealtime();
+  showPage(MOD_ALLOWED[0] || 'noaccess');
 }
-
-// ---------- Chat ke member (popup di portal member) ----------
-let chatData = [], chatReads = new Map(), chatMembers = [], chatUsersById = new Map();
-async function loadChat() {
-  const tb = $('chatBody'); if (!tb) return;
-  tb.innerHTML = '<tr><td colspan="7">Memuat data...</td></tr>';
-  const us = await supabaseClient.rpc('admin_list_all_users');
-  if (!us.error) {
-    const all = us.data || [];
-    chatUsersById = new Map(all.map(u => [String(u.id), u]));
-    chatMembers = all.filter(u => authStatusOf(u) === 'active' && !staffRoleById.has(String(u.id)) && !staffRoleByEmail.has(String(u.email || '').toLowerCase()));
-    $('chatMemberList').innerHTML = chatMembers.map(u => `<option value="${esc(u.email)}"></option>`).join('');
-  }
-  const [msgs, rd] = await Promise.all([
-    supabaseClient.from('chat_messages').select('*').order('created_at', { ascending: false }).limit(200),
-    supabaseClient.from('chat_reads').select('message_id')
-  ]);
-  if (msgs.error) { tb.innerHTML = `<tr><td colspan="7" style="color:var(--red)">Gagal memuat chat_messages: ${esc(msgs.error.message)}. Jalankan roles_chat_update.sql.</td></tr>`; return; }
-  chatReads = new Map();
-  (rd.data || []).forEach(r => chatReads.set(r.message_id, (chatReads.get(r.message_id) || 0) + 1));
-  chatData = msgs.data || [];
-  renderChat();
-}
-function renderChat() {
-  const tb = $('chatBody'); if (!tb) return;
-  tb.innerHTML = chatData.length ? chatData.map(r => {
-    const hd = isHigher(r.sender_id, null);
-    const mine = String(r.sender_id) === String(myUserId);
-    const canAct = myRank() <= 2 || mine;
-    const rec = r.recipient_id ? esc(chatUsersById.get(String(r.recipient_id))?.email || 'Member tertentu') : '<b>Semua member</b>';
-    const who = hd ? cz('', true) : esc(staffEmailById.get(String(r.sender_id)) || '(akun staf dicabut)');
-    const acts = canAct
-      ? `<button class="btn ${r.active ? '' : 'teal'}" type="button" data-chat-act="toggle" data-id="${esc(r.id)}">${r.active ? 'Tarik' : 'Aktifkan lagi'}</button> <button class="btn danger" type="button" data-chat-act="del" data-id="${esc(r.id)}">Hapus</button>`
-      : '—';
-    return `<tr><td class="row-note" style="white-space:normal;min-width:220px">${esc(r.body)}</td><td>${rec}</td><td>${who}<br><small style="${SOFT}">${esc(ROLE_LABEL[normRole(r.sender_role)])}</small></td><td>${esc(dt(r.created_at))}</td><td>${chatReads.get(r.id) || 0}</td><td>${flagBadge(r.active, 'Aktif', 'Ditarik')}</td><td>${acts}</td></tr>`;
-  }).join('') : '<tr><td colspan="7">Belum ada chat yang dikirim.</td></tr>';
-}
-$('chatForm')?.addEventListener('change', e => {
-  if (e.target.name === 'to') $('chatRecipientField').classList.toggle('hidden', e.target.value !== 'one');
-});
-$('chatForm')?.addEventListener('submit', async e => {
-  e.preventDefault();
-  const f = e.target.elements, body = f.body.value.trim();
-  if (!body) return;
-  let rid = null, remail = '';
-  if (f.to.value === 'one') {
-    remail = f.recipient.value.trim();
-    const u = chatMembers.find(x => String(x.email || '').toLowerCase() === remail.toLowerCase());
-    if (!u) { alert('Pilih email member aktif dari daftar.'); return; }
-    rid = u.id; remail = u.email;
-  }
-  if (!confirm(rid ? `Kirim chat ke ${remail}?` : `Kirim chat ke SEMUA member aktif (${chatMembers.length} member)?`)) return;
-  const { error } = await supabaseClient.from('chat_messages').insert({ sender_id: myUserId, sender_role: myRole, recipient_id: rid, body, active: true });
-  if (error) { alert('Gagal mengirim: ' + error.message); return; }
-  e.target.reset(); $('chatRecipientField').classList.add('hidden');
-  loadChat();
-});
-document.addEventListener('click', async e => {
-  const b = e.target.closest('[data-chat-act]');
-  if (!b) return;
-  const r = chatData.find(x => String(x.id) === String(b.dataset.id));
-  if (!r) return;
-  let error;
-  if (b.dataset.chatAct === 'del') {
-    if (!confirm('Hapus chat ini beserta data pembacanya?')) return;
-    ({ error } = await supabaseClient.from('chat_messages').delete().eq('id', r.id));
-  } else {
-    ({ error } = await supabaseClient.from('chat_messages').update({ active: !r.active }).eq('id', r.id));
-  }
-  if (error) { alert('Gagal: ' + error.message); return; }
-  loadChat();
-});
-$('chatRefresh')?.addEventListener('click', loadChat);
 
 // ---------- Live Chat dua arah (staf memulai dan menutup) ----------
 let lcThreads = [], lcCur = null, lcMsgs = [], lcUsers = new Map(), lcMembers = [], lcRT = false, lcUnread = 0, lcSeq = 0;
@@ -1944,7 +1926,7 @@ async function lcLoadUsers() {
   $('lcMemberList').innerHTML = lcMembers.map(u => `<option value="${esc(u.email)}"></option>`).join('');
 }
 async function lcFetchThreads(render) {
-  const { data, error } = await supabaseClient.from('chat_threads').select('*').order('created_at', { ascending: false }).limit(300);
+  const { data, error } = await supabaseClient.from('chat_threads').select('*').neq('status', 'closed').order('created_at', { ascending: false }).limit(300);
   if (error) { if (render) $('lcList').innerHTML = `<div class="lc-item" style="color:var(--red)">Gagal memuat chat_threads: ${esc(error.message)}. Jalankan livechat_update.sql.</div>`; return false; }
   lcThreads = (data || []).sort((a, b) => new Date(b.last_msg_at || b.created_at) - new Date(a.last_msg_at || a.created_at));
   lcRecount();
@@ -1952,14 +1934,15 @@ async function lcFetchThreads(render) {
   return true;
 }
 function lcRenderList() {
-  const f = $('lcFilter').value;
-  const list = lcThreads.filter(t => f === 'all' || t.status === f);
+  const q = ($('lcUserFilter')?.value || '').trim().toLowerCase();
+  const list = lcThreads.filter(t => !q || lcEmail(t.member_id).toLowerCase().includes(q));
   $('lcCount').textContent = `${list.length} dari ${lcThreads.length} chat`;
+  const fl = $('lcFilterList'); if (fl) fl.innerHTML = [...new Set(lcThreads.map(t => lcEmail(t.member_id)))].map(e => `<option value="${esc(e)}"></option>`).join('');
   $('lcList').innerHTML = list.length ? list.map(t => `<div class="lc-item${t.id === lcCur ? ' active' : ''}" data-lc="${esc(t.id)}">
     <b>${esc(lcEmail(t.member_id))}${lcUnreadOf(t) ? '<span class="lc-dot">baru</span>' : ''}</b>
     <span><span class="status ${t.status === 'open' ? 'active' : 'expired'}">${t.status === 'open' ? 'Terbuka' : 'Ditutup'}</span></span>
     <small>${esc(t.last_msg_preview || '(belum ada pesan)')}</small><small>${esc(dt(t.last_msg_at || t.created_at))}</small></div>`).join('')
-    : '<div class="lc-item" style="cursor:default">Belum ada chat pada filter ini.</div>';
+    : '<div class="lc-item" style="cursor:default">Belum ada chat terbuka untuk filter ini.</div>';
 }
 function lcRenderConv() {
   const box = $('lcConv'), t = lcThreads.find(x => x.id === lcCur);
@@ -1998,7 +1981,8 @@ async function loadLiveChat() {
   await lcRefresh();
 }
 $('lcList')?.addEventListener('click', e => { const it = e.target.closest('[data-lc]'); if (it) lcOpen(it.dataset.lc); });
-$('lcFilter')?.addEventListener('change', lcRenderList);
+$('lcUserFilter')?.addEventListener('input', lcRenderList);
+$('lcUserClear')?.addEventListener('click', () => { $('lcUserFilter').value = ''; lcRenderList(); });
 $('lcRefresh')?.addEventListener('click', loadLiveChat);
 document.addEventListener('keydown', e => {
   if (e.target.id === 'lcSendText' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('lcSendForm')?.requestSubmit(); }
@@ -2016,10 +2000,18 @@ document.addEventListener('submit', async e => {
 document.addEventListener('click', async e => {
   if (e.target.id !== 'lcCloseBtn') return;
   const t = lcThreads.find(x => x.id === lcCur); if (!t) return;
-  if (!confirm(`Tutup chat dengan ${lcEmail(t.member_id)}? Member tidak bisa membalas lagi dan widget chat di portalnya hilang.`)) return;
+  if (!confirm(`Tutup chat dengan ${lcEmail(t.member_id)}?\n\nSeluruh percakapan akan DIHAPUS permanen dan widget chat di portal member langsung hilang.`)) return;
+  e.target.disabled = true;
   const { error } = await supabaseClient.from('chat_threads').update({ status: 'closed' }).eq('id', t.id);
-  if (error) { alert('Gagal menutup chat: ' + error.message); return; }
+  if (error) { alert('Gagal menutup chat: ' + error.message); e.target.disabled = false; return; }
+  // Trigger database (livechat_autodelete.sql) menghapus percakapan. Cadangan: hapus dari sini bila trigger belum dipasang.
+  await new Promise(r => setTimeout(r, 600));   // beri waktu agar widget member menerima status "ditutup"
+  await supabaseClient.from('chat_thread_messages').delete().eq('thread_id', t.id);
+  await supabaseClient.from('chat_threads').delete().eq('id', t.id);
+  lcCur = null; lcMsgs = [];
   await lcRefresh();
+  const chk = await supabaseClient.from('chat_threads').select('id').eq('id', t.id).maybeSingle();
+  if (chk.data) alert('Chat sudah ditutup tetapi belum terhapus. Jalankan livechat_autodelete.sql di Supabase agar chat yang ditutup terhapus otomatis.');
 });
 $('lcStartForm')?.addEventListener('submit', async e => {
   e.preventDefault();
@@ -2032,14 +2024,14 @@ $('lcStartForm')?.addEventListener('submit', async e => {
     if (ins.error.code === '23505') {
       const ex = lcThreads.find(t => String(t.member_id) === String(u.id) && t.status === 'open');
       alert('Member ini sudah punya chat yang masih terbuka. Percakapan itu dibuka.');
-      if (ex) { lcCur = ex.id; $('lcFilter').value = 'open'; await lcRefresh(); }
+      if (ex) { lcCur = ex.id; await lcRefresh(); }
       return;
     }
     alert('Gagal memulai chat: ' + ins.error.message); return;
   }
   const m = await supabaseClient.from('chat_thread_messages').insert({ thread_id: ins.data.id, body: first });
   if (m.error) alert('Chat dibuat, tetapi pesan pertama gagal dikirim: ' + m.error.message);
-  e.target.reset(); lcCur = ins.data.id; $('lcFilter').value = 'open';
+  e.target.reset(); lcCur = ins.data.id;
   await lcRefresh();
 });
 // Badge "baru" di menu dan penyegaran otomatis saat member membalas
@@ -2335,10 +2327,10 @@ const MENU_GROUPS = [
   ['Overview', [['overview', 'Dashboard'], ['trade-entries', 'Statistik Entry Posisi'], ['analytics', 'Statistik Pengguna']]],
   ['Lisensi & Client', [['licenses', 'Akun MT5'], ['ib', 'Verifikasi IB'], ['history', 'Riwayat Lisensi'], ['auth-users', 'Konfirmasi User Auth'], ['visitor-history', 'Riwayat Pengunjung']]],
   ['Website Content', [['cms', 'Landing Page CMS'], ['models', 'Model AI & Pengumuman'], ['faq', 'FAQ & Panduan']]],
-  ['Komunikasi', [['livechat', 'Live Chat'], ['chat', 'Chat Popup (satu arah)'], ['broadcast', 'Broadcast Pesan'], ['social', 'Sosial']]]
+  ['Komunikasi', [['livechat', 'Live Chat'], ['broadcast', 'Broadcast Pesan'], ['social', 'Sosial']]]
 ];
 const MENU_ALL = MENU_GROUPS.flatMap(g => g[1].map(m => m[0]));
-const MENU_DEFAULT = ['overview', 'licenses', 'ib', 'history', 'auth-users', 'chat', 'livechat'];   // dipakai bila admin belum pernah mengatur
+const MENU_DEFAULT = ['overview', 'licenses', 'ib', 'history', 'auth-users', 'livechat'];   // dipakai bila admin belum pernah mengatur
 let admPages = new Map();   // user_id -> array menu (tidak ada = belum diatur)
 
 function openMenuDialog(userId) {
@@ -2349,7 +2341,7 @@ function openMenuDialog(userId) {
   ov.className = 'mod-ov';
   ov.innerHTML = `<div class="mod-dlg" role="dialog" aria-modal="true" aria-labelledby="menuT" style="max-width:520px;max-height:90vh;overflow:auto">
     <h3 id="menuT">Hak akses menu</h3>
-    <p class="mod-sub">${esc(a.email || a.user_id)} (Moderator). Menu yang tidak dicentang tidak tampil di halaman moderator.</p>
+    <p class="mod-sub">${esc(a.email || a.user_id)} (${esc(ROLE_LABEL[a.role] || a.role)}). Menu yang tidak dicentang tidak tampil di konsol akun ini.</p>
     ${MENU_GROUPS.map(g => `<div style="margin:12px 0 4px;font-size:12px;letter-spacing:.08em;color:var(--muted,#8fa0b8)">${esc(g[0].toUpperCase())}</div>` +
       g[1].map(m => `<label style="display:flex;gap:10px;align-items:center;font-weight:500;margin:6px 0"><input type="checkbox" data-menu="${m[0]}" ${cur.has(m[0]) ? 'checked' : ''}> ${esc(m[1])}</label>`).join('')).join('')}
     <div class="mod-act" style="justify-content:space-between;flex-wrap:wrap">
@@ -2367,7 +2359,7 @@ function openMenuDialog(userId) {
   ov.addEventListener('mousedown', e => { if (e.target === ov) done(); });
   ov.querySelector('#menuYes').onclick = async () => {
     const pages = boxes().filter(b => b.checked).map(b => b.dataset.menu);
-    if (!pages.length && !confirm('Tidak ada menu yang dicentang. Moderator ini tidak akan bisa membuka menu apa pun. Lanjutkan?')) return;
+    if (!pages.length && !confirm('Tidak ada menu yang dicentang. Akun ini tidak akan bisa membuka menu apa pun. Lanjutkan?')) return;
     const { error } = await supabaseClient.rpc('admin_set_pages', { p_user_id: userId, p_pages: pages });
     if (error) { alert('Gagal menyimpan: ' + error.message + '\nJalankan sql/moderation_update.sql di Supabase.'); return; }
     done(); loadAdmins();
