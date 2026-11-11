@@ -553,7 +553,7 @@ table.ff td.cd { white-space: nowrap; text-align: center; }
    <p class="sub">Berita High Impact dari Forex Factory. Pilih <b>PAIR ENTRY</b> untuk setiap berita &mdash; pilihan ini menjadi konfigurasi EA kamu.</p>
    <div class="card" id="ffAcctBox" style="display:none;margin-bottom:14px">
      <label style="margin:0">Akun MT5 untuk konfigurasi<select id="ffAcct"></select></label>
-     <p class="k" style="margin:8px 0 0">Kamu punya lebih dari satu akun aktif. Pair entry di bawah disimpan terpisah untuk setiap akun.</p>
+     <p class="k" id="ffAcctNote" style="margin:8px 0 0">Pair entry di bawah disimpan terpisah untuk setiap akun.</p>
    </div>
    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
      <button class="btn alt" id="ffDefaultBtn" type="button">Isi pair default</button>
@@ -573,7 +573,7 @@ table.ff td.cd { white-space: nowrap; text-align: center; }
    <p class="sub">Atur <b>Lot, Layer, SL, TP, dan TS</b> untuk setiap pair. EA memakai nilai ini setiap kali entry pada pair tersebut. Kolom kosong = EA memakai form di dashboard. SL, TP, dan TS dalam points.</p>
    <div class="card" id="pfAcctBox" style="display:none;margin-bottom:14px">
      <label style="margin:0">Akun MT5 untuk konfigurasi<select id="pfAcct"></select></label>
-     <p class="k" style="margin:8px 0 0">Form disimpan terpisah untuk setiap akun yang punya izin.</p>
+     <p class="k" id="pfAcctNote" style="margin:8px 0 0">Form disimpan terpisah untuk setiap akun yang punya izin.</p>
    </div>
    <div class="card">
      <div class="wrap"><table class="pf"><thead><tr><th>Pair</th><th>Lot</th><th>Layer</th><th>SL (pts)</th><th>TP (pts)</th><th>TS (pts)</th></tr></thead><tbody id="pfBody"><tr><td colspan="6" class="empty">Memuat...</td></tr></tbody></table></div>
@@ -1130,38 +1130,59 @@ function ffGroup(events){
 }
 
 const FF_PAIRS=['XAUUSD','EURUSD','GBPUSD','USDJPY','AUDUSD','NZDUSD','USDCAD','USDCHF'];
-let ffCfg={}, ffDays=[], ffLoaded=false, ffAcct='';
+let ffCfg={}, ffDays=[], ffLoaded=false, ffAcct='', ffToken=0;
 
 function ffActiveAccounts(){
   return (typeof licenses!=='undefined'?licenses:[]).filter(l=>String(l.status||'').toLowerCase()==='active');
 }
+// Pemilih akun selalu tampil bila ada akun aktif, agar jelas config milik akun yang mana
 function ffAcctInit(){
   const act=ffActiveAccounts();
-  const box=document.getElementById('ffAcctBox'), sel=document.getElementById('ffAcct');
+  const box=document.getElementById('ffAcctBox'), sel=document.getElementById('ffAcct'), note=document.getElementById('ffAcctNote');
   const nums=act.map(l=>String(l.account_number));
   if(!nums.includes(ffAcct)) ffAcct=nums[0]||'';
-  if(act.length>=2){
+  if(act.length){
     sel.innerHTML=act.map(l=>`<option value="${ffEsc(l.account_number)}"${String(l.account_number)===ffAcct?' selected':''}>${ffEsc(l.account_number)} — ${ffEsc(l.broker||'')}</option>`).join('');
+    sel.value=ffAcct;
+    note.textContent=act.length>=2
+      ? 'Pair entry disimpan terpisah untuk setiap akun. Pilih akun di atas sebelum mengatur pair.'
+      : 'Pair entry di bawah berlaku untuk akun ini.';
     box.style.display='';
   } else {
     box.style.display='none';
   }
 }
+// Kunci pilihan selama config akun dimuat, supaya tidak tersimpan ke akun yang salah
+function ffSetBusy(b){
+  document.querySelectorAll('#ffBody select[data-ev]').forEach(x=>x.disabled=b);
+  const a=document.getElementById('ffAcct'); if(a) a.disabled=b;
+}
 
 async function ffLoadCfg(){
-  ffCfg={};
-  if(!db||!user) return;
-  const {data}=await db.from('news_pair_config').select('slot_key,pair').eq('account_number',ffAcct);
-  (data||[]).forEach(r=>ffCfg[r.slot_key]=r.pair);
+  const my=++ffToken, acct=ffAcct, cfg={};
+  if(!db||!user||!acct){ ffCfg=cfg; return; }
+  const {data,error}=await db.from('news_pair_config').select('slot_key,pair,account_number')
+    .eq('user_id',user.id).eq('account_number',acct);
+  if(my!==ffToken) return;                 // ada permintaan akun yang lebih baru; hasil ini diabaikan
+  if(error) throw error;
+  (data||[]).forEach(r=>{ if(String(r.account_number)===String(acct)) cfg[r.slot_key]=r.pair; });   // hanya baris milik akun ini
+  ffCfg=cfg;
 }
-async function ffSave(ev,pair){
+async function ffSave(ev,pair,acct){
   const m=document.getElementById('ffMsg');
-  if(!db||!user){m.textContent='Login dulu untuk menyimpan config.';return;}
+  if(!db||!user){m.style.color='var(--down)';m.textContent='Login dulu untuk menyimpan config.';return;}
+  if(!acct){m.style.color='var(--down)';m.textContent='Belum ada akun aktif untuk disimpan.';return;}
   let res;
-  if(!pair){ res=await db.from('news_pair_config').delete().eq('user_id',user.id).eq('account_number',ffAcct).eq('slot_key',ev.id); delete ffCfg[ev.id]; }
-  else { res=await db.from('news_pair_config').upsert({user_id:user.id,account_number:ffAcct,slot_key:ev.id,event_time:ev.event_time,currency:ev.currency,pair,updated_at:new Date().toISOString()},{onConflict:'user_id,account_number,slot_key'}); ffCfg[ev.id]=pair; }
+  if(!pair){
+    res=await db.from('news_pair_config').delete().eq('user_id',user.id).eq('account_number',acct).eq('slot_key',ev.id);
+    if(!res.error&&acct===ffAcct) delete ffCfg[ev.id];
+  } else {
+    res=await db.from('news_pair_config').upsert({user_id:user.id,account_number:acct,slot_key:ev.id,event_time:ev.event_time,currency:ev.currency,pair,updated_at:new Date().toISOString()},{onConflict:'user_id,account_number,slot_key'}).select('account_number');
+    if(!res.error && (res.data||[]).some(r=>String(r.account_number)!==String(acct))) res={error:{message:'baris tersimpan ke akun lain. Periksa constraint tabel news_pair_config (jalankan news_config_per_account.sql).'}};
+    if(!res.error&&acct===ffAcct) ffCfg[ev.id]=pair;
+  }
   m.style.color=res.error?'var(--down)':'var(--up)';
-  m.textContent=res.error?('Gagal simpan: '+res.error.message):'Tersimpan ✓';
+  m.textContent=res.error?('Gagal simpan akun '+acct+': '+res.error.message):('Tersimpan untuk akun '+acct+' ✓');
 }
 function ffRender(){
   const body=document.getElementById('ffBody');
@@ -1185,7 +1206,7 @@ function ffRender(){
     });
   });
   body.innerHTML=html;
-  body.querySelectorAll('select[data-ev]').forEach(el=>el.addEventListener('change',()=>ffSave(evs[el.dataset.ev],el.value)));
+  body.querySelectorAll('select[data-ev]').forEach(el=>el.addEventListener('change',()=>ffSave(evs[el.dataset.ev],el.value,ffAcct)));
 }
 async function ffInit(force){
   if(ffLoaded&&!force) return;
@@ -1241,7 +1262,10 @@ document.getElementById('ffResetBtn').addEventListener('click',async()=>{
 document.getElementById('ffAcct').addEventListener('change',async e=>{
   ffAcct=e.target.value;
   const m=document.getElementById('ffMsg'); m.style.color='var(--muted)'; m.textContent='Memuat config akun '+ffAcct+'...';
-  await ffLoadCfg(); ffRender(); m.textContent='';
+  ffSetBusy(true);
+  try{ await ffLoadCfg(); }
+  catch(err){ ffSetBusy(false); m.style.color='var(--down)'; m.textContent='Gagal memuat config akun '+ffAcct+': '+err.message; return; }
+  ffRender(); ffSetBusy(false); m.textContent='';
 });
 document.getElementById('ffDefaultBtn').addEventListener('click',async()=>{
   if(!db||!user) return;
@@ -1257,19 +1281,31 @@ const PF_PAIRS=['XAUUSD','EURUSD','GBPUSD','USDJPY','AUDUSD','NZDUSD','USDCAD','
 const PF_KEYS=['lot','layer','sl','tp','ts'];
 const PF_PH={lot:'Default EA',layer:'Default EA',sl:'Default EA',tp:'Default EA',ts:'Default EA'};
 let pfAcct='', pfCfg={};
+function pfActive(){
+  return (typeof licenses!=='undefined'?licenses:[]).filter(l=>String(l.status||'').toLowerCase()==='active');
+}
 function pfAccounts(){
-  return (typeof licenses!=='undefined'?licenses:[]).filter(l=>String(l.status||'').toLowerCase()==='active' && l.form_access===true);
+  return pfActive().filter(l=>l.form_access===true);
 }
 function pfMsg(txt,color){const m=document.getElementById('pfMsg'); m.style.color=color||'var(--muted)'; m.textContent=txt||'';}
-// Menu hanya tampil bila minimal satu akun aktif punya izin
+// Menu hanya tampil bila minimal satu akun aktif punya izin. Pemilih akun menampilkan semua akun aktif;
+// akun tanpa izin ditandai dan tidak bisa dipilih.
 function pfRefreshMenu(){
-  const acc=pfAccounts();
+  const acc=pfAccounts(), all=pfActive();
   document.getElementById('menuPairForm').style.display=acc.length?'':'none';
   const nums=acc.map(l=>String(l.account_number));
   const prev=pfAcct;
   if(!nums.includes(pfAcct)) pfAcct=nums[0]||'';
-  document.getElementById('pfAcct').innerHTML=acc.map(l=>`<option value="${ffEsc(l.account_number)}"${String(l.account_number)===pfAcct?' selected':''}>${ffEsc(l.account_number)} — ${ffEsc(l.broker||'')}</option>`).join('');
-  document.getElementById('pfAcctBox').style.display=acc.length>=2?'':'none';
+  const sel=document.getElementById('pfAcct');
+  sel.innerHTML=all.map(l=>{
+    const ok=l.form_access===true;
+    return `<option value="${ffEsc(l.account_number)}"${String(l.account_number)===pfAcct?' selected':''}${ok?'':' disabled'}>${ffEsc(l.account_number)} — ${ffEsc(l.broker||'')}${ok?'':' (belum ada izin)'}</option>`;
+  }).join('');
+  if(pfAcct) sel.value=pfAcct;
+  document.getElementById('pfAcctBox').style.display=acc.length?'':'none';
+  document.getElementById('pfAcctNote').textContent=all.length>=2
+    ? 'Form disimpan terpisah untuk setiap akun. Hanya akun yang diberi izin admin yang bisa dipilih.'
+    : 'Form berlaku untuk akun ini.';
   if(!acc.length){
     if(document.getElementById('pairform').classList.contains('active')) document.querySelector('.menu[data-view="home"]').click();
     return;
@@ -1283,20 +1319,27 @@ function pfRender(){
   }).join('');
   document.querySelectorAll('#pfBody input').forEach(el=>el.addEventListener('change',()=>pfSaveRow(el.closest('tr'))));
 }
+let pfToken=0;
 async function pfLoad(){
+  const my=++pfToken, acct=pfAcct;
+  document.querySelectorAll('#pfBody input').forEach(i=>i.disabled=true);   // kunci input selama data akun dimuat
+  document.getElementById('pfAcct').disabled=true;
+  const done=()=>{ document.getElementById('pfAcct').disabled=false; };
   pfCfg={};
-  if(!db||!user||!pfAcct){pfRender();return;}
-  pfMsg('Memuat...');
-  const {data,error}=await db.from('pair_form_config').select('pair,lot,layer,sl,tp,ts').eq('account_number',pfAcct);
+  if(!db||!user||!acct){pfRender();done();return;}
+  pfMsg('Memuat form akun '+acct+'...');
+  const {data,error}=await db.from('pair_form_config').select('pair,lot,layer,sl,tp,ts,account_number').eq('user_id',user.id).eq('account_number',acct);
+  if(my!==pfToken) return;               // ada permintaan akun yang lebih baru
+  done();
   if(error){pfMsg('Gagal memuat form: '+error.message,'var(--down)');pfRender();return;}
-  (data||[]).forEach(r=>pfCfg[r.pair]=r);
+  (data||[]).forEach(r=>{ if(String(r.account_number)===String(acct)) pfCfg[r.pair]=r; });
   pfRender(); pfMsg('');
 }
 async function pfSaveRow(tr){
-  const pair=tr.dataset.pair;
+  const pair=tr.dataset.pair, acct=pfAcct;
   if(!db||!user){pfMsg('Login dulu untuk menyimpan.','var(--down)');return;}
-  if(!pfAccounts().some(l=>String(l.account_number)===pfAcct)){pfMsg('Akun ini belum memiliki izin EA Pair Setting.','var(--down)');return;}
-  const row={user_id:user.id,account_number:pfAcct,pair,updated_at:new Date().toISOString()};
+  if(!pfAccounts().some(l=>String(l.account_number)===acct)){pfMsg('Akun ini belum memiliki izin EA Pair Setting.','var(--down)');return;}
+  const row={user_id:user.id,account_number:acct,pair,updated_at:new Date().toISOString()};
   let any=false;
   for(const k of PF_KEYS){
     const inp=tr.querySelector(`input[data-k="${k}"]`);
@@ -1309,10 +1352,10 @@ async function pfSaveRow(tr){
     any=true;
   }
   let res;
-  if(!any){res=await db.from('pair_form_config').delete().eq('user_id',user.id).eq('account_number',pfAcct).eq('pair',pair); delete pfCfg[pair];}
-  else{res=await db.from('pair_form_config').upsert(row,{onConflict:'user_id,account_number,pair'}); pfCfg[pair]=row;}
-  if(res.error) pfMsg('Gagal simpan '+pair+': '+res.error.message,'var(--down)');
-  else pfMsg(pair+' tersimpan ✓','var(--up)');
+  if(!any){res=await db.from('pair_form_config').delete().eq('user_id',user.id).eq('account_number',acct).eq('pair',pair); if(acct===pfAcct) delete pfCfg[pair];}
+  else{res=await db.from('pair_form_config').upsert(row,{onConflict:'user_id,account_number,pair'}); if(acct===pfAcct) pfCfg[pair]=row;}
+  if(res.error) pfMsg('Gagal simpan '+pair+' (akun '+acct+'): '+res.error.message,'var(--down)');
+  else pfMsg(pair+' tersimpan untuk akun '+acct+' ✓','var(--up)');
 }
 document.getElementById('menuPairForm').addEventListener('click',()=>{ pfLoad(); });
 document.getElementById('pfAcct').addEventListener('change',e=>{ pfAcct=e.target.value; pfLoad(); });
