@@ -735,15 +735,18 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
 
           closeModal();
 
-          // Jabatan: Owner dan Admin -> pilih Portal, Moderator, atau Admin. Moderator -> pilih Portal atau Moderator.
-          // Member biasa (tanpa jabatan) -> langsung ke portal.
+          // Akun dikenali dulu, lalu tujuan ditentukan menurut jabatan:
+          //   Member biasa -> langsung ke portal member
+          //   Moderator    -> pilih Portal atau Moderator
+          //   Admin        -> pilih Portal atau Admin
+          //   Owner        -> pilih Portal, Moderator, atau Admin
           let isAdmin = false, role = null;
           try {
             const { data: adminFlag } = await supabaseClient.rpc('is_kingtherious_admin');
             isAdmin = adminFlag === true;
             if (isAdmin) {
               const { data: r, error: re } = await supabaseClient.rpc('admin_my_role');
-              role = (!re && r) ? normRole(r) : 'owner';   // peran tak terbaca: tampilkan semua pilihan, halaman tujuan tetap diperiksa database
+              role = (!re && r) ? normRole(r) : 'moderator';   // peran tak terbaca: pakai hak terendah
             }
           } catch (_) { /* jika gagal, anggap member biasa */ }
 
@@ -769,9 +772,11 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
     function showRoleChoice(portalUrl, user, role) {
       const ov = document.getElementById('roleModal');
       const label = { owner: 'Owner', admin: 'Admin', moderator: 'Moderator' }[role] || 'staf';
-      if (!ov) { window.location.href = role === 'moderator' ? 'moderator.html' : 'useradmin.html'; return; }
+      if (!ov) { window.location.href = portalUrl; return; }
       document.getElementById('roleDesc').textContent = 'Akun ini terdaftar sebagai ' + label + '. Pilih tujuan masuk.';
-      document.getElementById('goAdmin').style.display = (role === 'owner' || role === 'admin') ? '' : 'none';   // Moderator tidak punya Admin Console
+      // Tombol yang tampil sesuai jabatan
+      const show = { owner: ['goPortal', 'goModerator', 'goAdmin'], admin: ['goPortal', 'goAdmin'], moderator: ['goPortal', 'goModerator'] }[role] || ['goPortal'];
+      ['goPortal', 'goModerator', 'goAdmin'].forEach(id => { document.getElementById(id).style.display = show.includes(id) ? '' : 'none'; });
       ov.classList.add('active'); ov.setAttribute('aria-hidden', 'false');
       document.getElementById('goPortal').onclick = () => { window.location.href = portalUrl; };
       document.getElementById('goModerator').onclick = () => { window.location.href = 'moderator.html'; };
