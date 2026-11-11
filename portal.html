@@ -314,6 +314,22 @@ table.ff td.cd { white-space: nowrap; text-align: center; }
 .scl-date { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 8px; }
 
 /* ---------- Pesan broadcast admin ---------- */
+.lc-fab{position:fixed;right:18px;bottom:18px;z-index:900;width:58px;height:58px;border-radius:50%;border:1px solid var(--border-strong);background:var(--accent);color:var(--accent-ink);font-size:24px;cursor:pointer;box-shadow:var(--shadow)}
+.lc-badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--down);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.lc-panel{position:fixed;right:18px;bottom:18px;z-index:901;width:min(380px,calc(100vw - 24px));height:min(520px,calc(100vh - 36px));display:flex;flex-direction:column;background:var(--card);border:1px solid var(--accent);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.lc-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.lc-head b{display:block;font-size:14px}.lc-head small{color:var(--muted);font-size:11px}
+.lc-x{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:16px;line-height:1}
+.lc-body{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.lc-msg{max-width:82%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word;background:var(--card-2);border:1px solid var(--border);align-self:flex-start}
+.lc-msg.me{align-self:flex-end;background:color-mix(in srgb,var(--accent) 16%,transparent);border-color:var(--border-strong)}
+.lc-msg small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.lc-empty{color:var(--muted);font-size:13px;text-align:center;padding:20px}
+.lc-form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+.lc-form textarea{flex:1;resize:none;background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:9px;font:inherit;font-size:13px}
+.lc-closed{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
+.lc-err{color:var(--down);font-size:11px;padding:0 12px 6px}
+.lc-fab[hidden],.lc-panel[hidden],.lc-badge[hidden],.lc-form[hidden],.lc-closed[hidden],.lc-err[hidden]{display:none!important}
 .bc-overlay { position: fixed; inset: 0; background: var(--overlay); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 18px; }
 .bc-overlay.show { display: flex; }
 .bc-box { background: var(--card); border: 1px solid var(--accent); border-radius: 18px; width: 100%; max-width: 520px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: var(--shadow); }
@@ -610,6 +626,14 @@ table.ff td.cd { white-space: nowrap; text-align: center; }
  </div>
 </div>
 
+<button class="lc-fab" id="lcFab" type="button" aria-label="Buka chat dengan tim" hidden>💬<span class="lc-badge" id="lcBadge" hidden>0</span></button>
+<div class="lc-panel" id="lcPanel" role="dialog" aria-label="Chat dengan tim NEOTHRONE" hidden>
+ <div class="lc-head"><div><b>Chat dengan Tim NEOTHRONE</b><small id="lcSub">Dibalas oleh tim kami</small></div><button class="lc-x" id="lcMin" type="button" aria-label="Kecilkan chat">&minus;</button></div>
+ <div class="lc-body" id="lcBody"></div>
+ <div class="lc-err" id="lcErr" hidden></div>
+ <form class="lc-form" id="lcForm"><textarea id="lcInput" rows="2" maxlength="1000" placeholder="Tulis balasan..." required></textarea><button class="btn" type="submit">Kirim</button></form>
+ <div class="lc-closed" id="lcClosedBar" hidden><span>Percakapan ini sudah ditutup oleh tim.</span><button class="btn" id="lcDone" type="button">Selesai</button></div>
+</div>
 <div class="bc-overlay" id="chatOverlay" role="dialog" aria-modal="true" aria-labelledby="chatTitle">
  <div class="bc-box">
   <div class="bc-head"><h2 id="chatTitle">💬 Chat dari Tim NEOTHRONE</h2><span class="bc-count" id="chatCount"></span></div>
@@ -843,6 +867,7 @@ async function init() {
   await loadStats();
   await loadBroadcasts();
   await loadChats();
+  await lcLoad();
   await loadSocial();
   startRealtime();
 }
@@ -949,6 +974,86 @@ function chatRemove(id) {
   if ($('chatOverlay').classList.contains('show')) chatRefreshCount();
 }
 
+// ===== Live Chat dua arah: dibuka dan ditutup oleh staf =====
+// Widget mengambang hanya muncul saat staf memulai chat dan hilang setelah staf menutupnya.
+let lcThread = null, lcMsgs = [], lcIds = new Set(), lcOpenUI = false, lcUnread = 0;
+const LC_ROLE = { owner: 'Owner', admin: 'Admin', moderator: 'Moderator' };
+function lcRender() {
+  const body = $('lcBody');
+  body.innerHTML = lcMsgs.map(m => {
+    const mine = m.sender_type === 'member';
+    return `<div class="lc-msg ${mine ? 'me' : ''}">${esc(m.body)}<small>${mine ? 'Kamu' : esc((LC_ROLE[m.sender_role] || 'Tim') + ' NEOTHRONE')} · ${esc(bcFmt(m.created_at))}</small></div>`;
+  }).join('') || '<div class="lc-empty">Belum ada pesan.</div>';
+  body.scrollTop = body.scrollHeight;
+  const closed = lcThread?.status === 'closed';
+  $('lcClosedBar').hidden = !closed; $('lcForm').hidden = closed;
+  $('lcSub').textContent = closed ? 'Percakapan ditutup' : 'Dibalas oleh tim kami';
+}
+function lcBadge() { const b = $('lcBadge'); b.textContent = lcUnread; b.hidden = lcUnread <= 0 || lcOpenUI; }
+function lcTouch() { if (lcThread && lcThread.status === 'open') db.rpc('chat_member_touch', { p_thread: lcThread.id }).then(() => {}); }
+function lcSetOpen(on) {
+  lcOpenUI = on && !!lcThread;
+  $('lcPanel').hidden = !lcOpenUI;
+  $('lcFab').hidden = lcOpenUI || !lcThread;
+  if (lcOpenUI) { lcUnread = 0; lcTouch(); setTimeout(() => { if (!$('lcForm').hidden) $('lcInput').focus(); }, 60); }
+  lcBadge();
+}
+function lcClear() {
+  lcThread = null; lcMsgs = []; lcIds = new Set(); lcUnread = 0; lcOpenUI = false;
+  $('lcPanel').hidden = true; $('lcFab').hidden = true; lcBadge();
+}
+async function lcAttach(t) {
+  lcThread = t; lcIds = new Set(); lcMsgs = [];
+  const { data, error } = await db.from('chat_thread_messages').select('*').eq('thread_id', t.id).order('created_at', { ascending: true }).limit(300);
+  if (error) { console.error('Gagal memuat pesan chat:', error); return false; }
+  if (!lcThread || lcThread.id !== t.id) return false;
+  lcMsgs = data || []; lcMsgs.forEach(m => lcIds.add(m.id));
+  lcRender();
+  return true;
+}
+async function lcLoad() {
+  if (!db || !user) return;
+  const { data, error } = await db.from('chat_threads').select('*').eq('member_id', user.id).eq('status', 'open').order('created_at', { ascending: false }).limit(1);
+  if (error) { console.error('Live chat tidak tersedia:', error); return; }
+  const t = data && data[0];
+  if (!t) return;
+  if (!(await lcAttach(t))) return;
+  const unread = t.last_staff_msg_at && (!t.member_seen_at || new Date(t.last_staff_msg_at) > new Date(t.member_seen_at));
+  if (unread) lcSetOpen(true); else { $('lcFab').hidden = false; lcBadge(); }
+}
+async function lcThreadEvent(t) {
+  if (!t || !user || t.member_id !== user.id) return;
+  if (t.status === 'open' && (!lcThread || lcThread.id !== t.id)) {   // staf memulai chat baru
+    lcThread = t;
+    if (await lcAttach(t)) lcSetOpen(true);
+    return;
+  }
+  if (lcThread && lcThread.id === t.id) {
+    const justClosed = lcThread.status === 'open' && t.status === 'closed';
+    lcThread = t; lcRender();
+    if (justClosed) lcSetOpen(true);                                   // tampilkan info ditutup
+  }
+}
+function lcMsgEvent(m) {
+  if (!m || !lcThread || m.thread_id !== lcThread.id || lcIds.has(m.id)) return;
+  lcIds.add(m.id); lcMsgs.push(m); lcRender();
+  if (m.sender_type === 'staff') { if (lcOpenUI) lcTouch(); else { lcUnread++; lcBadge(); } }
+}
+$('lcFab').addEventListener('click', () => lcSetOpen(true));
+$('lcMin').addEventListener('click', () => lcSetOpen(false));
+$('lcDone').addEventListener('click', lcClear);
+$('lcInput').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('lcForm').requestSubmit(); } });
+$('lcForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const ta = $('lcInput'), body = ta.value.trim();
+  if (!body || !lcThread || lcThread.status !== 'open') return;
+  ta.disabled = true; $('lcErr').hidden = true;
+  const { data, error } = await db.from('chat_thread_messages').insert({ thread_id: lcThread.id, body }).select().single();
+  ta.disabled = false;
+  if (error) { $('lcErr').textContent = 'Gagal mengirim: ' + error.message; $('lcErr').hidden = false; return; }
+  ta.value = ''; lcMsgEvent(data); ta.focus();
+});
+
 // ===== Sosial media (bagian bawah Ringkasan) =====
 const SOCIAL_BUCKET = 'social-icons';
 async function loadSocial() {
@@ -980,6 +1085,9 @@ function startRealtime() {
       if (p.new.active === false) chatRemove(p.new.id); else await chatMarkRead(chatRender([p.new]));   // chat ditarik / diaktifkan lagi
     })
     .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_messages' }, p => chatRemove(p.old.id))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_threads' }, p => lcThreadEvent(p.new))
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'chat_threads' }, p => lcThreadEvent(p.new))
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_thread_messages' }, p => lcMsgEvent(p.new))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'social_links' }, () => loadSocial())
     .subscribe();
 }
