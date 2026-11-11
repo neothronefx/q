@@ -183,6 +183,22 @@ table th{background:var(--th-bg)}
 .mod-dlg textarea:focus{outline:2px solid var(--accent,#2dd4bf);outline-offset:1px}
 .mod-row{display:flex;justify-content:space-between;gap:10px;margin-top:6px;min-height:16px;color:var(--muted,#8fa0b8)}
 .mod-act{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+<style>
+.lc-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;margin-top:14px}
+.lc-list{border:1px solid var(--border);border-radius:12px;background:var(--card-2);max-height:560px;overflow:auto}
+.lc-item{padding:12px;border-bottom:1px solid var(--border);cursor:pointer;display:grid;gap:3px}
+.lc-item:last-child{border-bottom:0}.lc-item:hover,.lc-item.active{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.lc-item b{font-size:13px;word-break:break-all}.lc-item small{color:var(--muted);font-size:11px;white-space:normal}
+.lc-dot{display:inline-block;min-width:18px;padding:1px 7px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:10px;font-weight:800;margin-left:6px}
+.lc-conv{border:1px solid var(--border);border-radius:12px;background:var(--card);display:flex;flex-direction:column;min-height:420px;max-height:560px}
+.lc-conv-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.lc-msgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.lc-msg{max-width:78%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word;background:var(--card-2);border:1px solid var(--border)}
+.lc-msg.staff{align-self:flex-end;background:color-mix(in srgb,var(--accent) 14%,transparent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.lc-msg small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.lc-send{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border)}
+.lc-send textarea{flex:1;resize:none;background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:10px;font:inherit}
+@media(max-width:900px){.lc-wrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -238,7 +254,8 @@ table th{background:var(--th-bg)}
       <button data-page="faq"><span class="ico">?</span> FAQ & Panduan</button>
     </nav></div>
     <div><div class="nav-label">KOMUNIKASI</div><nav class="side-nav">
-      <button data-page="chat"><span class="ico">💬</span> Chat Member</button>
+      <button data-page="livechat"><span class="ico">🗨</span> Live Chat</button>
+      <button data-page="chat"><span class="ico">💬</span> Chat Popup</button>
       <button data-page="broadcast"><span class="ico">✉</span> Broadcast Pesan</button>
       <button data-page="social"><span class="ico">☍</span> Sosial</button>
     </nav></div>
@@ -559,6 +576,17 @@ table th{background:var(--th-bg)}
         <div class="notice">Bagian Sosial Media di bawah Ringkasan hanya tampil jika sudah ada minimal satu tautan. Portal member harus membaca tabel <b>social_links</b> untuk menampilkannya.</div>
       </section>
     </section>
+    <section class="page hidden" id="page-livechat"><section class="panel">
+      <div class="panel-head"><h2>Live Chat dengan member</h2><button class="btn" type="button" id="lcRefresh">Muat ulang</button></div>
+      <form id="lcStartForm" class="toolbar" style="align-items:flex-start">
+        <input name="recipient" list="lcMemberList" placeholder="Email member aktif" autocomplete="off" required style="min-width:240px"><datalist id="lcMemberList"></datalist>
+        <input name="first" placeholder="Pesan pertama" required maxlength="1000" style="flex:1;min-width:240px">
+        <button class="btn teal" type="submit">Mulai chat</button>
+      </form>
+      <div class="toolbar" style="margin-top:14px"><select id="lcFilter" aria-label="Filter chat"><option value="open">Chat terbuka</option><option value="closed">Chat ditutup</option><option value="all">Semua chat</option></select><span id="lcCount" class="row-note" style="min-width:0"></span></div>
+      <div class="lc-wrap"><div class="lc-list" id="lcList"></div><div class="lc-conv" id="lcConv"></div></div>
+      <div class="notice">Chat hanya dimulai dan ditutup oleh staf (Owner, Admin, Moderator). Selama chat terbuka, widget chat mengambang muncul di portal member dan member bisa membalas. Setelah ditutup, widget hilang dan member tidak bisa membalas lagi. Semua staf yang punya menu ini bisa membalas dan menutup percakapan. Jalankan <b>livechat_update.sql</b> sekali di Supabase.</div>
+    </section></section>
     <section class="page hidden" id="page-chat"><section class="panel">
       <div class="panel-head"><h2>Chat ke member</h2><button class="btn" type="button" id="chatRefresh">Muat ulang</button></div>
       <form id="chatForm">
@@ -655,7 +683,8 @@ const titles = {
  faq:['FAQ & Panduan','Kelola bantuan, instalasi EA, dan konfigurasi WebRequest.'],
  settings:['API & Keamanan','Periksa RLS, akses publik, dan kunci yang dipakai.'],
  admins:['Manajemen Jabatan','Atur Owner, Admin, dan Moderator beserta menu yang boleh dibuka.'],
- chat:['Chat Member','Kirim chat ke member; tampil sebagai popup di portal.'],
+ livechat:['Live Chat','Chat dua arah dengan member; dibuka dan ditutup oleh staf.'],
+ chat:['Chat Popup','Kirim pesan satu arah ke member; tampil sebagai popup di portal.'],
  broadcast:['Broadcast Pesan','Kirim pesan langsung ke seluruh member portal.'],
  social:['Sosial','Kelola sosial media dan hyperlink yang tampil di Ringkasan.']
 };
@@ -693,6 +722,8 @@ function showPage(name){
     loadSecurity();
   } else if (name === 'admins') {
     loadAdmins();
+  } else if (name === 'livechat') {
+    loadLiveChat();
   } else if (name === 'chat') {
     loadChat();
   } else if (name === 'broadcast') {
@@ -1377,7 +1408,7 @@ async function loadEaList() {
     return;
   }
   const groups = new Map();
-  (st.data || []).filter(f => f && f.name && EA_EXT.test(f.name)).forEach(f => {
+  (st.data || []).filter(f => f.id && EA_EXT.test(f.name)).forEach(f => {
     const k = f.name.replace(EA_EXT, '');
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(f);
@@ -1814,6 +1845,7 @@ async function applyRole() {
   await loadStaffRanks();
   const pill = $('rolePill');
   if (pill) pill.textContent = '● ' + ROLE_LABEL[myRole];
+  startLiveChatRealtime();
 }
 
 // ---------- Chat ke member (popup di portal member) ----------
@@ -1888,6 +1920,143 @@ document.addEventListener('click', async e => {
   loadChat();
 });
 $('chatRefresh')?.addEventListener('click', loadChat);
+
+// ---------- Live Chat dua arah (staf memulai dan menutup) ----------
+let lcThreads = [], lcCur = null, lcMsgs = [], lcUsers = new Map(), lcMembers = [], lcRT = false, lcUnread = 0, lcSeq = 0;
+const lcRoleTxt = r => (r === 'member' ? 'Member' : (ROLE_LABEL[normRole(r)] || 'Staf'));
+const lcEmail = id => lcUsers.get(String(id))?.email || 'Member';
+const lcUnreadOf = t => t.status === 'open' && !!t.last_member_msg_at && (!t.staff_seen_at || new Date(t.last_member_msg_at) > new Date(t.staff_seen_at));
+function lcAllowed() { return typeof MOD_ALLOWED === 'undefined' || !MOD_ALLOWED || MOD_ALLOWED.includes('livechat'); }
+function lcBadge() {
+  document.querySelectorAll('[data-page="livechat"]').forEach(b => {
+    let s = b.querySelector('.lc-dot');
+    if (lcUnread > 0) { if (!s) { s = document.createElement('span'); s.className = 'lc-dot'; b.appendChild(s); } s.textContent = lcUnread; }
+    else if (s) s.remove();
+  });
+}
+function lcRecount() { lcUnread = lcThreads.filter(lcUnreadOf).length; lcBadge(); }
+async function lcLoadUsers() {
+  const us = await supabaseClient.rpc('admin_list_all_users');
+  if (us.error) return;
+  const all = us.data || [];
+  lcUsers = new Map(all.map(u => [String(u.id), u]));
+  lcMembers = all.filter(u => authStatusOf(u) === 'active' && !staffRoleById.has(String(u.id)) && !staffRoleByEmail.has(String(u.email || '').toLowerCase()));
+  $('lcMemberList').innerHTML = lcMembers.map(u => `<option value="${esc(u.email)}"></option>`).join('');
+}
+async function lcFetchThreads(render) {
+  const { data, error } = await supabaseClient.from('chat_threads').select('*').order('created_at', { ascending: false }).limit(300);
+  if (error) { if (render) $('lcList').innerHTML = `<div class="lc-item" style="color:var(--red)">Gagal memuat chat_threads: ${esc(error.message)}. Jalankan livechat_update.sql.</div>`; return false; }
+  lcThreads = (data || []).sort((a, b) => new Date(b.last_msg_at || b.created_at) - new Date(a.last_msg_at || a.created_at));
+  lcRecount();
+  if (render) lcRenderList();
+  return true;
+}
+function lcRenderList() {
+  const f = $('lcFilter').value;
+  const list = lcThreads.filter(t => f === 'all' || t.status === f);
+  $('lcCount').textContent = `${list.length} dari ${lcThreads.length} chat`;
+  $('lcList').innerHTML = list.length ? list.map(t => `<div class="lc-item${t.id === lcCur ? ' active' : ''}" data-lc="${esc(t.id)}">
+    <b>${esc(lcEmail(t.member_id))}${lcUnreadOf(t) ? '<span class="lc-dot">baru</span>' : ''}</b>
+    <span><span class="status ${t.status === 'open' ? 'active' : 'expired'}">${t.status === 'open' ? 'Terbuka' : 'Ditutup'}</span></span>
+    <small>${esc(t.last_msg_preview || '(belum ada pesan)')}</small><small>${esc(dt(t.last_msg_at || t.created_at))}</small></div>`).join('')
+    : '<div class="lc-item" style="cursor:default">Belum ada chat pada filter ini.</div>';
+}
+function lcRenderConv() {
+  const box = $('lcConv'), t = lcThreads.find(x => x.id === lcCur);
+  if (!t) { box.innerHTML = '<div class="placeholder" style="margin:14px">Pilih percakapan di kiri, atau mulai chat baru dengan form di atas.</div>'; return; }
+  const open = t.status === 'open';
+  const msgs = lcMsgs.map(m => {
+    const staff = m.sender_type === 'staff';
+    const who = staff ? `${esc(lcRoleTxt(m.sender_role))} · ${isHigher(m.sender_id, null) ? cz('', true) : esc(staffEmailById.get(String(m.sender_id)) || 'staf')}` : esc(lcEmail(t.member_id));
+    return `<div class="lc-msg ${staff ? 'staff' : ''}">${esc(m.body)}<small>${who} · ${esc(dt(m.created_at))}</small></div>`;
+  }).join('') || '<div class="placeholder">Belum ada pesan.</div>';
+  const info = `Dibuka oleh ${esc(lcRoleTxt(t.opened_role))}${open ? '' : ' · ditutup oleh ' + esc(lcRoleTxt(t.closed_role)) + ' ' + esc(dt(t.closed_at))}`;
+  box.innerHTML = `<div class="lc-conv-head"><div><b>${esc(lcEmail(t.member_id))}</b><br><small style="color:var(--muted)">${info}</small></div>${open ? '<button class="btn danger" type="button" id="lcCloseBtn">Tutup chat</button>' : '<span class="status expired">Ditutup</span>'}</div>
+    <div class="lc-msgs" id="lcMsgs">${msgs}</div>
+    ${open ? '<form class="lc-send" id="lcSendForm"><textarea id="lcSendText" rows="2" maxlength="1000" placeholder="Tulis balasan... (Enter kirim, Shift+Enter baris baru)" required></textarea><button class="btn teal" type="submit">Kirim</button></form>'
+           : '<div class="notice" style="margin:12px">Chat ini sudah ditutup. Mulai chat baru jika perlu.</div>'}`;
+  const ms = $('lcMsgs'); if (ms) ms.scrollTop = ms.scrollHeight;
+}
+async function lcOpen(id) {
+  const seq = ++lcSeq; lcCur = id;
+  const { data, error } = await supabaseClient.from('chat_thread_messages').select('*').eq('thread_id', id).order('created_at', { ascending: true }).limit(500);
+  if (seq !== lcSeq) return;
+  if (error) { alert('Gagal memuat pesan: ' + error.message); return; }
+  lcMsgs = data || [];
+  const t = lcThreads.find(x => x.id === id);
+  if (t && lcUnreadOf(t)) {
+    t.staff_seen_at = new Date(Math.max(Date.now(), new Date(t.last_member_msg_at).getTime())).toISOString();   // sementara; nilai resmi diisi server
+    supabaseClient.rpc('chat_staff_touch', { p_thread: id }).then(() => {});
+    lcRecount();
+  }
+  lcRenderList(); lcRenderConv();
+}
+async function lcRefresh() { await lcFetchThreads(true); if (lcCur && lcThreads.some(t => t.id === lcCur)) await lcOpen(lcCur); else { lcCur = null; lcRenderConv(); } }
+async function loadLiveChat() {
+  $('lcList').innerHTML = '<div class="lc-item" style="cursor:default">Memuat...</div>';
+  await lcLoadUsers();
+  await lcRefresh();
+}
+$('lcList')?.addEventListener('click', e => { const it = e.target.closest('[data-lc]'); if (it) lcOpen(it.dataset.lc); });
+$('lcFilter')?.addEventListener('change', lcRenderList);
+$('lcRefresh')?.addEventListener('click', loadLiveChat);
+document.addEventListener('keydown', e => {
+  if (e.target.id === 'lcSendText' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('lcSendForm')?.requestSubmit(); }
+});
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'lcSendForm') return;
+  e.preventDefault();
+  const ta = $('lcSendText'), body = ta.value.trim();
+  if (!body || !lcCur) return;
+  ta.disabled = true;
+  const { error } = await supabaseClient.from('chat_thread_messages').insert({ thread_id: lcCur, body });
+  if (error) { alert('Gagal mengirim: ' + error.message); ta.disabled = false; return; }
+  await lcRefresh(); $('lcSendText')?.focus();
+});
+document.addEventListener('click', async e => {
+  if (e.target.id !== 'lcCloseBtn') return;
+  const t = lcThreads.find(x => x.id === lcCur); if (!t) return;
+  if (!confirm(`Tutup chat dengan ${lcEmail(t.member_id)}? Member tidak bisa membalas lagi dan widget chat di portalnya hilang.`)) return;
+  const { error } = await supabaseClient.from('chat_threads').update({ status: 'closed' }).eq('id', t.id);
+  if (error) { alert('Gagal menutup chat: ' + error.message); return; }
+  await lcRefresh();
+});
+$('lcStartForm')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target.elements, em = f.recipient.value.trim().toLowerCase(), first = f.first.value.trim();
+  const u = lcMembers.find(x => String(x.email || '').toLowerCase() === em);
+  if (!u) { alert('Pilih email member aktif dari daftar.'); return; }
+  if (!confirm(`Mulai chat dengan ${u.email}? Widget chat muncul di portal member sampai Anda menutupnya.`)) return;
+  const ins = await supabaseClient.from('chat_threads').insert({ member_id: u.id }).select('id').single();
+  if (ins.error) {
+    if (ins.error.code === '23505') {
+      const ex = lcThreads.find(t => String(t.member_id) === String(u.id) && t.status === 'open');
+      alert('Member ini sudah punya chat yang masih terbuka. Percakapan itu dibuka.');
+      if (ex) { lcCur = ex.id; $('lcFilter').value = 'open'; await lcRefresh(); }
+      return;
+    }
+    alert('Gagal memulai chat: ' + ins.error.message); return;
+  }
+  const m = await supabaseClient.from('chat_thread_messages').insert({ thread_id: ins.data.id, body: first });
+  if (m.error) alert('Chat dibuat, tetapi pesan pertama gagal dikirim: ' + m.error.message);
+  e.target.reset(); lcCur = ins.data.id; $('lcFilter').value = 'open';
+  await lcRefresh();
+});
+// Badge "baru" di menu dan penyegaran otomatis saat member membalas
+async function lcOnChange() {
+  if (typeof currentPage !== 'undefined' && currentPage === 'livechat') await lcRefresh();
+  else await lcFetchThreads(false);
+}
+function startLiveChatRealtime() {
+  if (lcRT || !lcAllowed()) return;
+  lcRT = true;
+  let tm; const kick = () => { clearTimeout(tm); tm = setTimeout(lcOnChange, 400); };
+  supabaseClient.channel('livechat-staff')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'chat_threads' }, kick)
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_thread_messages' }, kick)
+    .subscribe();
+  lcOnChange();
+}
 
 // ---------- Sosial media: nama + gambar + hyperlink ----------
 const SOCIAL_BUCKET = 'social-icons';
@@ -2166,10 +2335,10 @@ const MENU_GROUPS = [
   ['Overview', [['overview', 'Dashboard'], ['trade-entries', 'Statistik Entry Posisi'], ['analytics', 'Statistik Pengguna']]],
   ['Lisensi & Client', [['licenses', 'Akun MT5'], ['ib', 'Verifikasi IB'], ['history', 'Riwayat Lisensi'], ['auth-users', 'Konfirmasi User Auth'], ['visitor-history', 'Riwayat Pengunjung']]],
   ['Website Content', [['cms', 'Landing Page CMS'], ['models', 'Model AI & Pengumuman'], ['faq', 'FAQ & Panduan']]],
-  ['Komunikasi', [['chat', 'Chat Member'], ['broadcast', 'Broadcast Pesan'], ['social', 'Sosial']]]
+  ['Komunikasi', [['livechat', 'Live Chat'], ['chat', 'Chat Popup (satu arah)'], ['broadcast', 'Broadcast Pesan'], ['social', 'Sosial']]]
 ];
 const MENU_ALL = MENU_GROUPS.flatMap(g => g[1].map(m => m[0]));
-const MENU_DEFAULT = ['overview', 'licenses', 'ib', 'history', 'auth-users', 'chat'];   // dipakai bila admin belum pernah mengatur
+const MENU_DEFAULT = ['overview', 'licenses', 'ib', 'history', 'auth-users', 'chat', 'livechat'];   // dipakai bila admin belum pernah mengatur
 let admPages = new Map();   // user_id -> array menu (tidak ada = belum diatur)
 
 function openMenuDialog(userId) {
