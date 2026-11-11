@@ -255,7 +255,7 @@ table th{background:var(--th-bg)}
     </nav></div>
     <div><div class="nav-label">KOMUNIKASI</div><nav class="side-nav">
       <button data-page="livechat"><span class="ico">🗨</span> Live Chat</button>
-      
+      <button data-page="chat"><span class="ico">💬</span> Chat Popup</button>
       <button data-page="broadcast"><span class="ico">✉</span> Broadcast Pesan</button>
       <button data-page="social"><span class="ico">☍</span> Sosial</button>
     </nav></div>
@@ -339,15 +339,6 @@ table th{background:var(--th-bg)}
         </div>
       </section>
     </section>
-      <div class="toolbar trade-pagination" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px">
-        <small id="tradePageInfo" style="color:var(--muted)">0 data</small>
-        <div style="display:flex;gap:8px;align-items:center">
-          <label for="tradePageSize">Baris per halaman</label>
-          <select id="tradePageSize" aria-label="Baris per halaman"><option>10</option><option>25</option><option selected>50</option></select>
-          <button class="btn" type="button" id="tradePrev">Sebelumnya</button>
-          <button class="btn" type="button" id="tradeNext">Berikutnya</button>
-        </div>
-      </div>
 
     <section class="page hidden" id="page-analytics">
       <section class="panel">
@@ -607,7 +598,7 @@ table th{background:var(--th-bg)}
         <button class="btn teal" type="submit">Kirim chat</button>
       </form>
       <h3 style="margin:22px 0 10px;font-size:14px">Riwayat chat</h3>
-      <div class="toolbar" style="margin:10px 0"><input id="chatUserFilter" placeholder="Filter chat berdasarkan email member..." aria-label="Filter chat per user"></div><div class="table-wrap"><table><thead><tr><th>Pesan</th><th>Penerima</th><th>Pengirim</th><th>Dikirim</th><th>Dibaca</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="chatBody"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Pesan</th><th>Penerima</th><th>Pengirim</th><th>Dikirim</th><th>Dibaca</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="chatBody"><tr><td colspan="7">Memuat data...</td></tr></tbody></table></div>
       <div class="notice">Chat tampil sebagai popup di portal member yang sedang membuka portal (Supabase Realtime). Member yang sedang offline melihatnya saat login. Portal harus membaca tabel <b>chat_messages</b> (lihat <b>portal_chat_popup.js</b>). Moderator hanya bisa menarik atau menghapus chat miliknya; Admin dan Owner bisa mengelola semua chat.</div>
     </section></section>
     <section class="page hidden" id="page-broadcast"><section class="panel">
@@ -990,38 +981,30 @@ async function loadTradeEntries() {
   renderTradeTable(data);
 }
 
-let tradePage = 1;
 function renderTradeTable(rows) {
   const tbody = document.getElementById('tradeEntriesBody');
-  if (!tbody) return;
-  const size = Math.min(50, Math.max(1, Number(document.getElementById('tradePageSize')?.value || 50)));
-  const total = rows.length, pages = Math.max(1, Math.ceil(total / size));
-  tradePage = Math.min(tradePage, pages);
-  const pageRows = rows.slice((tradePage - 1) * size, tradePage * size);
-  const info = document.getElementById('tradePageInfo');
-  if (info) info.textContent = total ? `Menampilkan ${(tradePage-1)*size+1}–${Math.min(tradePage*size,total)} dari ${total} entry · halaman ${tradePage}/${pages}` : '0 data';
-  const prev = document.getElementById('tradePrev'), next = document.getElementById('tradeNext');
-  if (prev) prev.disabled = tradePage <= 1;
-  if (next) next.disabled = tradePage >= pages;
   tbody.innerHTML = '';
-  pageRows.forEach(row => {
+  rows.forEach(row => {
     const profitColor = row.profit >= 0 ? 'color: var(--teal);' : 'color: var(--red);';
     const formattedTime = formatOpenTime(row.time);
     const normalizedStatus = /^(close|closed|closed_position|complete|completed)$/i.test(String(row.status || '')) ? 'CLOSED' : (String(row.status || 'FLOATING').toUpperCase());
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${esc(row.account_id)}</td><td>${esc(row.account_name)}</td><td><strong>${esc(row.symbol)}</strong></td>
-      <td>${esc(row.ticket)}</td><td><span class="status ${String(row.type).toLowerCase() === 'buy' ? 'active' : 'blocked'}">${esc(row.type)}</span></td>
-      <td>${esc(row.volume)}</td><td>${esc(formattedTime)}</td><td style="${profitColor} font-weight:bold;">$${Number(row.profit).toFixed(2)}</td>
-      <td><span class="status ${normalizedStatus === 'CLOSED' ? 'expired' : 'active'}">${esc(normalizedStatus)}</span></td>`;
+      <td>${esc(row.account_id)}</td>
+      <td>${esc(row.account_name)}</td>
+      <td><strong>${esc(row.symbol)}</strong></td>
+      <td>${esc(row.ticket)}</td>
+      <td><span class="status ${String(row.type).toLowerCase() === 'buy' ? 'active' : 'blocked'}">${esc(row.type)}</span></td>
+      <td>${esc(row.volume)}</td>
+      <td>${esc(formattedTime)}</td>
+      <td style="${profitColor} font-weight: bold;">$${Number(row.profit).toFixed(2)}</td>
+      <td><span class="status ${normalizedStatus === 'CLOSED' ? 'expired' : 'active'}">${esc(normalizedStatus)}</span></td>
+    `;
     tbody.appendChild(tr);
   });
-}
+  }
 
-document.getElementById('tradePageSize')?.addEventListener('change', () => { tradePage = 1; applyTradeFilters(); });
-document.getElementById('tradePrev')?.addEventListener('click', () => { tradePage = Math.max(1, tradePage - 1); applyTradeFilters(); });
-document.getElementById('tradeNext')?.addEventListener('click', () => { tradePage++; applyTradeFilters(); });
-function applyTradeFilters() {
+  function applyTradeFilters() {
   if (!window._allTradeEntries) return;
   const accVal = document.getElementById('filterAccount').value.toLowerCase();
   const symVal = document.getElementById('filterSymbol').value.toLowerCase();
@@ -1039,10 +1022,10 @@ function applyTradeFilters() {
   renderTradeTable(filtered);
 }
 
-document.getElementById('filterAccount')?.addEventListener('input', () => { tradePage=1; applyTradeFilters(); });
-document.getElementById('filterSymbol')?.addEventListener('input', () => { tradePage=1; applyTradeFilters(); });
-document.getElementById('filterType')?.addEventListener('change', () => { tradePage=1; applyTradeFilters(); });
-document.getElementById('filterStatus')?.addEventListener('change', () => { tradePage=1; applyTradeFilters(); });
+document.getElementById('filterAccount')?.addEventListener('input', applyTradeFilters);
+document.getElementById('filterSymbol')?.addEventListener('input', applyTradeFilters);
+document.getElementById('filterType')?.addEventListener('change', applyTradeFilters);
+document.getElementById('filterStatus')?.addEventListener('change', applyTradeFilters);
 // Refresh daftar tiket secara berkala. Status CLOSED hanya akan muncul setelah callback EA/backend memperbarui kolom status di Supabase.
 setInterval(() => { if (document.getElementById('page-trade-entries') && !document.getElementById('page-trade-entries').classList.contains('hidden')) loadTradeEntries(); }, 15000);
 
@@ -1857,7 +1840,7 @@ document.addEventListener('change', async e => {
 var ROLE_PAGES = {};   // Owner = semua menu. Admin dan Moderator dialihkan ke moderator.html.
 async function applyRole() {
   const { data, error } = await supabaseClient.rpc('admin_my_role');
-  myRole = (!error && data) ? normRole(data) : 'moderator';
+  myRole = (!error && data) ? normRole(data) : 'owner';   // jika fungsi belum dibuat, jangan mengunci pemilik
   if (myRole !== 'owner') { location.replace('moderator.html'); return; }
   await loadStaffRanks();
   const pill = $('rolePill');
@@ -1937,7 +1920,6 @@ document.addEventListener('click', async e => {
   loadChat();
 });
 $('chatRefresh')?.addEventListener('click', loadChat);
-$('chatUserFilter')?.addEventListener('input', renderChat);
 
 // ---------- Live Chat dua arah (staf memulai dan menutup) ----------
 let lcThreads = [], lcCur = null, lcMsgs = [], lcUsers = new Map(), lcMembers = [], lcRT = false, lcUnread = 0, lcSeq = 0;
@@ -2034,12 +2016,9 @@ document.addEventListener('submit', async e => {
 document.addEventListener('click', async e => {
   if (e.target.id !== 'lcCloseBtn') return;
   const t = lcThreads.find(x => x.id === lcCur); if (!t) return;
-  if (!confirm(`Tutup chat dengan ${lcEmail(t.member_id)} dan hapus seluruh isi percakapan? Tindakan ini permanen.`)) return;
-  const delMsgs = await supabaseClient.from('chat_thread_messages').delete().eq('thread_id', t.id);
-  if (delMsgs.error) { alert('Gagal menghapus pesan: ' + delMsgs.error.message); return; }
-  const { error } = await supabaseClient.from('chat_threads').delete().eq('id', t.id);
-  if (error) { alert('Pesan sudah dihapus, tetapi thread gagal dihapus: ' + error.message); return; }
-  lcCur = null; lcMsgs = [];
+  if (!confirm(`Tutup chat dengan ${lcEmail(t.member_id)}? Member tidak bisa membalas lagi dan widget chat di portalnya hilang.`)) return;
+  const { error } = await supabaseClient.from('chat_threads').update({ status: 'closed' }).eq('id', t.id);
+  if (error) { alert('Gagal menutup chat: ' + error.message); return; }
   await lcRefresh();
 });
 $('lcStartForm')?.addEventListener('submit', async e => {
