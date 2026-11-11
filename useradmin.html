@@ -1377,7 +1377,7 @@ async function loadEaList() {
     return;
   }
   const groups = new Map();
-  (st.data || []).filter(f => f.id && EA_EXT.test(f.name)).forEach(f => {
+  (st.data || []).filter(f => f && f.name && EA_EXT.test(f.name)).forEach(f => {
     const k = f.name.replace(EA_EXT, '');
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(f);
