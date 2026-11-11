@@ -1356,7 +1356,7 @@ $('eaUsageEvent')?.addEventListener('change', renderEaUsage);
 $('eaUsageRefresh')?.addEventListener('click', loadEaUsage);
 
 // ===== Management EA: publish/private, pesan maintenance/pengumuman, upload panduan penggunaan =====
-const EA_BUCKET = 'EA PUBLISH'; // bucket Supabase Storage tempat file EA disimpan (harus persis sama)
+const EA_BUCKET = 'ea-publish'; // bucket Supabase Storage tempat file EA disimpan (harus persis sama)
 const EA_FOLDER = '';           // isi jika EA berada di dalam folder, mis. 'ea'
 const EA_EXT = /\.(ex5|ex4|mq5|mq4)$/i;
 const GUIDE_BUCKET = 'ea-guides';                 // dibuat oleh sql/neothrone_update.sql
