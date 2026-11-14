@@ -150,7 +150,7 @@ h1, h2, h3 { font-family: var(--font-head); }
 .header-clock-box {
   display: flex; flex-direction: column; gap: 2px;
   background: var(--card); border: 1px solid var(--border-strong);
-  padding: 8px 16px; border-radius: 14px; min-width: 210px;
+  padding: 6px 16px; border-radius: 14px; min-width: 190px;
   box-shadow: var(--shadow);
 }
 .clock-header-row {
@@ -484,20 +484,11 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
       <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Ganti tema">☀</button>
       <!-- Live Clock Widget -->
       <div class="header-clock-box">
-        <div class="clock-header-row">
-          <span class="chrono-label">
-            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            TIME
-          </span>
-          <span class="chrono-status">
-            <span class="live-dot-indicator"></span> <span class="live-text">LIVE</span>
-          </span>
-        </div>
+        <div class="clock-date" id="liveClockDate">Sunday · 11 October 2026</div>
         <div class="clock-main-row">
           <div class="clock-time" id="liveClockTime">00:00:00</div>
           <div class="clock-ampm" id="liveClockAmPm"></div>
         </div>
-        <div class="clock-date" id="liveClockDate">Sunday · 11 October 2026</div>
       </div>
 
       <!-- Tombol Pemicu Modal Masuk / Daftar -->
