@@ -221,23 +221,19 @@ table.ff td.num{white-space:nowrap}
     <div class="page-header">
       <div>
         <h1>Performa Live Trading</h1>
-        <p>Data real-time yang disinkronkan langsung dari Expert Advisor (EA) MT5.</p>
+        <p>Posisi terakhir yang ditutup oleh Expert Advisor (EA) MT5, diperbarui otomatis.</p>
       </div>
     </div>
 
     <!-- Ringkasan Statistik Keseluruhan -->
     <div class="summary-grid">
       <div class="summary-card">
-        <div class="summary-label">Rata-rata Monthly Profit</div>
-        <div class="summary-value" id="avgMonthly">-</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-label">Rata-rata Win Rate</div>
-        <div class="summary-value" id="avgWinRate">-</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-label">Total Akun Terhubung</div>
+        <div class="summary-label">Akun dengan Close Terakhir</div>
         <div class="summary-value" id="totalAccounts">-</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Waktu Close Terbaru</div>
+        <div class="summary-value" id="lastCloseTime" style="font-size:20px">-</div>
       </div>
     </div>
 
@@ -267,17 +263,16 @@ table.ff td.num{white-space:nowrap}
         <thead>
           <tr>
             <th>ID Akun</th>
-            <th>Total Profit</th>
-            <th>Avg. Monthly</th>
-            <th>Win Rate</th>
-            <th>Entry Posisi</th>
-            <th>Pair Terakhir</th>
-            <th>Profit Terakhir</th>
+            <th>Posisi</th>
+            <th>Pair</th>
+            <th>Lot</th>
+            <th>Profit Close</th>
+            <th>Waktu Close</th>
           </tr>
         </thead>
         <tbody id="statsTableBody">
           <tr>
-            <td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Menghubungkan ke database Supabase...</td>
+            <td colspan="6" style="text-align: center; color: var(--muted); padding: 30px;">Memuat close terakhir...</td>
           </tr>
         </tbody>
       </table>
@@ -463,115 +458,68 @@ window.NT_CONFIG = {
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let allTradingData = [];
 
+    // Hanya CLOSE TERAKHIR tiap akun (ID disamarkan di server). Data lain tidak diambil ke browser.
     async function fetchLiveTradingData() {
       const tbody = document.getElementById('statsTableBody');
       try {
-        const { data, error } = await supabaseClient
-          .from('trading_stats')
-          .select('*')
-          .order('updated_at', { ascending: false });
-
+        const { data, error } = await supabaseClient.rpc('public_last_closes', { p_limit: 200 });
         if (error) throw error;
-
-        if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Belum ada data akun MT5 yang masuk di database.</td></tr>`;
-          document.getElementById('avgMonthly').textContent = '0%';
-          document.getElementById('avgWinRate').textContent = '0%';
+        allTradingData = data || [];
+        if (!allTradingData.length) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px;">Belum ada posisi yang ditutup.</td></tr>`;
           document.getElementById('totalAccounts').textContent = '0';
+          document.getElementById('lastCloseTime').textContent = '-';
           return;
         }
-
-        allTradingData = data;
         renderTable(allTradingData);
-
       } catch (err) {
         console.error('Gagal mengambil data:', err.message);
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--red); padding: 30px;">Gagal memuat data dari Supabase. Pastikan URL dan Anon Key sudah diisi dengan benar.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--red);padding:30px;">Gagal memuat data. Coba muat ulang halaman.</td></tr>`;
       }
     }
 
-    // Fungsi Sensor ID Akun (Menyisakan 3 digit terakhir)
-    function maskAccountId(accountId) {
-      if (!accountId) return '-';
-      const strId = String(accountId);
-      if (strId.length <= 3) return strId;
-      const maskedPart = '*'.repeat(strId.length - 3);
-      const visiblePart = strId.slice(-3);
-      return maskedPart + visiblePart;
-    }
+    const fmtClose = iso => {
+      const d = new Date(iso);
+      return isNaN(d) ? '-' : d.toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    };
+    const escHtml = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-    // Fungsi Render Tabel & Kalkulasi Ringkasan Berdasarkan Data Aktif
     function renderTable(data) {
       const tbody = document.getElementById('statsTableBody');
       tbody.innerHTML = '';
-
-      if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 30px;">Tidak ada data yang sesuai dengan pencarian atau filter.</td></tr>`;
-        document.getElementById('avgMonthly').textContent = '0%';
-        document.getElementById('avgWinRate').textContent = '0%';
+      if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px;">Tidak ada data yang sesuai dengan pencarian atau filter.</td></tr>`;
         document.getElementById('totalAccounts').textContent = '0';
+        document.getElementById('lastCloseTime').textContent = '-';
         return;
       }
-
-      let sumMonthly = 0;
-      let sumWinRate = 0;
-
       data.forEach(row => {
-        sumMonthly += Number(row.monthly_profit || 0);
-        sumWinRate += Number(row.win_rate || 0);
-
-        let positionBadge = '-';
-        if (row.entry_position) {
-          const pos = row.entry_position.toUpperCase();
-          positionBadge = `<span class="${pos === 'BUY' ? 'badge-buy' : 'badge-sell'}">${pos}</span>`;
-        }
-
-        const totalProfitClass = Number(row.total_profit) >= 0 ? 'profit-pos' : 'profit-neg';
-        const lastProfitClass = Number(row.last_entry_profit) >= 0 ? 'profit-pos' : 'profit-neg';
-
+        const pos = String(row.type || '').toUpperCase();
+        const posBadge = pos ? `<span class="${pos === 'BUY' ? 'badge-buy' : 'badge-sell'}">${escHtml(pos)}</span>` : '-';
+        const p = Number(row.profit || 0);
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td style="font-weight: 700; color: var(--cyan);">${maskAccountId(row.account_id)}</td>
-          <td class="${totalProfitClass}">$${Number(row.total_profit || 0).toLocaleString()}</td>
-          <td>+${Number(row.monthly_profit || 0)}%</td>
-          <td>${Number(row.win_rate || 0)}%</td>
-          <td>${positionBadge}</td>
-          <td style="font-weight: 600;">${row.last_entry_pair || '-'}</td>
-          <td class="${lastProfitClass}">$${Number(row.last_entry_profit || 0).toLocaleString()}</td>
-        `;
+          <td style="font-weight:700;color:var(--cyan);">${escHtml(row.account_label)}</td>
+          <td>${posBadge}</td>
+          <td style="font-weight:600;">${escHtml(row.symbol || '-')}</td>
+          <td>${row.volume != null ? Number(row.volume).toFixed(2) : '-'}</td>
+          <td class="${p >= 0 ? 'profit-pos' : 'profit-neg'}">${p >= 0 ? '+' : '-'}$${Math.abs(p).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          <td>${fmtClose(row.closed_at)}</td>`;
         tbody.appendChild(tr);
       });
-
-      const count = data.length;
-      document.getElementById('avgMonthly').textContent = `+${(sumMonthly / count).toFixed(1)}%`;
-      document.getElementById('avgWinRate').textContent = `${(sumWinRate / count).toFixed(1)}%`;
-      document.getElementById('totalAccounts').textContent = count;
+      document.getElementById('totalAccounts').textContent = data.length;
+      document.getElementById('lastCloseTime').textContent = fmtClose(data[0].closed_at);
     }
 
-    // Fungsi Filter Data berdasarkan Search input & Dropdown Bulan
+    // Filter: pencarian 3 digit terakhir ID + bulan close
     function filterData() {
-      const searchValue = document.getElementById('searchAccountId').value.trim().toLowerCase();
-      const selectedMonth = document.getElementById('filterMonth').value;
-
-      const filtered = allTradingData.filter(row => {
-        const masked = maskAccountId(row.account_id).toLowerCase();
-        const fullId = String(row.account_id || '').toLowerCase();
-        
-        // Cocokkan pencarian dengan ID asli maupun yang tersensor
-        const matchesSearch = masked.includes(searchValue) || fullId.includes(searchValue);
-
-        // Filter berdasarkan bulan dari kolom waktu (asumsi kolom waktu bernama `updated_at` atau `created_at` berformat ISO string)
-        let matchesMonth = true;
-        if (selectedMonth) {
-          const rowDate = new Date(row.updated_at || row.created_at);
-          const monthStr = String(rowDate.getMonth() + 1).padStart(2, '0');
-          matchesMonth = (monthStr === selectedMonth);
-        }
-
-        return matchesSearch && matchesMonth;
-      });
-
-      renderTable(filtered);
+      const q = document.getElementById('searchAccountId').value.trim().toLowerCase();
+      const m = document.getElementById('filterMonth').value;
+      renderTable(allTradingData.filter(row => {
+        const okSearch = !q || String(row.account_label || '').toLowerCase().includes(q);
+        const okMonth = !m || String(new Date(row.closed_at).getMonth() + 1).padStart(2, '0') === m;
+        return okSearch && okMonth;
+      }));
     }
 
     fetchLiveTradingData();

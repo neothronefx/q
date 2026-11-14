@@ -184,8 +184,23 @@ table th{background:var(--th-bg)}
 <style>
 tr.cens-row td{opacity:.55}
 .cens{color:var(--muted,#8fa0b8);font-size:12px;white-space:nowrap}
-#chatBody{width:100%;min-height:96px;resize:vertical;font:inherit;color:inherit;background:var(--input,rgba(255,255,255,.04));border:1px solid var(--line,rgba(148,163,184,.25));border-radius:10px;padding:12px 14px}
+#chatBody{width:100%;min-height:48px;resize:vertical;font:inherit;color:inherit;background:var(--input,rgba(255,255,255,.04));border:1px solid var(--line,rgba(148,163,184,.25));border-radius:10px;padding:12px 14px}
 .chat-msg{white-space:pre-wrap;word-break:break-word;max-width:420px}
+.chat2{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px}
+@media(max-width:860px){.chat2{grid-template-columns:1fr}}
+.chat2-side input{width:100%}
+.chat2-res,.chat2-threads{display:grid;gap:6px;margin-top:8px}
+.chat2-item{display:block;width:100%;text-align:left;padding:9px 11px;border-radius:10px;border:1px solid var(--line,rgba(148,163,184,.25));background:transparent;color:inherit;font:inherit;cursor:pointer}
+.chat2-item:hover,.chat2-item.on{border-color:#00e0b2}
+.chat2-item small{display:block;color:var(--muted,#8fa0b8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat2-item .dot{display:inline-block;min-width:18px;padding:0 6px;border-radius:9px;background:#e11d48;color:#fff;font-size:11px;text-align:center;margin-left:6px}
+.chat2-head{font-weight:600;padding:4px 2px 10px;border-bottom:1px solid var(--line,rgba(148,163,184,.25))}
+.chat2-log{height:360px;overflow-y:auto;padding:12px 4px;display:flex;flex-direction:column;gap:8px}
+.chat-row{display:flex}.chat-row.staff{justify-content:flex-end}
+.chat-bub{max-width:78%;padding:8px 12px;border-radius:12px;background:rgba(148,163,184,.14)}
+.chat-row.staff .chat-bub{background:rgba(0,224,178,.16)}
+.chat-bub small{display:block;color:var(--muted,#8fa0b8);font-size:11px;margin-bottom:2px}
+.chat2-form{display:grid;gap:8px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -526,15 +541,24 @@ tr.cens-row td{opacity:.55}
 
     <section class="page hidden" id="page-noaccess"><section class="panel"><div class="panel-head"><h2>Belum ada menu yang diberikan</h2></div><p class="placeholder">Akun Anda sudah login, tetapi Owner atau Admin belum memberi akses ke menu apa pun. Hubungi mereka untuk meminta akses.</p></section></section>
     <section class="page hidden" id="page-chat"><section class="panel">
-      <div class="panel-head"><h2>Chat ke Member</h2></div>
-      <p class="placeholder" style="margin-bottom:14px">Pesan yang dikirim dari sini muncul sebagai popup di portal member saat mereka membuka portal. Pilih satu member atau kirim ke semua member.</p>
-      <form id="chatForm" style="display:grid;gap:12px;margin-bottom:22px">
-        <div class="toolbar"><input id="chatTargetSearch" type="search" placeholder="Cari email / nama member..." aria-label="Cari member"><select id="chatTarget" aria-label="Penerima"><option value="">Semua member</option></select></div>
-        <textarea id="chatBody" maxlength="1000" rows="4" placeholder="Tulis pesan untuk member..." aria-label="Isi pesan" required></textarea>
-        <div class="toolbar"><button class="btn teal" type="submit" id="chatSend">Kirim pesan</button><span id="chatCount" class="row-note" style="min-width:0">0/1000</span><span id="chatMsg" class="row-note" style="min-width:0"></span></div>
-      </form>
-      <h3 style="margin:0 0 10px;font-size:14px">Riwayat pesan terkirim</h3>
-      <div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Pengirim</th><th>Penerima</th><th>Pesan</th><th>Dibaca</th><th>Aksi</th></tr></thead><tbody id="chatBody2"><tr><td colspan="6">Memuat pesan...</td></tr></tbody></table></div>
+      <div class="panel-head"><h2>Chat dengan Member</h2></div>
+      <p class="placeholder" style="margin-bottom:14px">Chat 2 arah. Hanya staf yang dapat memulai dan menutup chat; member hanya membalas lewat popup di portal. <b>Saat chat ditutup, seluruh percakapan dihapus permanen.</b> Untuk pengumuman ke semua member gunakan menu Broadcast.</p>
+      <div class="chat2">
+        <aside class="chat2-side">
+          <input id="chatTargetSearch" type="search" placeholder="Cari member (email / nama) untuk memulai chat..." aria-label="Cari member">
+          <div id="chatSearchRes" class="chat2-res"></div>
+          <h3 style="margin:14px 0 8px;font-size:13px">Chat aktif</h3>
+          <div id="chatThreads" class="chat2-threads"><div class="row-note">Memuat...</div></div>
+        </aside>
+        <div class="chat2-main">
+          <div id="chatHead" class="chat2-head">Pilih chat di kiri, atau cari member untuk memulai.</div>
+          <div id="chatLog" class="chat2-log" aria-live="polite"></div>
+          <form id="chatForm" class="chat2-form">
+            <textarea id="chatBody" maxlength="1000" rows="2" placeholder="Tulis balasan... (Enter kirim, Shift+Enter baris baru)" aria-label="Isi pesan" disabled></textarea>
+            <div class="toolbar"><button class="btn teal" type="submit" id="chatSend" disabled>Kirim</button><button class="btn danger" type="button" id="chatCloseBtn" disabled>Tutup &amp; hapus chat</button><span id="chatMsg" class="row-note" style="min-width:0"></span></div>
+          </form>
+        </div>
+      </div>
     </section></section>
     <section class="page hidden" id="page-admins"><section class="panel">
       <div class="panel-head"><h2>Manajemen Jabatan</h2><button class="btn teal" data-action="add-admin">+ Tambah staf</button></div>
@@ -652,7 +676,7 @@ const titles = {
  faq:['FAQ & Panduan','Kelola bantuan, instalasi EA, dan konfigurasi WebRequest.'],
  settings:['API & Keamanan','Periksa RLS, akses publik, dan kunci yang dipakai.'],
  admins:['Manajemen Jabatan','Atur jabatan Owner, Admin, dan Moderator beserta akses menunya.'],
- chat:['Chat','Kirim pesan ke member; muncul sebagai popup di portal.'],
+ chat:['Chat','Chat 2 arah dengan member. Ditutup = percakapan dihapus.'],
  noaccess:['Belum ada menu','Owner atau Admin belum memberi akses menu untuk akun ini.'],
  broadcast:['Broadcast Pesan','Kirim pesan langsung ke seluruh member portal.'],
  social:['Sosial','Kelola sosial media dan hyperlink yang tampil di Ringkasan.']
@@ -1834,52 +1858,99 @@ async function applyRole() {
   showPage(MOD_ALLOWED[0] || 'noaccess');
 }
 
-// ---------- Chat ke member (muncul sebagai popup di portal) ----------
-let chatMembers = [];
-function chatFillTargets() {
-  const sel = $('chatTarget'); if (!sel) return;
-  const q = ($('chatTargetSearch')?.value || '').trim().toLowerCase(), keep = sel.value;
-  const list = chatMembers.filter(u => !q || (u.email + ' ' + u.name).toLowerCase().includes(q)).slice(0, 200);
-  sel.innerHTML = '<option value="">Semua member</option>' + list.map(u => `<option value="${esc(u.id)}">${esc(u.email)}${u.name ? ' — ' + esc(u.name) : ''}</option>`).join('');
-  if ([...sel.options].some(o => o.value === keep)) sel.value = keep;
+// ---------- Chat 2 arah dengan member (hanya staf yang memulai / menutup; ditutup = dihapus) ----------
+let chatCur = null, chatLast = 0, chatTimer = null, chatTick_busy = false, chatSearchT = null;
+const chatActive = () => !$('page-chat')?.classList.contains('hidden');
+const chatMsgHtml = m => `<div class="chat-row ${m.from_staff ? 'staff' : 'mem'}"><div class="chat-bub"><small>${m.from_staff ? esc(roleLabel(m.sender_role) + (m.sender_email ? ' · ' + m.sender_email : '')) : 'Member'} · ${esc(dt(m.created_at))}</small><div class="chat-msg">${esc(m.body)}</div></div></div>`;
+function chatSetEnabled(on) { ['chatBody', 'chatSend', 'chatCloseBtn'].forEach(id => { const el = $(id); if (el) el.disabled = !on; }); }
+function chatErr(text) { const m = $('chatMsg'); if (m) { m.style.color = text ? 'var(--red)' : ''; m.textContent = text || ''; } }
+function chatReset(note) {
+  chatCur = null; chatLast = 0; chatSetEnabled(false);
+  $('chatLog').innerHTML = ''; $('chatHead').textContent = note || 'Pilih chat di kiri, atau cari member untuk memulai.';
+}
+async function chatThreadsRefresh() {
+  const box = $('chatThreads');
+  const { data, error } = await supabaseClient.rpc('chat_staff_threads');
+  if (error) { box.innerHTML = `<div class="row-note" style="color:var(--red)">${esc(error.message)}. Jalankan CORE-9-chat2arah.sql / hubungi Owner untuk akses Chat.</div>`; return null; }
+  box.innerHTML = (data || []).length ? data.map(t => `<button type="button" class="chat2-item ${t.thread_id === chatCur ? 'on' : ''}" data-chat-th="${esc(t.thread_id)}" data-chat-mem="${esc(t.member_email)}" data-chat-by="${esc(t.opened_by_email || '')}"><b>${esc(t.member_email)}</b>${Number(t.unread) ? `<span class="dot">${Number(t.unread)}</span>` : ''}<small>${esc(t.last_body || 'Belum ada pesan')}</small></button>`).join('')
+    : '<div class="row-note">Belum ada chat aktif.</div>';
+  return data || [];
+}
+async function chatMsgsRefresh() {
+  if (!chatCur) return;
+  const { data, error } = await supabaseClient.rpc('chat_staff_messages', { p_thread: chatCur, p_after: chatLast });
+  if (error) { chatErr(error.message); return; }
+  if (!(data || []).length) return;
+  const log = $('chatLog'), stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 40;
+  log.insertAdjacentHTML('beforeend', data.map(chatMsgHtml).join(''));
+  chatLast = data[data.length - 1].id;
+  if (stick || chatLast === data[0].id) log.scrollTop = log.scrollHeight;
+}
+async function chatTick() {
+  if (chatTick_busy) return; chatTick_busy = true;
+  try {
+    const list = await chatThreadsRefresh();
+    if (list && chatCur && !list.some(t => t.thread_id === chatCur)) chatReset('Chat ini sudah ditutup dan percakapannya dihapus.');
+    else await chatMsgsRefresh();
+  } finally { chatTick_busy = false; }
+}
+async function chatSelect(tid, memEmail, byEmail) {
+  chatCur = tid; chatLast = 0; chatErr('');
+  $('chatLog').innerHTML = ''; chatSetEnabled(true);
+  $('chatHead').textContent = `${memEmail}${byEmail ? ' — dibuka oleh ' + byEmail : ''}`;
+  await chatMsgsRefresh(); await chatThreadsRefresh();
+  $('chatBody').focus();
 }
 async function loadChat() {
-  const msg = $('chatMsg'); if (msg) msg.textContent = '';
-  if (!(authUserCache || []).length) { const r = await listRpc('admin_list_all_users'); if (!r.error) authUserCache = r.data || []; }
-  chatMembers = (authUserCache || []).filter(u => !u._censored && u.email).map(u => {
-    const m = u.raw_user_meta_data || u.user_metadata || {};
-    return { id: u.id, email: u.email, name: m.full_name || m.display_name || m.username || m.name || '' };
-  }).sort((a, b) => a.email.localeCompare(b.email));
-  chatFillTargets();
-  const tb = $('chatBody2');
-  tb.innerHTML = '<tr><td colspan="6">Memuat pesan...</td></tr>';
-  const { data, error } = await supabaseClient.rpc('chat_list_sent', { p_limit: 100 });
-  if (error) { tb.innerHTML = `<tr><td colspan="6" style="color:var(--red)">Gagal memuat: ${esc(error.message)}. Jalankan sql/neothrone_roles_chat.sql.</td></tr>`; return; }
-  tb.innerHTML = (data || []).length ? data.map(r => `<tr><td>${esc(dt(r.created_at))}</td><td>${esc(r.sender_email || '-')}<br><small style="color:var(--muted)">${esc(roleLabel(r.sender_role))}</small></td><td>${r.recipient_id ? esc(r.recipient_email || r.recipient_id) : 'Semua member'}</td><td class="chat-msg">${esc(r.body)}</td><td>${esc(r.read_count)}</td><td><button class="btn danger" type="button" data-chat-del="${esc(r.id)}">Tarik</button></td></tr>`).join('')
-    : '<tr><td colspan="6">Belum ada pesan terkirim.</td></tr>';
+  chatErr(''); $('chatSearchRes').innerHTML = ''; $('chatTargetSearch').value = '';
+  if (!chatCur) chatReset();
+  await chatThreadsRefresh();
+  clearInterval(chatTimer);
+  chatTimer = setInterval(() => { if (!chatActive()) { clearInterval(chatTimer); chatTimer = null; return; } chatTick(); }, 4000);
 }
-$('chatTargetSearch')?.addEventListener('input', chatFillTargets);
-$('chatBody')?.addEventListener('input', e => { $('chatCount').textContent = e.target.value.length + '/1000'; });
+$('chatThreads')?.addEventListener('click', e => {
+  const b = e.target.closest('[data-chat-th]'); if (!b) return;
+  chatSelect(Number(b.dataset.chatTh), b.dataset.chatMem, b.dataset.chatBy);
+});
+$('chatTargetSearch')?.addEventListener('input', () => {
+  clearTimeout(chatSearchT);
+  chatSearchT = setTimeout(async () => {
+    const q = $('chatTargetSearch').value.trim(), box = $('chatSearchRes');
+    if (q.length < 2) { box.innerHTML = ''; return; }
+    const { data, error } = await supabaseClient.rpc('chat_member_search', { p_q: q });
+    if (error) { box.innerHTML = `<div class="row-note" style="color:var(--red)">${esc(error.message)}</div>`; return; }
+    box.innerHTML = (data || []).length ? data.map(u => `<button type="button" class="chat2-item" data-chat-new="${esc(u.id)}"><b>${esc(u.email)}</b><small>${esc(u.name || '')}${u.has_chat ? ' · chat sudah aktif' : ' · mulai chat'}</small></button>`).join('')
+      : '<div class="row-note">Member tidak ditemukan.</div>';
+  }, 300);
+});
+$('chatSearchRes')?.addEventListener('click', async e => {
+  const b = e.target.closest('[data-chat-new]'); if (!b) return;
+  const label = b.querySelector('b').textContent;
+  if (!confirm(`Mulai chat dengan ${label}? Popup chat akan muncul di portal member.`)) return;
+  const { data, error } = await supabaseClient.rpc('chat_open', { p_member: b.dataset.chatNew });
+  if (error) { chatErr('Gagal: ' + error.message); return; }
+  $('chatSearchRes').innerHTML = ''; $('chatTargetSearch').value = '';
+  await chatSelect(Number(data), label, '');
+});
 $('chatForm')?.addEventListener('submit', async e => {
   e.preventDefault();
-  const body = $('chatBody').value.trim(), to = $('chatTarget').value || null, msg = $('chatMsg'), btn = $('chatSend');
-  if (!body) return;
-  const label = to ? $('chatTarget').selectedOptions[0].textContent : 'SEMUA member';
-  if (!confirm(`Kirim pesan ini ke ${label}?`)) return;
-  btn.disabled = true; msg.style.color = ''; msg.textContent = 'Mengirim...';
-  const { error } = await supabaseClient.rpc('chat_send', { p_recipient: to, p_body: body });
-  btn.disabled = false;
-  if (error) { msg.style.color = 'var(--red)'; msg.textContent = 'Gagal: ' + error.message; return; }
-  msg.style.color = '#00e0b2'; msg.textContent = 'Terkirim. Member akan melihatnya sebagai popup di portal.';
-  $('chatBody').value = ''; $('chatCount').textContent = '0/1000';
-  loadChat();
+  const body = $('chatBody').value.trim(); if (!body || !chatCur) return;
+  $('chatSend').disabled = true; chatErr('');
+  const { error } = await supabaseClient.rpc('chat_staff_send', { p_thread: chatCur, p_body: body });
+  $('chatSend').disabled = !chatCur;
+  if (error) { chatErr('Gagal: ' + error.message); return; }
+  $('chatBody').value = '';
+  chatMsgsRefresh(); chatThreadsRefresh();
 });
-document.addEventListener('click', async e => {
-  const b = e.target.closest('[data-chat-del]'); if (!b) return;
-  if (!confirm('Tarik pesan ini? Pesan hilang dari portal member.')) return;
-  const { error } = await supabaseClient.rpc('chat_delete', { p_id: Number(b.dataset.chatDel) });
-  if (error) { alert('Gagal: ' + error.message); return; }
-  loadChat();
+$('chatBody')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); $('chatForm').requestSubmit(); }
+});
+$('chatCloseBtn')?.addEventListener('click', async () => {
+  if (!chatCur) return;
+  if (!confirm('Tutup chat ini? Seluruh percakapan akan DIHAPUS PERMANEN dan tidak bisa dikembalikan.')) return;
+  const { error } = await supabaseClient.rpc('chat_close', { p_thread: chatCur });
+  if (error) { chatErr('Gagal: ' + error.message); return; }
+  chatReset('Chat ditutup dan percakapan dihapus.'); chatThreadsRefresh();
 });
 
 // ---------- Sosial media: nama + gambar + hyperlink ----------

@@ -832,7 +832,7 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
     // Real-time Metrics Khusus Bulan Berjalan
     async function fetchIndexMetricsCurrentMonth() {
       try {
-        const { data, error } = await supabaseClient.from('trading_stats').select('*');
+        const { data: sum, error } = await supabaseClient.rpc('public_stats_summary');
         if (error) throw error;
         const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
         const NOTES = { noteMonthly: 'Rata-rata profit bulanan', noteWinRate: 'Berdasarkan seluruh transaksi', noteTotal: 'Akumulasi keuntungan total (USD)', noteAccounts: 'Akun MT4/MT5 terverifikasi' };
@@ -842,38 +842,17 @@ table.ff td.num { white-space: nowrap; font-family: var(--font-mono); font-varia
         };
         const showNotes = () => Object.keys(NOTES).forEach(id => set(id, NOTES[id]));
 
-        if (!data || data.length === 0) {
+        if (!sum || !Number(sum.accounts)) {
           showEmpty();
           return;
         }
-
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth();
-
-        const currentMonthData = data.filter(row => {
-          const date = new Date(row.updated_at || row.created_at);
-          return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
-        });
-
-        if (currentMonthData.length === 0) {
-          showEmpty();
-          return;
-        }
-
-        let sumMonthly = 0, sumWinRate = 0, sumTotalProfit = 0;
-        currentMonthData.forEach(row => {
-          sumMonthly += Number(row.monthly_profit || 0);
-          sumWinRate += Number(row.win_rate || 0);
-          sumTotalProfit += Number(row.total_profit || 0);
-        });
 
         showNotes();
-        const count = currentMonthData.length;
-        set('statMonthly', `${(sumMonthly / count) >= 0 ? '+' : ''}${(sumMonthly / count).toFixed(1)}%`);
-        set('statWinRate', `${(sumWinRate / count).toFixed(1)}%`);
-        set('statTotalProfit', `$${sumTotalProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
-        set('statAccounts', count);
+        const avgMonthly = Number(sum.avg_monthly || 0), avgWin = Number(sum.avg_win_rate || 0), totalProfit = Number(sum.total_profit || 0);
+        set('statMonthly', `${avgMonthly >= 0 ? '+' : ''}${avgMonthly.toFixed(1)}%`);
+        set('statWinRate', `${avgWin.toFixed(1)}%`);
+        set('statTotalProfit', `$${totalProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+        set('statAccounts', Number(sum.accounts));
       } catch (err) {
         console.error('Gagal memuat metrik beranda:', err.message);
       }

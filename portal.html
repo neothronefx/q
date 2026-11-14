@@ -281,6 +281,24 @@ table.ff td.cd{white-space:nowrap;text-align:center}
 table.pf td input{max-width:110px;text-align:center;font-family:var(--f-mono)}
 table.pf td.pfp{font-weight:700;letter-spacing:.02em;font-family:var(--f-head)}
 /* Broadcast & sosial */
+/* ===== Widget chat 2 arah ===== */
+.cw{position:fixed;right:16px;bottom:16px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.cw[hidden],.cw-panel[hidden],.cw-badge[hidden],.cw-form[hidden]{display:none}
+.cw-fab{display:flex;align-items:center;gap:8px;background:var(--teal);color:#06231f;border:0;border-radius:999px;padding:12px 18px;font:700 14px var(--f-head,inherit);cursor:pointer;box-shadow:var(--shadow)}
+.cw-badge{background:#e11d48;color:#fff;border-radius:10px;font-size:11px;padding:1px 7px}
+.cw-panel{width:min(360px,calc(100vw - 32px));background:var(--card);border:1px solid var(--teal);border-radius:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.cw-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.cw-head button{background:transparent;border:1px solid var(--line);color:var(--text);border-radius:8px;width:30px;height:28px;cursor:pointer}
+.cw-log{height:min(320px,45vh);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.cw-row{display:flex}.cw-row.me{justify-content:flex-end}
+.cw-bub{max-width:82%;padding:8px 11px;border-radius:12px;background:var(--card2,rgba(148,163,184,.14));font-size:14px;line-height:1.45}
+.cw-row.me .cw-bub{background:color-mix(in srgb,var(--teal) 22%,transparent)}
+.cw-bub small{display:block;color:var(--muted);font-size:11px;margin-bottom:2px}
+.cw-bub div{white-space:pre-wrap;word-break:break-word}
+.cw-sys{text-align:center;color:var(--muted);font-size:13px;padding:10px}
+.cw-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line)}
+.cw-form textarea{flex:1;resize:none;background:var(--input,transparent);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 10px;font:inherit}
+.cw-note{color:var(--muted);font-size:11px;padding:0 12px 10px}
 .bc-overlay{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;z-index:1000;padding:18px}
 .bc-overlay.show{display:flex}
 .bc-box{background:var(--card);border:1px solid var(--teal);border-radius:18px;width:100%;max-width:520px;max-height:85vh;display:flex;flex-direction:column;box-shadow:var(--shadow)}
@@ -524,12 +542,14 @@ table.pf td.pfp{font-weight:700;letter-spacing:.02em;font-family:var(--f-head)}
  </div>
 </div>
 
-<div class="bc-overlay" id="chOverlay" role="dialog" aria-modal="true" aria-labelledby="chTitle">
- <div class="bc-box">
-  <div class="bc-head"><h2 id="chTitle">Pesan dari Tim Neothrone</h2><span class="bc-count" id="chCount"></span></div>
-  <div class="bc-body" id="chBody"></div>
-  <div class="bc-foot"><button class="btn" id="chClose" type="button">Mengerti</button></div>
- </div>
+<div id="chatWidget" class="cw" hidden>
+  <button id="cwFab" class="cw-fab" type="button" aria-label="Buka chat" hidden><span>Chat</span><i id="cwBadge" class="cw-badge" hidden>0</i></button>
+  <div id="cwPanel" class="cw-panel" hidden role="dialog" aria-label="Chat dengan tim Neothrone">
+    <div class="cw-head"><b>Chat dengan Tim Neothrone</b><button id="cwMin" type="button" aria-label="Perkecil">–</button></div>
+    <div id="cwLog" class="cw-log" aria-live="polite"></div>
+    <form id="cwForm" class="cw-form"><textarea id="cwInput" rows="1" maxlength="1000" placeholder="Tulis balasan..." aria-label="Pesan"></textarea><button class="btn" type="submit" id="cwSend">Kirim</button></form>
+    <div class="cw-note">Chat dimulai dan ditutup oleh tim kami. Saat ditutup, seluruh percakapan dihapus.</div>
+  </div>
 </div>
 
 <script>
@@ -974,34 +994,77 @@ function bcRemove(id) {
 }
 
 
-// ===== Chat dari staf (moderator/admin/owner) =====
-// Popup muncul saat login dan saat polling menemukan pesan baru. Pengirim hanya ditampilkan sebagai jabatan.
-const chShown = new Set(); let chTimer = null;
-const chLabel = r => ({ owner: 'Owner', admin: 'Admin', moderator: 'Moderator' }[r] || 'Tim');
-async function chPoll() {
-  if (!db || !user || document.hidden) return;
-  try {
-    const { data, error } = await db.rpc('chat_inbox', { p_limit: 20 });
-    if (error) { console.warn('chat_inbox:', error.message); return; }
-    const fresh = (data || []).filter(m => !m.is_read && !chShown.has(m.id));
-    if (!fresh.length) return;
-    fresh.forEach(m => chShown.add(m.id));
-    if (!$('chOverlay').classList.contains('show')) $('chBody').innerHTML = '';
-    $('chBody').insertAdjacentHTML('afterbegin', fresh.map(m =>
-      `<div class="bc-item" data-id="${esc(m.id)}"><b>${esc(chLabel(m.sender_role))}</b><p>${esc(m.body)}</p><small>${esc(bcFmt(m.created_at))}</small></div>`).join(''));
-    $('chCount').textContent = $('chBody').querySelectorAll('.bc-item').length + ' pesan baru';
-    $('chOverlay').classList.add('show');
-  } catch (e) { console.warn('chat poll error', e); }
+// ===== Chat 2 arah dengan staf =====
+// Dimulai & ditutup oleh staf. Member hanya membalas. Chat ditutup = percakapan dihapus di server.
+let cwThread = null, cwLast = 0, cwTimer = null, cwOpen = false, cwErrN = 0;
+const cwRole = r => ({ owner: 'Owner', admin: 'Admin', moderator: 'Moderator' }[r] || 'Tim');
+function cwUnread(n) { const b = $('cwBadge'); b.textContent = n; b.hidden = !(n > 0 && !cwOpen); }
+function cwShow(open) {
+  cwOpen = open;
+  $('cwPanel').hidden = !open; $('cwFab').hidden = open;
+  if (open) {
+    cwUnread(0); $('cwLog').scrollTop = $('cwLog').scrollHeight;
+    db.rpc('chat_member_mark_read').then(() => {}, () => {});
+    setTimeout(() => $('cwInput').focus(), 50);
+  }
 }
-async function chClose() {
-  const ids = [...$('chBody').querySelectorAll('.bc-item')].map(e => Number(e.dataset.id));
-  $('chOverlay').classList.remove('show');
-  $('chBody').innerHTML = '';
-  if (ids.length) { const { error } = await db.rpc('chat_mark_read', { p_ids: ids }); if (error) console.warn('chat_mark_read:', error.message); }
+function cwAdd(list) {
+  const log = $('cwLog'), stick = log.scrollTop + log.clientHeight >= log.scrollHeight - 40;
+  log.insertAdjacentHTML('beforeend', list.map(m => m.from_staff
+    ? `<div class="cw-row"><div class="cw-bub"><small>${esc(cwRole(m.sender_role))} · ${esc(bcFmt(m.created_at))}</small><div>${esc(m.body)}</div></div></div>`
+    : `<div class="cw-row me"><div class="cw-bub"><small>Kamu · ${esc(bcFmt(m.created_at))}</small><div>${esc(m.body)}</div></div></div>`).join(''));
+  if (stick) log.scrollTop = log.scrollHeight;
 }
-$('chClose').addEventListener('click', chClose);
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('chOverlay').classList.contains('show')) chClose(); });
-function startChat() { if (chTimer) return; chPoll(); chTimer = setInterval(chPoll, 20000); }
+function cwClosed() {
+  cwThread = null; cwLast = 0;
+  if (cwOpen) {
+    $('cwLog').innerHTML = '<div class="cw-sys">Chat ditutup oleh tim. Percakapan telah dihapus.</div>';
+    $('cwForm').hidden = true;
+    setTimeout(() => { if (cwThread === null) { $('chatWidget').hidden = true; cwShow(false); $('cwFab').hidden = true; } }, 5000);
+  } else { $('chatWidget').hidden = true; }
+}
+async function cwPoll() {
+  if (!db || !user) return;
+  const { data, error } = await db.rpc('chat_member_poll', { p_after: cwLast });
+  if (error) { cwErrN++; if (cwErrN < 3) console.warn('chat_member_poll:', error.message); return; }
+  cwErrN = 0;
+  if (!data.open) { if (cwThread !== null) cwClosed(); return; }
+  if (data.thread !== cwThread) {                 // chat baru dimulai staf
+    cwThread = data.thread; cwLast = 0; $('cwLog').innerHTML = ''; $('cwForm').hidden = false;
+    $('chatWidget').hidden = false;
+    return cwPoll();                              // ambil seluruh pesan dari awal
+  }
+  const msgs = data.messages || [];
+  if (msgs.length) {
+    cwAdd(msgs); cwLast = msgs[msgs.length - 1].id;
+    if (msgs.some(m => m.from_staff)) {
+      if (!cwOpen) cwShow(true);                  // pesan staf baru -> popup otomatis
+      else db.rpc('chat_member_mark_read').then(() => {}, () => {});
+    }
+  }
+  cwUnread(Number(data.unread || 0));
+  if ($('cwFab').hidden && !cwOpen) $('cwFab').hidden = false;
+}
+async function cwLoop() {
+  try { await cwPoll(); } catch (e) { console.warn('chat poll error', e); }
+  cwTimer = setTimeout(cwLoop, cwThread ? (document.hidden ? 15000 : 4000) : 10000);
+}
+$('cwFab').addEventListener('click', () => cwShow(true));
+$('cwMin').addEventListener('click', () => cwShow(false));
+$('cwForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const body = $('cwInput').value.trim(); if (!body || cwThread === null) return;
+  $('cwSend').disabled = true;
+  const { error } = await db.rpc('chat_member_send', { p_body: body });
+  $('cwSend').disabled = false;
+  if (error) { $('cwLog').insertAdjacentHTML('beforeend', `<div class="cw-sys">Gagal mengirim: ${esc(error.message)}</div>`); return; }
+  $('cwInput').value = '';
+  cwPoll();
+});
+$('cwInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); $('cwForm').requestSubmit(); }
+});
+function startChat() { if (cwTimer) return; cwLoop(); }
 
 // ===== Sosial media (bagian bawah Ringkasan) =====
 const SOCIAL_BUCKET = 'social-icons';
